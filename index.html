@@ -46,7 +46,6 @@ footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
 #loading{display:none;font-size:13px;color:#fff;margin-top:10px}
 @media(max-width:800px){.grid,.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.report-result{align-items:stretch;flex-direction:column}.report-result button{width:100%}button{min-height:44px;font-size:14px}.field input,.field select{font-size:16px;min-height:46px}.container{padding:0 10px 25px;margin-top:12px}.grid,.metric-grid{grid-template-columns:1fr}.card-body{padding:14px}.toolbar button{flex:1;min-width:calc(50% - 10px)}.actions button{flex:1}header{padding:18px 13px}}
-.report-view-table{width:100%;border-collapse:collapse;margin-top:12px;table-layout:fixed}.report-view-table th,.report-view-table td{border:1px solid #d8e3dc;padding:9px;text-align:left;vertical-align:top;overflow-wrap:anywhere}.report-view-table th{width:42%;background:#f2f7f3}.report-result{margin:12px 0;padding:14px;border:1px solid #d8e3dc;border-radius:10px;background:#fff}.report-result h3{margin:0;font-size:1.05rem}@media(max-width:600px){.report-view-table th{width:44%}.report-view-table th,.report-view-table td{padding:7px;font-size:14px}}
 </style>
 </head>
 <body>
@@ -88,7 +87,7 @@ footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
       <div class="actions">
         <button class="primary" id="findBtn" type="button">View Report</button>
       </div>
-      <p class="small">Existing reports are searched by SOL ID. Select a branch to see all reports submitted for that branch, then choose Edit on the required report.</p>
+      <p class="small">Existing reports are searched by SOL ID. Select a branch to view all reports submitted for that branch. Reports are read-only here.</p>
     </div>
   </section>
 
@@ -138,6 +137,7 @@ footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
     <div class="card-head">Existing Report</div>
     <div class="card-body">
       <div id="resultList"></div>
+      <div id="reportDetails" class="hidden" style="margin-top:16px"></div>
     </div>
   </section>
   <footer>DFS Saturation Camp Reporting Portal</footer>
@@ -393,6 +393,7 @@ function setMode(newMode) {
   mode = newMode;
   $('modeBadge').textContent = newMode === 'edit' ? 'Edit Existing Report' : 'New Report';
   $('saveBtn').textContent = newMode === 'edit' ? 'Update Existing Report' : 'Submit Report';
+  $('editBtn').classList.toggle('hidden', !(newMode === 'view' && currentlyLoadedReport));
   $('resetBtn').classList.toggle('hidden', newMode === 'edit');
 }
 function showForm(newMode='new') {
@@ -465,24 +466,16 @@ async function findReport() {
       showStatus(`No existing report found for SOL ID ${solId}. You can create a new report using New Report.`, 'info');
       return;
     }
-    reportsForSelectedSol.forEach((report) => {
+    reportsForSelectedSol.forEach((report, index) => {
       const card = document.createElement('div');
       card.className = 'report-result';
-      const heading = document.createElement('h3');
-      heading.textContent = `GP: ${report['Gram Panchayat (GP) Name'] || ''} (${report['Gram Panchayat (GP) Code'] || ''}) — Camp Date: ${normalizeDate(report['Camp Date']) || ''}`;
-      card.appendChild(heading);
-      const table = document.createElement('table');
-      table.className = 'report-view-table';
-      const tbody = document.createElement('tbody');
-      Object.entries(report).forEach(([key, value]) => {
-        const tr = document.createElement('tr');
-        const th = document.createElement('th');
-        th.scope = 'row'; th.textContent = key;
-        const td = document.createElement('td');
-        td.textContent = key === 'Camp Date' ? (normalizeDate(value) || String(value ?? '')) : (value === null || value === undefined || value === '' ? '—' : String(value));
-        tr.append(th, td); tbody.appendChild(tr);
-      });
-      table.appendChild(tbody); card.appendChild(table);
+      const details = document.createElement('div');
+      details.className = 'report-result-details';
+      details.textContent = `GP: ${report['Gram Panchayat (GP) Name'] || ''} (${report['Gram Panchayat (GP) Code'] || ''}) | Block: ${report['Block Name'] || ''} | Camp Date: ${normalizeDate(report['Camp Date']) || ''}`;
+      const view = document.createElement('button');
+      view.type = 'button'; view.className = 'secondary'; view.textContent = 'View All Fields';
+      view.addEventListener('click', () => renderReportDetails(report));
+      card.append(details, view);
       $('resultList').appendChild(card);
     });
     $('resultCard').classList.remove('hidden');
@@ -493,6 +486,30 @@ async function findReport() {
   } finally {
     setLoading(false);
   }
+}
+
+function renderReportDetails(report) {
+  const panel = $('reportDetails');
+  if (!panel) return;
+  panel.replaceChildren();
+  const title = document.createElement('h3');
+  title.textContent = 'Complete Report — View Only';
+  panel.appendChild(title);
+  const table = document.createElement('table');
+  table.style.cssText = 'width:100%;border-collapse:collapse;font-size:14px;';
+  Object.keys(report).filter(k => !k.startsWith('_')).forEach(key => {
+    const tr = document.createElement('tr');
+    const th = document.createElement('th');
+    const td = document.createElement('td');
+    th.textContent = key;
+    td.textContent = report[key] === null || report[key] === undefined ? '' : String(report[key]);
+    th.style.cssText = 'text-align:left;padding:9px;border:1px solid #d8e3da;background:#f7faf8;width:48%;vertical-align:top;';
+    td.style.cssText = 'padding:9px;border:1px solid #d8e3da;overflow-wrap:anywhere;';
+    tr.append(th, td); table.appendChild(tr);
+  });
+  panel.appendChild(table);
+  panel.classList.remove('hidden');
+  panel.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 function collectPayload() {
