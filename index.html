@@ -46,6 +46,7 @@ footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
 #loading{display:none;font-size:13px;color:#fff;margin-top:10px}
 @media(max-width:800px){.grid,.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.report-result{align-items:stretch;flex-direction:column}.report-result button{width:100%}button{min-height:44px;font-size:14px}.field input,.field select{font-size:16px;min-height:46px}.container{padding:0 10px 25px;margin-top:12px}.grid,.metric-grid{grid-template-columns:1fr}.card-body{padding:14px}.toolbar button{flex:1;min-width:calc(50% - 10px)}.actions button{flex:1}header{padding:18px 13px}}
+.report-view-table{width:100%;border-collapse:collapse;margin-top:12px;table-layout:fixed}.report-view-table th,.report-view-table td{border:1px solid #d8e3dc;padding:9px;text-align:left;vertical-align:top;overflow-wrap:anywhere}.report-view-table th{width:42%;background:#f2f7f3}.report-result{margin:12px 0;padding:14px;border:1px solid #d8e3dc;border-radius:10px;background:#fff}.report-result h3{margin:0;font-size:1.05rem}@media(max-width:600px){.report-view-table th{width:44%}.report-view-table th,.report-view-table td{padding:7px;font-size:14px}}
 </style>
 </head>
 <body>
@@ -72,7 +73,6 @@ footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
   <div class="toolbar">
     <button class="primary" id="newBtn" type="button">＋ New Report</button>
     <button class="secondary" id="viewBtn" type="button">⌕ View Existing Report</button>
-    <button class="blue hidden" id="editBtn" type="button">✎ Edit Report</button>
     <button class="secondary" id="reloadBtn" type="button">↻ Reload Master Data</button>
   </div>
 
@@ -201,13 +201,16 @@ const $ = id => document.getElementById(id);
 
 function showStatus(message, type='info') {
   const box = $('status');
+  if (!box) { console[type === 'err' ? 'error' : 'log'](message); return; }
   box.textContent = message;
   box.className = 'status ' + type;
-  box.scrollIntoView({behavior:'smooth', block:'nearest'});
+  if (box.scrollIntoView) box.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 function clearStatus() {
-  $('status').textContent = '';
-  $('status').className = 'status';
+  const box = $('status');
+  if (!box) return;
+  box.textContent = '';
+  box.className = 'status';
 }
 function setLoading(on) {
   $('loading').style.display = on ? 'block' : 'none';
@@ -390,7 +393,6 @@ function setMode(newMode) {
   mode = newMode;
   $('modeBadge').textContent = newMode === 'edit' ? 'Edit Existing Report' : 'New Report';
   $('saveBtn').textContent = newMode === 'edit' ? 'Update Existing Report' : 'Submit Report';
-  $('editBtn').classList.toggle('hidden', !(newMode === 'view' && currentlyLoadedReport));
   $('resetBtn').classList.toggle('hidden', newMode === 'edit');
 }
 function showForm(newMode='new') {
@@ -463,16 +465,24 @@ async function findReport() {
       showStatus(`No existing report found for SOL ID ${solId}. You can create a new report using New Report.`, 'info');
       return;
     }
-    reportsForSelectedSol.forEach((report, index) => {
+    reportsForSelectedSol.forEach((report) => {
       const card = document.createElement('div');
       card.className = 'report-result';
-      const details = document.createElement('div');
-      details.className = 'report-result-details';
-      details.textContent = `GP: ${report['Gram Panchayat (GP) Name'] || ''} (${report['Gram Panchayat (GP) Code'] || ''}) | Block: ${report['Block Name'] || ''} | Camp Date: ${normalizeDate(report['Camp Date']) || ''}`;
-      const edit = document.createElement('button');
-      edit.type = 'button'; edit.className = 'blue'; edit.textContent = 'Edit Report';
-      edit.addEventListener('click', () => { currentlyLoadedReport = report; fillReport(report); showForm('edit'); });
-      card.append(details, edit);
+      const heading = document.createElement('h3');
+      heading.textContent = `GP: ${report['Gram Panchayat (GP) Name'] || ''} (${report['Gram Panchayat (GP) Code'] || ''}) — Camp Date: ${normalizeDate(report['Camp Date']) || ''}`;
+      card.appendChild(heading);
+      const table = document.createElement('table');
+      table.className = 'report-view-table';
+      const tbody = document.createElement('tbody');
+      Object.entries(report).forEach(([key, value]) => {
+        const tr = document.createElement('tr');
+        const th = document.createElement('th');
+        th.scope = 'row'; th.textContent = key;
+        const td = document.createElement('td');
+        td.textContent = key === 'Camp Date' ? (normalizeDate(value) || String(value ?? '')) : (value === null || value === undefined || value === '' ? '—' : String(value));
+        tr.append(th, td); tbody.appendChild(tr);
+      });
+      table.appendChild(tbody); card.appendChild(table);
       $('resultList').appendChild(card);
     });
     $('resultCard').classList.remove('hidden');
@@ -527,12 +537,25 @@ async function saveReport(event) {
     showSuccessModal(mode === 'edit');
     originalGpCode = payload['Gram Panchayat (GP) Code'];
     currentlyLoadedReport = payload;
-    $('resultSummary').textContent =
-      `GP: ${payload['Gram Panchayat (GP) Name']} (${payload['Gram Panchayat (GP) Code']}) | ` +
-      `Branch: ${payload['Branch Name']} (${payload['Sol ID']}) | Camp Date: ${payload['Camp Date']}`;
-    $('resultCard').classList.remove('hidden');
+    // This layout uses resultList (not the older resultSummary element).
+    // Render a success summary safely so a missing legacy element cannot
+    // turn a successful save into a misleading submission-failed message.
+    const resultList = $('resultList');
+    if (resultList) {
+      resultList.replaceChildren();
+      const summary = document.createElement('div');
+      summary.className = 'report-result-details';
+      summary.textContent =
+        `GP: ${payload['Gram Panchayat (GP) Name']} (${payload['Gram Panchayat (GP) Code']}) | ` +
+        `Branch: ${payload['Branch Name']} (${payload['Sol ID']}) | Camp Date: ${payload['Camp Date']}`;
+      resultList.appendChild(summary);
+    }
+    const resultCard = $('resultCard');
+    if (resultCard) {
+      resultCard.classList.remove('hidden');
+      if (resultCard.scrollIntoView) resultCard.scrollIntoView({behavior:'smooth', block:'start'});
+    }
     hideForm();
-    $('resultCard').scrollIntoView({behavior:'smooth', block:'start'});
   } catch (err) {
     hideSaveModal();
     showStatus((mode === 'edit' ? 'Update failed: ' : 'Submission failed: ') + err.message, 'err');
@@ -558,12 +581,6 @@ $('viewBtn').addEventListener('click', () => {
   $('resultCard').classList.add('hidden');
 });
 $('findBtn').addEventListener('click', findReport);
-$('editBtn').addEventListener('click', () => {
-  if (!currentlyLoadedReport) return;
-  const report = currentlyLoadedReport;
-  fillReport(report);
-  showForm('edit');
-});
 $('reloadBtn').addEventListener('click', loadMaster);
 $('cancelBtn').addEventListener('click', () => {
   hideForm(); showStatus('Form closed.', 'info');
