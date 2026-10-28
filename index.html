@@ -106,7 +106,6 @@ footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
           <div class="field"><label for="gpName">Gram Panchayat (GP) *</label><select id="gpName" required disabled><option value="">Select GP</option></select></div>
           <div class="field"><label for="gpCode">GP Code *</label><input id="gpCode" readonly required></div>
           <div class="field"><label for="bankName">Bank Name</label><input id="bankName" value="MPGB" readonly aria-readonly="true"></div>
-          <div class="field photo-field"><label for="campPhotos">Camp Photos * (Minimum 1, Maximum 5)</label><input type="file" id="campPhotos" accept="image/*" multiple required><div class="small">At least 1 and maximum 5 photos are mandatory. Maximum 8 MB per photo.</div><div id="photoPreview" class="photo-preview"></div><div id="savedPhotos" class="photo-preview"></div></div>
         </div>
       </div>
     </section>
@@ -127,6 +126,19 @@ footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
       <div class="card-head">5. KCC, CKYC & DEAF Claims</div>
       <div class="card-body"><div class="metric-grid" id="fieldsD"></div></div>
     </section>
+    <section class="card photo-upload-card">
+      <div class="card-head">6. Camp Photos (Last Step)</div>
+      <div class="card-body">
+        <div class="field photo-field">
+          <label for="campPhotos">Upload Camp Photos * (Minimum 1, Maximum 5)</label>
+          <input type="file" id="campPhotos" accept="image/*" multiple required>
+          <div class="small">Upload at least 1 and maximum 5 camp photos. Maximum 8 MB per photo.</div>
+          <div id="photoPreview" class="photo-preview"></div>
+          <div id="savedPhotos" class="photo-preview"></div>
+        </div>
+      </div>
+    </section>
+
     <div class="actions">
       <button class="primary" id="saveBtn" type="submit">Submit Report</button>
       <button class="secondary" id="cancelBtn" type="button">Cancel</button>
