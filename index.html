@@ -46,7 +46,7 @@ footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
 #loading{display:none;font-size:13px;color:#fff;margin-top:10px}
 @media(max-width:800px){.grid,.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.report-result{align-items:stretch;flex-direction:column}.report-result button{width:100%}button{min-height:44px;font-size:14px}.field input,.field select{font-size:16px;min-height:46px}.container{padding:0 10px 25px;margin-top:12px}.grid,.metric-grid{grid-template-columns:1fr}.card-body{padding:14px}.toolbar button{flex:1;min-width:calc(50% - 10px)}.actions button{flex:1}header{padding:18px 13px}}
-.photo-field{grid-column:1/-1}.photo-preview{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}.photo-preview img{width:110px;height:85px;object-fit:cover;border:1px solid #cbd5d1;border-radius:8px}.photo-preview a{display:inline-block}
+.photo-field{grid-column:1/-1;background:#f8fbf9;border:1px dashed #7aa58a;border-radius:10px;padding:14px}.photo-field input[type=file]{display:block!important;visibility:visible!important;opacity:1!important;width:100%;min-height:48px;padding:10px;background:#fff;border:1px solid #8eaa96;border-radius:8px;cursor:pointer}.photo-preview{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}.photo-preview img{width:110px;height:85px;object-fit:cover;border:1px solid #cbd5d1;border-radius:8px}.photo-preview a{display:inline-block}
 </style>
 </head>
 <body>
@@ -202,11 +202,11 @@ let reportsForSelectedSol = [];
 const $ = id => document.getElementById(id);
 
 function showStatus(message, type='info') {
+  // All user-facing status/error messages use a popup, not an inline banner.
+  if (!message) return;
+  window.alert(String(message));
   const box = $('status');
-  if (!box) { console[type === 'err' ? 'error' : 'log'](message); return; }
-  box.textContent = message;
-  box.className = 'status ' + type;
-  if (box.scrollIntoView) box.scrollIntoView({behavior:'smooth', block:'nearest'});
+  if (box) { box.textContent = ''; box.className = 'status'; }
 }
 function clearStatus() {
   const box = $('status');
@@ -376,7 +376,7 @@ async function loadMaster() {
     if (!master.branches.length || !master.gpMaster.length) {
       showStatus('Apps Script se branch ya GP master data nahi mila. Code.gs, spreadsheet ID, GP sheet headers aur deployment check karein.', 'err');
     } else {
-      showStatus(`Loaded ${master.branches.length} branches and ${master.gpMaster.length} GP records.`, 'ok');
+      clearStatus(); // Master data loaded silently; popup is reserved for actionable messages.
     }
   } catch (err) {
     master = { districts: [], gpMaster: [], branches: [] };
@@ -550,6 +550,7 @@ $('campPhotos').addEventListener('change', () => {
   if (files.length > 5) { alert('You can upload a maximum of 5 Camp Photos.'); $('campPhotos').value=''; $('photoPreview').replaceChildren(); return; }
   const host = $('photoPreview'); host.replaceChildren();
   files.forEach(file => { const img=document.createElement('img'); img.alt=file.name; img.src=URL.createObjectURL(file); host.appendChild(img); });
+  if (files.length) showStatus(files.length + ' camp photo(s) selected.', 'ok');
 });
 
 function collectPayload() {
@@ -587,7 +588,6 @@ async function saveReport(event) {
   try {
     let result;
     result = await api('submitReport', {payload});
-    showStatus('Saved successfully.', 'ok');
     showSuccessModal(false);
     originalGpCode = payload['Gram Panchayat (GP) Code'];
     currentlyLoadedReport = payload;
