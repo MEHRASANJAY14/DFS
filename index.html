@@ -4,200 +4,51 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DFS Saturation Camp Reporting Portal</title>
-
 <style>
-:root {
-  --green:#006633;
-  --green2:#008447;
-  --light:#f2f7f3;
-  --border:#d8e3da;
-  --text:#1d2b22;
-  --muted:#607064;
-  --danger:#b42318;
-  --blue:#1c4fa3;
-}
-* { box-sizing:border-box; }
-body {
-  margin:0;
-  background:#f3f6f4;
-  color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
-}
-header {
-  background:linear-gradient(120deg,var(--green),var(--green2));
-  color:#fff;
-  padding:22px 16px;
-  box-shadow:0 3px 12px #0002;
-}
-.header-inner { max-width:1200px; margin:auto; }
-header h1 { font-size:clamp(20px,3vw,30px); margin:0 0 7px; }
-header p { margin:0; opacity:.92; font-size:14px; }
-.container { max-width:1200px; margin:20px auto; padding:0 14px 36px; }
-.toolbar { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
-button {
-  border:0;
-  border-radius:8px;
-  padding:11px 15px;
-  font-weight:700;
-  cursor:pointer;
-  font-size:14px;
-}
-button:disabled { opacity:.55; cursor:not-allowed; }
-.primary { background:var(--green); color:white; }
-.secondary { background:#e4eee7; color:var(--green); }
-.blue { background:var(--blue); color:#fff; }
-.danger { background:#fde9e7; color:var(--danger); }
-
-.card {
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:12px;
-  margin-bottom:16px;
-  box-shadow:0 3px 12px #183b2410;
-  overflow:hidden;
-}
-.card-head {
-  padding:14px 18px;
-  background:#f7faf8;
-  border-bottom:1px solid var(--border);
-  font-size:16px;
-  font-weight:700;
-}
-.card-body { padding:18px; }
-.grid {
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:14px;
-}
-.field { min-width:0; }
-.field label {
-  display:block;
-  font-size:13px;
-  font-weight:700;
-  margin:0 0 6px;
-}
-.field input,.field select {
-  width:100%;
-  padding:11px 10px;
-  border:1px solid #cbd8ce;
-  border-radius:7px;
-  background:#fff;
-  font-size:14px;
-  min-height:42px;
-  color:#17251b;
-}
-.field input:focus,.field select:focus {
-  outline:2px solid #a5d5b7;
-  border-color:var(--green);
-}
-.field input[readonly] { background:#f0f4f1; }
-.metric-grid {
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:14px;
-}
-.actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; }
-.status {
-  display:none;
-  padding:12px 14px;
-  border-radius:8px;
-  margin:0 0 16px;
-  font-size:14px;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-}
-.status.ok { display:block; background:#e7f6eb; color:#176534; border:1px solid #b9e2c5; }
-.status.err { display:block; background:#fff0ee; color:#a32117; border:1px solid #f1c1bc; }
-.status.info { display:block; background:#eaf1ff; color:#234c91; border:1px solid #c9d8fb; }
-
-.report-result {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  padding:13px 0;
-  border-bottom:1px solid var(--border);
-}
-.report-result:last-child { border-bottom:0; }
-.report-result-details { font-size:14px; line-height:1.5; overflow-wrap:anywhere; }
-.report-result button { flex-shrink:0; }
-.small { font-size:12px; color:var(--muted); line-height:1.5; }
-.badge {
-  display:inline-block;
-  padding:4px 8px;
-  border-radius:20px;
-  background:#e5f3e9;
-  color:var(--green);
-  font-size:12px;
-  font-weight:700;
-}
-footer { text-align:center; color:#738078; font-size:12px; padding:8px 0 20px; }
-.hidden { display:none !important; }
-
-.modal-backdrop {
-  position:fixed;
-  inset:0;
-  background:rgba(12,35,20,.48);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:18px;
-  z-index:9999;
-}
-.modal-backdrop.show { display:flex; }
-.modal-box {
-  width:min(100%,360px);
-  background:#fff;
-  border-radius:16px;
-  padding:25px 22px;
-  text-align:center;
-  box-shadow:0 16px 50px #0003;
-}
-.modal-icon {
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:0 auto 12px;
-  background:#e7f6eb;
-  color:#176534;
-  font-size:27px;
-  font-weight:bold;
-}
-.modal-title { font-size:19px; font-weight:700; margin:0 0 8px; }
-.modal-message { font-size:14px; color:#526257; margin:0 0 18px; line-height:1.5; }
-.spinner {
-  width:32px;
-  height:32px;
-  border:4px solid #dce9df;
-  border-top-color:var(--green);
-  border-radius:50%;
-  animation:spin .8s linear infinite;
-  margin:0 auto 14px;
-}
-@keyframes spin { to { transform:rotate(360deg); } }
-#loading { display:none; font-size:13px; color:#fff; margin-top:10px; }
-
-@media(max-width:800px) {
-  .grid,.metric-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
-}
-@media(max-width:520px) {
-  .report-result { align-items:stretch; flex-direction:column; }
-  .report-result button { width:100%; }
-  button { min-height:44px; font-size:14px; }
-  .field input,.field select { font-size:16px; min-height:46px; }
-  .container { padding:0 10px 25px; margin-top:12px; }
-  .grid,.metric-grid { grid-template-columns:1fr; }
-  .card-body { padding:14px; }
-  .toolbar button { flex:1; min-width:calc(50% - 10px); }
-  .actions button { flex:1; }
-  header { padding:18px 13px; }
-}
+:root{--green:#006633;--green2:#008447;--light:#f2f7f3;--border:#d8e3da;--text:#1d2b22;--muted:#607064;--danger:#b42318;--blue:#1c4fa3}
+*{box-sizing:border-box}
+body{margin:0;background:#f3f6f4;color:var(--text);font-family:Arial,Helvetica,sans-serif}
+header{background:linear-gradient(120deg,var(--green),var(--green2));color:#fff;padding:22px 16px;box-shadow:0 3px 12px #0002}
+.header-inner{max-width:1200px;margin:auto}
+header h1{font-size:clamp(20px,3vw,30px);margin:0 0 7px}
+header p{margin:0;opacity:.92;font-size:14px}
+.container{max-width:1200px;margin:20px auto;padding:0 14px 36px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+button{border:0;border-radius:8px;padding:11px 15px;font-weight:700;cursor:pointer;font-size:14px}
+button:disabled{opacity:.55;cursor:not-allowed}
+.primary{background:var(--green);color:white}.secondary{background:#e4eee7;color:var(--green)}.blue{background:var(--blue);color:#fff}.danger{background:#fde9e7;color:var(--danger)}
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:16px;box-shadow:0 3px 12px #183b2410;overflow:hidden}
+.card-head{padding:14px 18px;background:#f7faf8;border-bottom:1px solid var(--border);font-size:16px;font-weight:700}
+.card-body{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.field{min-width:0}
+.field label{display:block;font-size:13px;font-weight:700;margin:0 0 6px}
+.field input,.field select{width:100%;padding:11px 10px;border:1px solid #cbd8ce;border-radius:7px;background:#fff;font-size:14px;min-height:42px;color:#17251b}
+.field input:focus,.field select:focus{outline:2px solid #a5d5b7;border-color:var(--green)}
+.field input[readonly]{background:#f0f4f1}
+.section-title{font-size:15px;color:var(--green);margin:0 0 14px;padding-bottom:9px;border-bottom:1px solid var(--border)}
+.metric-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.status{display:none;padding:12px 14px;border-radius:8px;margin:0 0 16px;font-size:14px;white-space:pre-wrap}
+.status.ok{display:block;background:#e7f6eb;color:#176534;border:1px solid #b9e2c5}
+.status.err{display:block;background:#fff0ee;color:#a32117;border:1px solid #f1c1bc}
+.status.info{display:block;background:#eaf1ff;color:#234c91;border:1px solid #c9d8fb}
+.report-result{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--border)}.report-result:last-child{border-bottom:0}.report-result-details{font-size:14px;line-height:1.5;overflow-wrap:anywhere}.report-result button{flex-shrink:0}
+.small{font-size:12px;color:var(--muted);line-height:1.5}
+.badge{display:inline-block;padding:4px 8px;border-radius:20px;background:#e5f3e9;color:var(--green);font-size:12px;font-weight:700}
+footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
+.hidden{display:none!important}
+/* Save/update modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(12,35,20,.48);display:none;align-items:center;justify-content:center;padding:18px;z-index:9999}
+.modal-backdrop.show{display:flex}.modal-box{width:min(100%,360px);background:#fff;border-radius:16px;padding:25px 22px;text-align:center;box-shadow:0 16px 50px #0003}
+.modal-icon{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;background:#e7f6eb;color:#176534;font-size:27px;font-weight:bold}
+.modal-title{font-size:19px;font-weight:700;margin:0 0 8px}.modal-message{font-size:14px;color:#526257;margin:0 0 18px;line-height:1.5}.spinner{width:32px;height:32px;border:4px solid #dce9df;border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}@keyframes spin{to{transform:rotate(360deg)}}
+#loading{display:none;font-size:13px;color:#fff;margin-top:10px}
+@media(max-width:800px){.grid,.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.report-result{align-items:stretch;flex-direction:column}.report-result button{width:100%}button{min-height:44px;font-size:14px}.field input,.field select{font-size:16px;min-height:46px}.container{padding:0 10px 25px;margin-top:12px}.grid,.metric-grid{grid-template-columns:1fr}.card-body{padding:14px}.toolbar button{flex:1;min-width:calc(50% - 10px)}.actions button{flex:1}header{padding:18px 13px}}
+.photo-field{grid-column:1/-1}.photo-preview{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}.photo-preview img{width:110px;height:85px;object-fit:cover;border:1px solid #cbd5d1;border-radius:8px}.photo-preview a{display:inline-block}
 </style>
 </head>
-
 <body>
 <header>
   <div class="header-inner">
@@ -209,7 +60,6 @@ footer { text-align:center; color:#738078; font-size:12px; padding:8px 0 20px; }
 
 <main class="container">
   <div id="status" class="status" role="status" aria-live="polite"></div>
-
   <div class="modal-backdrop" id="saveModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal-box">
       <div id="modalSpinner" class="spinner"></div>
@@ -232,70 +82,31 @@ footer { text-align:center; color:#738078; font-size:12px; padding:8px 0 20px; }
       <div class="grid">
         <div class="field">
           <label for="lookupSolId">SOL ID / Branch</label>
-          <select id="lookupSolId">
-            <option value="">Select branch / SOL ID</option>
-          </select>
+          <select id="lookupSolId"><option value="">Select branch / SOL ID</option></select>
         </div>
       </div>
       <div class="actions">
         <button class="primary" id="findBtn" type="button">View Report</button>
       </div>
-      <p class="small">Select a branch to view its existing reports. Existing reports are view-only on this screen.</p>
+      <p class="small">Existing reports are searched by SOL ID. Select a branch to view all reports submitted for that branch. Reports are read-only here.</p>
     </div>
   </section>
 
   <form id="reportForm" class="hidden" autocomplete="off">
     <section class="card">
-      <div class="card-head">
-        1. Camp & Branch Details
-        <span class="badge" id="modeBadge">New Report</span>
-      </div>
+      <div class="card-head">1. Camp & Branch Details <span class="badge" id="modeBadge">New Report</span></div>
       <div class="card-body">
         <div class="grid">
-          <div class="field">
-            <label for="campDate">Camp Date *</label>
-            <input type="date" id="campDate" required>
-          </div>
-          <div class="field">
-            <label for="solId">SOL ID / Branch *</label>
-            <select id="solId" required>
-              <option value="">Select branch</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="branchName">Branch Name</label>
-            <input id="branchName" readonly>
-          </div>
-          <div class="field">
-            <label for="district">District *</label>
-            <select id="district" required>
-              <option value="">Select district</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="blockName">Block Name *</label>
-            <select id="blockName" required disabled>
-              <option value="">Select block</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="blockCode">Block Code</label>
-            <input id="blockCode" readonly>
-          </div>
-          <div class="field">
-            <label for="gpName">Gram Panchayat (GP) *</label>
-            <select id="gpName" required disabled>
-              <option value="">Select GP</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="gpCode">GP Code *</label>
-            <input id="gpCode" readonly required>
-          </div>
-          <div class="field">
-            <label for="bankName">Bank Name</label>
-            <input id="bankName" value="MPGB" readonly>
-          </div>
+          <div class="field"><label for="campDate">Camp Date *</label><input type="date" id="campDate" required></div>
+          <div class="field"><label for="solId">SOL ID / Branch *</label><select id="solId" required><option value="">Select branch</option></select></div>
+          <div class="field"><label for="branchName">Branch Name</label><input id="branchName" readonly></div>
+          <div class="field"><label for="district">District *</label><select id="district" required><option value="">Select district</option></select></div>
+          <div class="field"><label for="blockName">Block Name *</label><select id="blockName" required disabled><option value="">Select block</option></select></div>
+          <div class="field"><label for="blockCode">Block Code</label><input id="blockCode" readonly></div>
+          <div class="field"><label for="gpName">Gram Panchayat (GP) *</label><select id="gpName" required disabled><option value="">Select GP</option></select></div>
+          <div class="field"><label for="gpCode">GP Code *</label><input id="gpCode" readonly required></div>
+          <div class="field"><label for="bankName">Bank Name</label><input id="bankName" value="MPGB" readonly aria-readonly="true"></div>
+          <div class="field photo-field"><label for="campPhotos">Camp Photos * (Minimum 1, Maximum 5)</label><input type="file" id="campPhotos" accept="image/*" multiple required><div class="small">At least 1 and maximum 5 photos are mandatory. Maximum 8 MB per photo.</div><div id="photoPreview" class="photo-preview"></div><div id="savedPhotos" class="photo-preview"></div></div>
         </div>
       </div>
     </section>
@@ -304,50 +115,43 @@ footer { text-align:center; color:#738078; font-size:12px; padding:8px 0 20px; }
       <div class="card-head">2. PMJDY & Account Reactivation</div>
       <div class="card-body"><div class="metric-grid" id="fieldsA"></div></div>
     </section>
-
     <section class="card">
       <div class="card-head">3. Social Security Schemes</div>
       <div class="card-body"><div class="metric-grid" id="fieldsB"></div></div>
     </section>
-
     <section class="card">
       <div class="card-head">4. Re-KYC & Nomination</div>
       <div class="card-body"><div class="metric-grid" id="fieldsC"></div></div>
     </section>
-
     <section class="card">
       <div class="card-head">5. KCC, CKYC & DEAF Claims</div>
       <div class="card-body"><div class="metric-grid" id="fieldsD"></div></div>
     </section>
-
     <div class="actions">
       <button class="primary" id="saveBtn" type="submit">Submit Report</button>
       <button class="secondary" id="cancelBtn" type="button">Cancel</button>
-      <button class="danger" id="resetBtn" type="button">Clear Form</button>
+      <button class="danger hidden" id="resetBtn" type="button">Clear Form</button>
     </div>
-
-    <p class="small">Please verify all figures before submitting. Blank numeric fields are saved as zero.</p>
+    <p class="small">Please verify all figures before submitting. Blank numeric fields are saved as zero. Reports are checked against the GP Code on the server.</p>
   </form>
 
   <section class="card hidden" id="resultCard">
-    <div class="card-head">Existing Report Details</div>
+    <div class="card-head">Existing Report</div>
     <div class="card-body">
       <div id="resultList"></div>
+      <div id="reportDetails" class="hidden" style="margin-top:16px"></div>
     </div>
   </section>
-
   <footer>DFS Saturation Camp Reporting Portal</footer>
 </main>
 
 <script>
 'use strict';
 
-/*
- * Apps Script Web App URL.
- * Keep this URL aligned with your existing Code.gs deployment.
- */
-const API_URL =
-'https://script.google.com/macros/s/AKfycbx2hgNtIUM7NcnWyOKPj7U0sXM9CFAVUPXcgfztUwMZfIRCXmQyxnWX8uPmXRt_4HVQ/exec';
+/* Your deployed Google Apps Script Web App URL */
+const API_URL = 'https://script.google.com/macros/s/AKfycbx2hgNtIUM7NcnWyOKPj7U0sXM9CFAVUPXcgfztUwMZfIRCXmQyxnWX8uPmXRt_4HVQ/exec';
+
+/* Branch list is loaded only from Code.gs via getMasterData(). */
 
 const NUMERIC_FIELDS = [
   'PMJDY Applications Sourced',
@@ -397,113 +201,128 @@ let reportsForSelectedSol = [];
 
 const $ = id => document.getElementById(id);
 
-function showStatus(message, type = 'info') {
+function showStatus(message, type='info') {
   const box = $('status');
-  if (!box) return;
-
+  if (!box) { console[type === 'err' ? 'error' : 'log'](message); return; }
   box.textContent = message;
   box.className = 'status ' + type;
+  if (box.scrollIntoView) box.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
-
 function clearStatus() {
-  $('status').textContent = '';
-  $('status').className = 'status';
+  const box = $('status');
+  if (!box) return;
+  box.textContent = '';
+  box.className = 'status';
 }
-
 function setLoading(on) {
   $('loading').style.display = on ? 'block' : 'none';
-
-  ['newBtn', 'viewBtn', 'findBtn', 'saveBtn', 'reloadBtn']
-    .forEach(id => {
-      if ($(id)) $(id).disabled = on;
-    });
-}
-
-function option(value, label) {
-  const o = document.createElement('option');
-  o.value = value;
-  o.textContent = label;
-  return o;
-}
-
-function clearSelect(select, label) {
-  select.replaceChildren();
-  select.appendChild(option('', label));
-}
-
-function fillSelect(select, items, valueFn, labelFn, placeholder) {
-  select.replaceChildren();
-  select.appendChild(option('', placeholder));
-
-  items.forEach(item => {
-    select.appendChild(option(valueFn(item), labelFn(item)));
+  ['newBtn','viewBtn','findBtn','saveBtn','reloadBtn'].forEach(id => {
+    if ($(id)) $(id).disabled = on;
   });
 }
-
+function option(value, label) {
+  const o = document.createElement('option');
+  o.value = value; o.textContent = label;
+  return o;
+}
+function clearSelect(select, label) {
+  while (select.firstChild) select.removeChild(select.firstChild);
+  select.appendChild(option('', label));
+}
+function fillSelect(select, items, valueFn, labelFn, placeholder) {
+  while (select.firstChild) select.removeChild(select.firstChild);
+  select.appendChild(option('', placeholder));
+  items.forEach(item => select.appendChild(option(valueFn(item), labelFn(item))));
+}
 function uniqueSorted(values) {
-  return [...new Set(values.filter(Boolean))]
-    .sort((a, b) => a.localeCompare(b));
+  return [...new Set(values.filter(Boolean))].sort((a,b)=>a.localeCompare(b));
 }
-
 function selectedGP(code) {
-  return master.gpMaster.find(
-    g => String(g.gpCode) === String(code)
-  );
+  return master.gpMaster.find(g => String(g.gpCode) === String(code));
 }
-
 function selectedBranch(sol) {
-  return master.branches.find(
-    b => String(b.solId) === String(sol)
-  );
+  return master.branches.find(b => String(b.solId) === String(sol));
 }
-
 function buildNumericFields() {
   Object.keys(FIELD_GROUPS).forEach(groupId => {
     const host = $(groupId);
-    host.replaceChildren();
-
-    FIELD_GROUPS[groupId].forEach(label => {
+    FIELD_GROUPS[groupId].forEach((label, index) => {
       const wrap = document.createElement('div');
       wrap.className = 'field';
-
       const id = 'num_' + NUMERIC_FIELDS.indexOf(label);
-
       const lab = document.createElement('label');
-      lab.htmlFor = id;
-      lab.textContent = label;
-
+      lab.htmlFor = id; lab.textContent = label;
       const input = document.createElement('input');
-      input.type = 'number';
-      input.id = id;
-      input.dataset.header = label;
-      input.min = '0';
-      input.step = 'any';
-      input.inputMode = 'decimal';
+      input.type = 'number'; input.id = id; input.dataset.header = label;
+      input.min = '0'; input.step = 'any'; input.inputMode = 'decimal';
       input.value = '0';
-
       input.addEventListener('input', () => {
-        if (input.value !== '' && Number(input.value) < 0) {
-          input.value = '0';
-        }
+        if (input.value !== '' && Number(input.value) < 0) input.value = '0';
       });
-
       wrap.append(lab, input);
       host.appendChild(wrap);
     });
   });
 }
-
+function populateMaster() {
+  fillSelect($('solId'), master.branches,
+    b => b.solId, b => `${b.solId} — ${b.branchName}`, 'Select branch');
+  fillSelect($('district'), master.districts,
+    d => d, d => d, 'Select district');
+  fillSelect($('lookupSolId'), master.branches, b => String(b.solId), b => `${b.solId} — ${b.branchName}`, 'Select branch / SOL ID');
+  resetLocationFields();
+}
 function resetLocationFields() {
   clearSelect($('blockName'), 'Select block');
   clearSelect($('gpName'), 'Select GP');
-
   $('blockName').disabled = true;
   $('gpName').disabled = true;
-
   $('blockCode').value = '';
   $('gpCode').value = '';
 }
-
+function updateBlocks(prefix) {
+  const districtId = prefix === 'lookup' ? 'lookupDistrict' : 'district';
+  const blockId = prefix === 'lookup' ? 'lookupBlock' : 'blockName';
+  const gpId = prefix === 'lookup' ? 'lookupGP' : 'gpName';
+  const district = $(districtId).value;
+  const blocks = uniqueSorted(master.gpMaster
+    .filter(g => g.district === district).map(g => g.blockName));
+  fillSelect($(blockId), blocks, b => b, b => b, 'Select block');
+  $(blockId).disabled = !district;
+  fillSelect($(gpId), [], x => x, x => x, 'Select GP');
+  $(gpId).disabled = true;
+  if (prefix !== 'lookup') {
+    $('blockCode').value = '';
+    $('gpCode').value = '';
+  }
+}
+function updateGPs(prefix) {
+  const districtId = prefix === 'lookup' ? 'lookupDistrict' : 'district';
+  const blockId = prefix === 'lookup' ? 'lookupBlock' : 'blockName';
+  const gpId = prefix === 'lookup' ? 'lookupGP' : 'gpName';
+  const district = $(districtId).value;
+  const block = $(blockId).value;
+  const gps = master.gpMaster.filter(g =>
+    g.district === district && g.blockName === block);
+  fillSelect($(gpId), gps, g => g.gpCode,
+    g => `${g.gpName} — ${g.gpCode}`, 'Select GP');
+  $(gpId).disabled = !block;
+  if (prefix !== 'lookup') {
+    $('blockCode').value = '';
+    $('gpCode').value = '';
+  }
+}
+function onGPChanged() {
+  const gp = selectedGP($('gpName').value);
+  $('blockCode').value = gp ? gp.blockCode : '';
+  $('gpCode').value = gp ? gp.gpCode : '';
+}
+function resetLookupLocation() {
+  clearSelect($('lookupBlock'), 'Select block');
+  clearSelect($('lookupGP'), 'Select GP');
+  $('lookupBlock').disabled = true;
+  $('lookupGP').disabled = true;
+}
 function showSavingModal() {
   $('modalSpinner').classList.remove('hidden');
   $('modalIcon').classList.add('hidden');
@@ -512,124 +331,61 @@ function showSavingModal() {
   $('modalMessage').textContent = 'Please wait while your report is saved.';
   $('saveModal').classList.add('show');
 }
-
 function showSuccessModal(isUpdate) {
   $('modalSpinner').classList.add('hidden');
   $('modalIcon').classList.remove('hidden');
-
-  $('modalTitle').textContent =
-    isUpdate ? 'Updated successfully' : 'Saved successfully';
-
-  $('modalMessage').textContent =
-    isUpdate
-      ? 'Your report has been updated successfully.'
-      : 'Your report has been saved successfully.';
-
+  $('modalTitle').textContent = isUpdate ? 'Updated successfully' : 'Saved successfully';
+  $('modalMessage').textContent = isUpdate ? 'Your report has been updated successfully.' : 'Your report has been saved successfully.';
   $('modalClose').classList.remove('hidden');
 }
-
-function hideSaveModal() {
-  $('saveModal').classList.remove('show');
-}
-
+function hideSaveModal() { $('saveModal').classList.remove('show'); }
 $('modalClose').addEventListener('click', hideSaveModal);
 
-async function api(action, extra = {}) {
+async function api(action, extra={}) {
   const response = await fetch(API_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify({ action, ...extra })
+    headers: {'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify({action, ...extra})
   });
-
-  if (!response.ok) {
-    throw new Error('Server returned HTTP ' + response.status);
-  }
-
+  if (!response.ok) throw new Error('Server returned HTTP ' + response.status);
   const responseText = await response.text();
   let result;
-
   try {
     result = JSON.parse(responseText);
-  } catch (err) {
-    throw new Error(
-      'Apps Script did not return JSON. Check the Web App deployment. Response: ' +
-      responseText.slice(0, 160)
-    );
+  } catch (parseError) {
+    throw new Error('Apps Script did not return JSON. Check the Web App deployment and Code.gs execution error. Response begins: ' + responseText.slice(0, 160));
   }
-
-  if (!result.success) {
-    throw new Error(result.message || 'Request failed.');
-  }
-
+  if (!result.success) throw new Error(result.message || 'Request failed.');
   return result.data;
 }
-
 async function loadMaster() {
   setLoading(true);
   clearStatus();
-
   try {
     const data = await api('getMasterData');
-
     master = {
       districts: Array.isArray(data.districts) ? data.districts : [],
       gpMaster: Array.isArray(data.gpMaster) ? data.gpMaster : [],
       branches: Array.isArray(data.branches) ? data.branches : []
     };
-
-    fillSelect(
-      $('solId'),
-      master.branches,
-      b => String(b.solId),
-      b => `${b.solId} — ${b.branchName}`,
-      'Select branch'
-    );
-
-    fillSelect(
-      $('district'),
-      master.districts,
-      d => d,
-      d => d,
-      'Select district'
-    );
-
-    fillSelect(
-      $('lookupSolId'),
-      master.branches,
-      b => String(b.solId),
-      b => `${b.solId} — ${b.branchName}`,
-      'Select branch / SOL ID'
-    );
-
+    fillSelect($('solId'), master.branches, b => String(b.solId), b => `${b.solId} — ${b.branchName}`, 'Select branch');
+    fillSelect($('district'), master.districts, d => d, d => d, 'Select district');
+    fillSelect($('lookupSolId'), master.branches, b => String(b.solId), b => `${b.solId} — ${b.branchName}`, 'Select branch / SOL ID');
     resetLocationFields();
-
+    // SOL ID lookup uses the branch list directly.
     if (!master.branches.length || !master.gpMaster.length) {
-      showStatus(
-        'Branch ya GP master data nahi mila. Apps Script deployment, spreadsheet ID aur master sheet check karein.',
-        'err'
-      );
+      showStatus('Apps Script se branch ya GP master data nahi mila. Code.gs, spreadsheet ID, GP sheet headers aur deployment check karein.', 'err');
     } else {
-      showStatus(
-        `Loaded ${master.branches.length} branches and ${master.gpMaster.length} GP records.`,
-        'ok'
-      );
+      showStatus(`Loaded ${master.branches.length} branches and ${master.gpMaster.length} GP records.`, 'ok');
     }
   } catch (err) {
-    console.error('Master data loading failed:', err);
-
     master = { districts: [], gpMaster: [], branches: [] };
-
-    fillSelect($('solId'), [], x => x, x => x, 'Unable to load branches');
-    fillSelect($('district'), [], x => x, x => x, 'Unable to load districts');
-    fillSelect($('lookupSolId'), [], x => x, x => x, 'Unable to load branches');
-
+    fillSelect($('solId'), [], b => String(b.solId), b => b.branchName, 'Unable to load branches');
+    fillSelect($('district'), [], d => d, d => d, 'Unable to load districts');
+    fillSelect($('lookupSolId'), [], b => String(b.solId), b => b.branchName, 'Unable to load branches');
     resetLocationFields();
-
-    showStatus(
-      'Master data load failed: ' + (err.message || err) +
-      '. Check the Apps Script Web App URL and deployment.',
-      'err'
-    );
+    // SOL ID lookup uses the branch list directly.
+    showStatus('Master data load failed: ' + (err.message || err) + '. Apps Script ko save karke new version deploy karein.', 'err');
   } finally {
     setLoading(false);
   }
@@ -637,283 +393,166 @@ async function loadMaster() {
 
 function setMode(newMode) {
   mode = newMode;
-
-  $('modeBadge').textContent =
-    newMode === 'edit' ? 'Edit Existing Report' : 'New Report';
-
-  $('saveBtn').textContent =
-    newMode === 'edit' ? 'Update Existing Report' : 'Submit Report';
-
+  $('modeBadge').textContent = newMode === 'edit' ? 'Edit Existing Report' : 'New Report';
+  $('saveBtn').textContent = 'Submit Report';
+  // View-only existing reports: no edit button is present in this page.
   $('resetBtn').classList.toggle('hidden', newMode === 'edit');
 }
-
-function showForm(newMode = 'new') {
+function showForm(newMode='new') {
   setMode(newMode);
-
-  $('lookupCard').classList.add('hidden');
   $('reportForm').classList.remove('hidden');
   $('resultCard').classList.add('hidden');
-
-  $('reportForm').scrollIntoView({
-    behavior: 'smooth',
-    block: 'start'
-  });
+  $('reportForm').scrollIntoView({behavior:'smooth', block:'start'});
 }
-
 function hideForm() {
   $('reportForm').classList.add('hidden');
 }
-
 function clearForm() {
   $('reportForm').reset();
-
-  $('branchName').value = '';
-  $('bankName').value = 'MPGB';
-
+  if ($('campPhotos')) $('campPhotos').value = '';
+  if ($('photoPreview')) $('photoPreview').replaceChildren();
+  if ($('savedPhotos')) $('savedPhotos').replaceChildren();
   resetLocationFields();
-
-  document.querySelectorAll('[data-header]').forEach(input => {
-    input.value = '0';
-  });
-
+  $('branchName').value = '';
+  $('blockCode').value = '';
+  $('gpCode').value = '';
+  document.querySelectorAll('[data-header]').forEach(input => input.value = '0');
   originalGpCode = '';
   currentlyLoadedReport = null;
-
   setMode('new');
 }
-
-function updateBlocks() {
-  const district = $('district').value;
-
-  const blocks = uniqueSorted(
-    master.gpMaster
-      .filter(g => String(g.district) === String(district))
-      .map(g => g.blockName)
-  );
-
-  fillSelect(
-    $('blockName'),
-    blocks,
-    b => b,
-    b => b,
-    'Select block'
-  );
-
-  $('blockName').disabled = !district;
-
-  clearSelect($('gpName'), 'Select GP');
-  $('gpName').disabled = true;
-
-  $('blockCode').value = '';
-  $('gpCode').value = '';
-}
-
-function updateGPs() {
-  const district = $('district').value;
-  const block = $('blockName').value;
-
-  const gps = master.gpMaster.filter(g =>
-    String(g.district) === String(district) &&
-    String(g.blockName) === String(block)
-  );
-
-  fillSelect(
-    $('gpName'),
-    gps,
-    g => String(g.gpCode),
-    g => `${g.gpName} — ${g.gpCode}`,
-    'Select GP'
-  );
-
-  $('gpName').disabled = !block;
-  $('blockCode').value = '';
-  $('gpCode').value = '';
-}
-
-function onGPChanged() {
-  const gp = selectedGP($('gpName').value);
-
-  $('blockCode').value = gp ? gp.blockCode : '';
-  $('gpCode').value = gp ? gp.gpCode : '';
-}
-
-function normalizeDate(value) {
-  if (!value) return '';
-
-  const s = String(value);
-
-  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
-    return s;
-  }
-
-  const m = s.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-
-  if (m) {
-    return `${m[3]}-${m[2]}-${m[1]}`;
-  }
-
-  const date = new Date(s);
-
-  if (!Number.isNaN(date.getTime())) {
-    const local = new Date(
-      date.getTime() - date.getTimezoneOffset() * 60000
-    );
-
-    return local.toISOString().slice(0, 10);
-  }
-
-  return '';
-}
-
 function fillGPSelectors(gpCode) {
   const gp = selectedGP(gpCode);
-
-  if (!gp) {
-    showStatus(
-      'The report GP Code was not found in the loaded GP master.',
-      'err'
-    );
-    return false;
-  }
-
+  if (!gp) return false;
   $('district').value = gp.district;
-  updateBlocks();
-
+  updateBlocks('');
   $('blockName').value = gp.blockName;
-  updateGPs();
-
-  $('gpName').value = String(gp.gpCode);
+  updateGPs('');
+  $('gpName').value = gp.gpCode;
   onGPChanged();
-
   return true;
 }
-
 function fillReport(report) {
   clearForm();
-
   $('campDate').value = normalizeDate(report['Camp Date']);
   $('solId').value = String(report['Sol ID'] || '');
-
   const branch = selectedBranch($('solId').value);
-
-  $('branchName').value =
-    branch ? branch.branchName : (report['Branch Name'] || '');
-
+  $('branchName').value = branch ? branch.branchName : (report['Branch Name'] || '');
   $('bankName').value = 'MPGB';
-
   const gpCode = String(report['Gram Panchayat (GP) Code'] || '');
-
   fillGPSelectors(gpCode);
-
   document.querySelectorAll('[data-header]').forEach(input => {
-    const value = report[input.dataset.header];
-
-    input.value =
-      value === undefined || value === null || value === ''
-        ? '0'
-        : value;
+    const val = report[input.dataset.header];
+    input.value = val === undefined || val === null || val === '' ? '0' : val;
   });
-
   originalGpCode = gpCode;
   currentlyLoadedReport = report;
+  renderSavedPhotos(report[ 'Camp Photos' ] || '');
 }
-
+function normalizeDate(value) {
+  if (!value) return '';
+  const s = String(value);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  const m = s.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  return m ? `${m[3]}-${m[2]}-${m[1]}` : '';
+}
 async function findReport() {
   const solId = $('lookupSolId').value;
-
   if (!solId) {
     showStatus('Please select a branch / SOL ID first.', 'err');
     return;
   }
-
-  setLoading(true);
-  clearStatus();
-
+  setLoading(true); clearStatus();
   $('resultCard').classList.add('hidden');
   $('resultList').replaceChildren();
-
   try {
-    const data = await api('getReportsBySOL', { solId });
-
-    reportsForSelectedSol =
-      Array.isArray(data.reports) ? data.reports : [];
-
+    const data = await api('getReportsBySOL', {solId});
+    reportsForSelectedSol = Array.isArray(data.reports) ? data.reports : [];
     if (!reportsForSelectedSol.length) {
-      showStatus(
-        `No existing report found for SOL ID ${solId}. You can create a new report using New Report.`,
-        'info'
-      );
+      showStatus(`No existing report found for SOL ID ${solId}. You can create a new report using New Report.`, 'info');
       return;
     }
-
-    reportsForSelectedSol.forEach(report => {
+    reportsForSelectedSol.forEach((report, index) => {
       const card = document.createElement('div');
       card.className = 'report-result';
-
       const details = document.createElement('div');
       details.className = 'report-result-details';
-
-      details.textContent =
-        `GP: ${report['Gram Panchayat (GP) Name'] || ''} ` +
-        `(${report['Gram Panchayat (GP) Code'] || ''}) | ` +
-        `Block: ${report['Block Name'] || ''} | ` +
-        `Camp Date: ${normalizeDate(report['Camp Date']) || ''}`;
-
+      details.textContent = `GP: ${report['Gram Panchayat (GP) Name'] || ''} (${report['Gram Panchayat (GP) Code'] || ''}) | Block: ${report['Block Name'] || ''} | Camp Date: ${normalizeDate(report['Camp Date']) || ''}`;
       const view = document.createElement('button');
-      view.type = 'button';
-      view.className = 'secondary';
-      view.textContent = 'View Report';
-
-      view.addEventListener('click', () => {
-        fillReport(report);
-        showForm('view');
-
-        document.querySelectorAll('#reportForm input').forEach(input => {
-          if (input.id !== 'campDate' && input.dataset.header) {
-            input.readOnly = true;
-          }
-        });
-
-        $('solId').disabled = true;
-        $('district').disabled = true;
-        $('blockName').disabled = true;
-        $('gpName').disabled = true;
-        $('campDate').disabled = true;
-        $('saveBtn').classList.add('hidden');
-        $('resetBtn').classList.add('hidden');
-
-        const oldCancel = $('cancelBtn');
-        oldCancel.textContent = 'Close Report';
-      });
-
+      view.type = 'button'; view.className = 'secondary'; view.textContent = 'View All Fields';
+      view.addEventListener('click', () => renderReportDetails(report));
       card.append(details, view);
       $('resultList').appendChild(card);
     });
-
     $('resultCard').classList.remove('hidden');
-    $('resultCard').scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
-
-    showStatus(
-      `${reportsForSelectedSol.length} report(s) found for SOL ID ${solId}.`,
-      'ok'
-    );
+    $('resultCard').scrollIntoView({behavior:'smooth', block:'start'});
+    showStatus(`${reportsForSelectedSol.length} report(s) found for SOL ID ${solId}.`, 'ok');
   } catch (err) {
-    console.error('Report lookup failed:', err);
-    showStatus(
-      'Unable to retrieve report: ' + (err.message || err),
-      'err'
-    );
+    showStatus('Unable to retrieve report. ' + (err.message || err), 'err');
   } finally {
     setLoading(false);
   }
 }
 
-function collectPayload() {
-  const gpOption = $('gpName').selectedOptions[0];
+function renderReportDetails(report) {
+  const panel = $('reportDetails');
+  if (!panel) return;
+  panel.replaceChildren();
+  const title = document.createElement('h3');
+  title.textContent = 'Complete Report — View Only';
+  panel.appendChild(title);
+  if (report['Camp Photos']) { const gallery = document.createElement('div'); gallery.className = 'photo-preview'; String(report['Camp Photos']).split(/\n|,\s*(?=https?:)/).filter(Boolean).forEach(url => { const a=document.createElement('a'); a.href=url.trim(); a.target='_blank'; a.rel='noopener'; a.textContent='Open camp photo'; gallery.appendChild(a); }); panel.appendChild(gallery); }
+  const table = document.createElement('table');
+  table.style.cssText = 'width:100%;border-collapse:collapse;font-size:14px;';
+  Object.keys(report).filter(k => !k.startsWith('_')).forEach(key => {
+    const tr = document.createElement('tr');
+    const th = document.createElement('th');
+    const td = document.createElement('td');
+    th.textContent = key;
+    td.textContent = report[key] === null || report[key] === undefined ? '' : String(report[key]);
+    th.style.cssText = 'text-align:left;padding:9px;border:1px solid #d8e3da;background:#f7faf8;width:48%;vertical-align:top;';
+    td.style.cssText = 'padding:9px;border:1px solid #d8e3da;overflow-wrap:anywhere;';
+    tr.append(th, td); table.appendChild(tr);
+  });
+  panel.appendChild(table);
+  panel.classList.remove('hidden');
+  panel.scrollIntoView({behavior:'smooth',block:'start'});
+}
 
+
+function renderSavedPhotos(raw) {
+  const host = $('savedPhotos');
+  if (!host) return;
+  host.replaceChildren();
+  const urls = String(raw || '').split(/\n|,\s*(?=https?:)/).filter(Boolean);
+  urls.forEach(url => {
+    const a = document.createElement('a'); a.href = url.trim(); a.target = '_blank'; a.rel = 'noopener';
+    const img = document.createElement('img'); img.src = url.trim(); img.alt = 'Saved camp photo'; img.onerror = () => { img.style.display = 'none'; a.textContent = 'Open saved camp photo'; };
+    a.appendChild(img); host.appendChild(a);
+  });
+}
+function fileToDataURL(file) {
+  return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve({name:file.name,mimeType:file.type || 'image/jpeg',data:String(reader.result).split(',')[1]}); reader.onerror = () => reject(new Error('Unable to read photo: ' + file.name)); reader.readAsDataURL(file); });
+}
+async function getSelectedPhotos() {
+  const input = $('campPhotos');
+  const files = input ? Array.from(input.files || []) : [];
+  if (files.length < 1) { alert('Kindly upload at least 1 Camp Photo before submitting the report.'); if (input) { input.focus(); input.scrollIntoView({behavior:'smooth',block:'center'}); } return null; }
+  if (files.length > 5) { alert('You can upload a maximum of 5 Camp Photos.'); input.focus(); return null; }
+  for (const file of files) {
+    if (!file.type || !file.type.startsWith('image/')) { alert('Only image files are allowed.'); return null; }
+    if (file.size > 8 * 1024 * 1024) { alert('Each camp photo must be 8 MB or smaller: ' + file.name); return null; }
+  }
+  return Promise.all(files.map(fileToDataURL));
+}
+$('campPhotos').addEventListener('change', () => {
+  const files = Array.from($('campPhotos').files || []);
+  if (files.length > 5) { alert('You can upload a maximum of 5 Camp Photos.'); $('campPhotos').value=''; $('photoPreview').replaceChildren(); return; }
+  const host = $('photoPreview'); host.replaceChildren();
+  files.forEach(file => { const img=document.createElement('img'); img.alt=file.name; img.src=URL.createObjectURL(file); host.appendChild(img); });
+});
+
+function collectPayload() {
   const payload = {
     'Camp Date': $('campDate').value,
     'Sol ID': $('solId').value,
@@ -921,224 +560,88 @@ function collectPayload() {
     'Block Code': $('blockCode').value,
     'Block Name': $('blockName').value,
     'Gram Panchayat (GP) Code': $('gpCode').value,
-    'Gram Panchayat (GP) Name':
-      gpOption ? gpOption.textContent.split(' — ')[0] : '',
+    'Gram Panchayat (GP) Name': $('gpName').selectedOptions[0]?.textContent.split(' — ')[0] || '',
     'Bank Name': 'MPGB'
   };
-
   document.querySelectorAll('[data-header]').forEach(input => {
-    payload[input.dataset.header] =
-      input.value === '' ? 0 : Number(input.value);
+    payload[input.dataset.header] = input.value === '' ? 0 : Number(input.value);
   });
-
   return payload;
 }
-
 async function saveReport(event) {
   event.preventDefault();
   clearStatus();
-
-  if (!$('reportForm').reportValidity()) {
-    return;
-  }
-
+  if (!$('reportForm').reportValidity()) return;
   const payload = collectPayload();
-
+  const campPhotos = await getSelectedPhotos();
+  if (!campPhotos) return;
+  payload.campPhotos = campPhotos;
   if (!payload['Gram Panchayat (GP) Code']) {
-    showStatus('Select a valid Gram Panchayat.', 'err');
-    return;
+    showStatus('Select a valid Gram Panchayat.', 'err'); return;
   }
-
-  const isUpdate = mode === 'edit';
-
-  if (!window.confirm(
-    isUpdate
-      ? 'Update the existing report with these values?'
-      : 'Submit this report? Only one report is allowed per GP Code.'
-  )) {
-    return;
-  }
+  const message = 'Submit this report? Only one report is allowed per GP Code.';
+  if (!window.confirm(message)) return;
 
   setLoading(true);
   showSavingModal();
-
   try {
     let result;
-
-    if (isUpdate) {
-      result = await api('updateReport', {
-        payload,
-        originalGpCode
-      });
-    } else {
-      result = await api('submitReport', { payload });
-    }
-
-    showSuccessModal(isUpdate);
-
-    showStatus(
-      isUpdate ? 'Report updated successfully.' : 'Report submitted successfully.',
-      'ok'
-    );
-
-    currentlyLoadedReport = payload;
+    result = await api('submitReport', {payload});
+    showStatus('Saved successfully.', 'ok');
+    showSuccessModal(false);
     originalGpCode = payload['Gram Panchayat (GP) Code'];
-
-    $('resultList').replaceChildren();
-
-    const summary = document.createElement('div');
-    summary.className = 'report-result-details';
-
-    summary.textContent =
-      `GP: ${payload['Gram Panchayat (GP) Name']} ` +
-      `(${payload['Gram Panchayat (GP) Code']}) | ` +
-      `Branch: ${payload['Branch Name']} (${payload['Sol ID']}) | ` +
-      `Camp Date: ${payload['Camp Date']}`;
-
-    $('resultList').appendChild(summary);
-    $('resultCard').classList.remove('hidden');
-
+    currentlyLoadedReport = payload;
+    // This layout uses resultList (not the older resultSummary element).
+    // Render a success summary safely so a missing legacy element cannot
+    // turn a successful save into a misleading submission-failed message.
+    const resultList = $('resultList');
+    if (resultList) {
+      resultList.replaceChildren();
+      const summary = document.createElement('div');
+      summary.className = 'report-result-details';
+      summary.textContent =
+        `GP: ${payload['Gram Panchayat (GP) Name']} (${payload['Gram Panchayat (GP) Code']}) | ` +
+        `Branch: ${payload['Branch Name']} (${payload['Sol ID']}) | Camp Date: ${payload['Camp Date']}`;
+      resultList.appendChild(summary);
+    }
+    const resultCard = $('resultCard');
+    if (resultCard) {
+      resultCard.classList.remove('hidden');
+      if (resultCard.scrollIntoView) resultCard.scrollIntoView({behavior:'smooth', block:'start'});
+    }
     hideForm();
-    $('lookupCard').classList.remove('hidden');
   } catch (err) {
     hideSaveModal();
-
-    console.error('Report save failed:', err);
-
-    showStatus(
-      (isUpdate ? 'Update failed: ' : 'Submission failed: ') +
-      (err.message || err),
-      'err'
-    );
+    showStatus('Submission failed: ' + err.message, 'err');
   } finally {
     setLoading(false);
   }
 }
 
-/* BRANCH SELECTION */
 $('solId').addEventListener('change', () => {
   const branch = selectedBranch($('solId').value);
-
-  $('branchName').value =
-    branch ? branch.branchName : '';
+  $('branchName').value = branch ? branch.branchName : '';
 });
-
-/* GP MASTER DROPDOWNS */
-$('district').addEventListener('change', updateBlocks);
-$('blockName').addEventListener('change', updateGPs);
+$('district').addEventListener('change', () => updateBlocks(''));
+$('blockName').addEventListener('change', () => updateGPs(''));
 $('gpName').addEventListener('change', onGPChanged);
-
-/*
- * FIXED NEW REPORT BUTTON:
- * Always opens the form, even if master data loading failed.
- */
 $('newBtn').addEventListener('click', () => {
-  try {
-    clearStatus();
-    clearForm();
-
-    $('lookupCard').classList.add('hidden');
-    $('resultCard').classList.add('hidden');
-
-    // Ensure fields are editable for a new report.
-    $('solId').disabled = false;
-    $('district').disabled = false;
-    $('blockName').disabled = false;
-    $('gpName').disabled = false;
-    $('campDate').disabled = false;
-
-    document.querySelectorAll('#reportForm input').forEach(input => {
-      input.readOnly = Boolean(input.id === 'branchName' ||
-                               input.id === 'blockCode' ||
-                               input.id === 'gpCode' ||
-                               input.id === 'bankName');
-    });
-
-    $('saveBtn').classList.remove('hidden');
-    $('resetBtn').classList.remove('hidden');
-    $('cancelBtn').textContent = 'Cancel';
-
-    showForm('new');
-
-    const now = new Date();
-    const localDate = new Date(
-      now.getTime() - now.getTimezoneOffset() * 60000
-    ).toISOString().slice(0, 10);
-
-    $('campDate').value = localDate;
-    $('bankName').value = 'MPGB';
-
-    showStatus(
-      'Enter camp details and reporting figures.',
-      'info'
-    );
-  } catch (err) {
-    console.error('New Report button error:', err);
-    showStatus(
-      'Unable to open New Report: ' + (err.message || err),
-      'err'
-    );
-  }
-});
-
-/* VIEW EXISTING REPORTS */
-$('viewBtn').addEventListener('click', () => {
-  hideForm();
-
-  $('lookupCard').classList.remove('hidden');
+  clearForm(); showForm('new');
   $('resultCard').classList.add('hidden');
-
-  $('lookupCard').scrollIntoView({
-    behavior: 'smooth',
-    block: 'start'
-  });
+  showStatus('Enter the camp details and reporting figures.', 'info');
 });
-
-/* FIND EXISTING REPORT */
+$('viewBtn').addEventListener('click', () => {
+  $('lookupCard').scrollIntoView({behavior:'smooth', block:'start'});
+  $('resultCard').classList.add('hidden');
+});
 $('findBtn').addEventListener('click', findReport);
-
-/* CANCEL / CLOSE */
+$('reloadBtn').addEventListener('click', loadMaster);
 $('cancelBtn').addEventListener('click', () => {
-  hideForm();
-
-  $('lookupCard').classList.remove('hidden');
-
-  $('solId').disabled = false;
-  $('district').disabled = false;
-  $('blockName').disabled = false;
-  $('gpName').disabled = false;
-  $('campDate').disabled = false;
-
-  document.querySelectorAll('#reportForm input').forEach(input => {
-    input.readOnly = Boolean(input.id === 'branchName' ||
-                             input.id === 'blockCode' ||
-                             input.id === 'gpCode' ||
-                             input.id === 'bankName');
-  });
-
-  $('saveBtn').classList.remove('hidden');
-  $('resetBtn').classList.remove('hidden');
-  $('cancelBtn').textContent = 'Cancel';
-
-  clearStatus();
+  hideForm(); showStatus('Form closed.', 'info');
 });
-
-/* CLEAR FORM */
-$('resetBtn').addEventListener('click', () => {
-  clearForm();
-
-  const now = new Date();
-  const localDate = new Date(
-    now.getTime() - now.getTimezoneOffset() * 60000
-  ).toISOString().slice(0, 10);
-
-  $('campDate').value = localDate;
-});
-
-/* SUBMIT */
+$('resetBtn').addEventListener('click', clearForm);
 $('reportForm').addEventListener('submit', saveReport);
 
-/* INITIALIZE */
 buildNumericFields();
 loadMaster();
 </script>
