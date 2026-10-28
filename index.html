@@ -402,7 +402,7 @@ function showForm(newMode='new') {
   setMode(newMode);
   $('reportForm').classList.remove('hidden');
   $('resultCard').classList.add('hidden');
-  $('reportForm').scrollIntoView({behavior:'smooth', block:'start'});
+  $('reportForm').scrollIntoView({behavior:'auto', block:'start'});
 }
 function hideForm() {
   $('reportForm').classList.add('hidden');
@@ -612,7 +612,9 @@ async function saveReport(event) {
     hideForm();
   } catch (err) {
     hideSaveModal();
-    showStatus('Submission failed: ' + err.message, 'err');
+    const errorName = (err && err.name) ? err.name : 'UnknownError';
+    const errorDetails = (err && err.message) ? err.message : String(err || 'Unknown error');
+    showStatus('ERROR NAME: ' + errorName + '\n\nERROR DETAILS: ' + errorDetails, 'err');
   } finally {
     setLoading(false);
   }
@@ -626,9 +628,15 @@ $('district').addEventListener('change', () => updateBlocks(''));
 $('blockName').addEventListener('change', () => updateGPs(''));
 $('gpName').addEventListener('change', onGPChanged);
 $('newBtn').addEventListener('click', () => {
-  clearForm(); showForm('new');
+  // Open a fresh report form immediately in one click; do not interrupt with an alert.
+  clearStatus();
+  clearForm();
   $('resultCard').classList.add('hidden');
-  showStatus('Enter the camp details and reporting figures.', 'info');
+  $('lookupCard').classList.add('hidden');
+  showForm('new');
+  $('reportForm').scrollIntoView({ behavior: 'auto', block: 'start' });
+  const firstField = $('campDate');
+  if (firstField) firstField.focus({ preventScroll: true });
 });
 $('viewBtn').addEventListener('click', () => {
   $('lookupCard').scrollIntoView({behavior:'smooth', block:'start'});
@@ -637,7 +645,9 @@ $('viewBtn').addEventListener('click', () => {
 $('findBtn').addEventListener('click', findReport);
 $('reloadBtn').addEventListener('click', loadMaster);
 $('cancelBtn').addEventListener('click', () => {
-  hideForm(); showStatus('Form closed.', 'info');
+  hideForm();
+  $('lookupCard').classList.remove('hidden');
+  clearStatus();
 });
 $('resetBtn').addEventListener('click', clearForm);
 $('reportForm').addEventListener('submit', saveReport);
