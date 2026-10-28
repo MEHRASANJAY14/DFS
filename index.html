@@ -145,6 +145,62 @@ footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
 /* Your deployed Google Apps Script Web App URL */
 const API_URL = 'https://script.google.com/macros/s/AKfycbx2hgNtIUM7NcnWyOKPj7U0sXM9CFAVUPXcgfztUwMZfIRCXmQyxnWX8uPmXRt_4HVQ/exec';
 
+const HARDCODED_BRANCHES = [
+  { solId: '12010', branchName: 'JABALPUR' },
+  { solId: '12020', branchName: 'RANJHI' },
+  { solId: '12030', branchName: 'SIHORA (JBP)' },
+  { solId: '12040', branchName: 'KHITOLA BAZAR' },
+  { solId: '12050', branchName: 'SAHAJPUR' },
+  { solId: '12060', branchName: 'SHAHPURA (JBP)' },
+  { solId: '12070', branchName: 'PANAGAR' },
+  { solId: '12080', branchName: 'LAMKANA' },
+  { solId: '12090', branchName: 'ADHARTAL JABALPUR' },
+  { solId: '12100', branchName: 'PATAN' },
+  { solId: '12110', branchName: 'MANJHOLI' },
+  { solId: '12120', branchName: 'PISANHARI MADHIYA' },
+  { solId: '12130', branchName: 'EKTA CHOUK, UKHARIROAD' },
+  { solId: '12140', branchName: 'KARMETA GRAM' },
+  { solId: '12150', branchName: 'BARGI' },
+  { solId: '12160', branchName: 'GWARIGHAT ROAD' },
+  { solId: '12170', branchName: 'BILHARI' },
+  { solId: '12180', branchName: 'KUA' },
+  { solId: '12190', branchName: 'KYMORE' },
+  { solId: '12200', branchName: 'DEORA KALA' },
+  { solId: '12210', branchName: 'VILAYAT KALA' },
+  { solId: '12220', branchName: 'DASHARMAN' },
+  { solId: '12230', branchName: 'AMGAWAN' },
+  { solId: '12240', branchName: 'KATNI' },
+  { solId: '12250', branchName: 'DEORI TOLA' },
+  { solId: '12260', branchName: 'UMARIYAPAN' },
+  { solId: '12270', branchName: 'BADWARA' },
+  { solId: '12280', branchName: 'VIJAY RAGHAVGARH' },
+  { solId: '12290', branchName: 'KHIRHANI DURGA CHOWK' },
+  { solId: '12300', branchName: 'BARAHI' },
+  { solId: '12310', branchName: 'BAHORIBAND' },
+  { solId: '12320', branchName: 'NARSINGHPUR' },
+  { solId: '12330', branchName: 'STATION GANJ NARSINGHPUR' },
+  { solId: '12340', branchName: 'AMGAON BADA' },
+  { solId: '12350', branchName: 'KANWAS' },
+  { solId: '12360', branchName: 'PANARI' },
+  { solId: '12370', branchName: 'BOHANI' },
+  { solId: '12380', branchName: 'KARELI' },
+  { solId: '12390', branchName: 'BAGASPUR' },
+  { solId: '12400', branchName: 'SAIKHEDA' },
+  { solId: '12410', branchName: 'CHICHALI' },
+  { solId: '12420', branchName: 'BARAHATA' },
+  { solId: '12430', branchName: 'KAMTI IMALYA' },
+  { solId: '12440', branchName: 'SINGHPUR BADA' },
+  { solId: '12450', branchName: 'GADARWARA' },
+  { solId: '12460', branchName: 'DEORI LOLRI' },
+  { solId: '12470', branchName: 'NARSINGHPUR BASTI' },
+  { solId: '12480', branchName: 'KARAKBEL' },
+  { solId: '12490', branchName: 'SOORWARI' },
+  { solId: '12500', branchName: 'TENDUKHEDA' },
+  { solId: '12510', branchName: 'GOTEGAON' },
+  { solId: '12520', branchName: 'COLLECTORATE, NARSINGHPUR' },
+  { solId: '12530', branchName: 'ADARSH SHIKSHAN SAMITI, KARELI' }
+];
+
 const NUMERIC_FIELDS = [
   'PMJDY Applications Sourced',
   'PMJDY Accounts Opened',
@@ -320,29 +376,75 @@ async function api(action, extra={}) {
   return result.data;
 }
 async function loadMaster() {
-  setLoading(true); clearStatus();
+  setLoading(true);
+  clearStatus();
+
+  // Load branch list locally first, so SOL ID works even if the API is down.
+  master.branches = HARDCODED_BRANCHES.slice();
+  fillSelect(
+    $('solId'),
+    master.branches,
+    b => String(b.solId),
+    b => `${b.solId} — ${b.branchName}`,
+    'Select branch'
+  );
+
   try {
     const data = await api('getMasterData');
+
     master = {
       districts: Array.isArray(data.districts) ? data.districts : [],
       gpMaster: Array.isArray(data.gpMaster) ? data.gpMaster : [],
-      branches: Array.isArray(data.branches) ? data.branches : []
+      branches: Array.isArray(data.branches) && data.branches.length
+        ? data.branches
+        : HARDCODED_BRANCHES.slice()
     };
+
+    // Keep hardcoded branch list if backend doesn't return one.
+    if (!master.branches.length) master.branches = HARDCODED_BRANCHES.slice();
+
+    fillSelect(
+      $('solId'),
+      master.branches,
+      b => String(b.solId),
+      b => `${b.solId} — ${b.branchName}`,
+      'Select branch'
+    );
+    fillSelect($('district'), master.districts, d => d, d => d, 'Select district');
+    fillSelect($('lookupDistrict'), master.districts, d => d, d => d, 'Select district');
+    resetLocationFields();
+    resetLookupLocation();
+
     if (!master.gpMaster.length) {
-      showStatus('Master data loaded, but no GP records were found. Add GP records to the GP sheet (columns A–E).', 'err');
-    } else if (!master.branches.length) {
-      showStatus('No branch list was returned. Check the deployed Code.gs version.', 'err');
+      showStatus(
+        `SOL ID loaded (${master.branches.length} branches), but GP/Block data is empty. Check the GP sheet and Apps Script API.`,
+        'err'
+      );
     } else {
-      populateMaster();
-      showStatus(`Master data loaded: ${master.branches.length} branches and ${master.gpMaster.length} GP records.`, 'ok');
+      showStatus(
+        `Loaded ${master.branches.length} branches and ${master.gpMaster.length} GP records.`,
+        'ok'
+      );
     }
   } catch (err) {
-    showStatus('Unable to load master data.\n' + err.message +
-      '\n\nCheck that Code.gs is saved, deployed as a Web App, and the deployment URL is correct.', 'err');
+    // Branches remain available even when Apps Script fails.
+    fillSelect(
+      $('solId'),
+      HARDCODED_BRANCHES,
+      b => String(b.solId),
+      b => `${b.solId} — ${b.branchName}`,
+      'Select branch'
+    );
+    showStatus(
+      'SOL ID list loaded locally (' + HARDCODED_BRANCHES.length + ' branches), but Block/GP data could not be loaded from Apps Script. ' +
+      'Please correct/redeploy Code.gs. Details: ' + err.message,
+      'err'
+    );
   } finally {
     setLoading(false);
   }
 }
+
 function setMode(newMode) {
   mode = newMode;
   $('modeBadge').textContent = newMode === 'edit' ? 'Edit Existing Report' : 'New Report';
