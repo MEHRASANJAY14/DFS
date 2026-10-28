@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DFS Saturation Camp Reporting Portal</title>
+<style>
+:root{--green:#006633;--green2:#008447;--light:#f2f7f3;--border:#d8e3da;--text:#1d2b22;--muted:#607064;--danger:#b42318;--blue:#1c4fa3}
+*{box-sizing:border-box}
+body{margin:0;background:#f3f6f4;color:var(--text);font-family:Arial,Helvetica,sans-serif}
+header{background:linear-gradient(120deg,var(--green),var(--green2));color:#fff;padding:22px 16px;box-shadow:0 3px 12px #0002}
+.header-inner{max-width:1200px;margin:auto}
+header h1{font-size:clamp(20px,3vw,30px);margin:0 0 7px}
+header p{margin:0;opacity:.92;font-size:14px}
+.container{max-width:1200px;margin:20px auto;padding:0 14px 36px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+button{border:0;border-radius:8px;padding:11px 15px;font-weight:700;cursor:pointer;font-size:14px}
+button:disabled{opacity:.55;cursor:not-allowed}
+.primary{background:var(--green);color:white}.secondary{background:#e4eee7;color:var(--green)}.blue{background:var(--blue);color:#fff}.danger{background:#fde9e7;color:var(--danger)}
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:16px;box-shadow:0 3px 12px #183b2410;overflow:hidden}
+.card-head{padding:14px 18px;background:#f7faf8;border-bottom:1px solid var(--border);font-size:16px;font-weight:700}
+.card-body{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.field{min-width:0}
+.field label{display:block;font-size:13px;font-weight:700;margin:0 0 6px}
+.field input,.field select{width:100%;padding:11px 10px;border:1px solid #cbd8ce;border-radius:7px;background:#fff;font-size:14px;min-height:42px;color:#17251b}
+.field input:focus,.field select:focus{outline:2px solid #a5d5b7;border-color:var(--green)}
+.field input[readonly]{background:#f0f4f1}
+.section-title{font-size:15px;color:var(--green);margin:0 0 14px;padding-bottom:9px;border-bottom:1px solid var(--border)}
+.metric-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.status{display:none;padding:12px 14px;border-radius:8px;margin:0 0 16px;font-size:14px;white-space:pre-wrap}
+.status.ok{display:block;background:#e7f6eb;color:#176534;border:1px solid #b9e2c5}
+.status.err{display:block;background:#fff0ee;color:#a32117;border:1px solid #f1c1bc}
+.status.info{display:block;background:#eaf1ff;color:#234c91;border:1px solid #c9d8fb}
+.small{font-size:12px;color:var(--muted);line-height:1.5}
+.badge{display:inline-block;padding:4px 8px;border-radius:20px;background:#e5f3e9;color:var(--green);font-size:12px;font-weight:700}
+footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
+.hidden{display:none!important}
+#loading{display:none;font-size:13px;color:#fff;margin-top:10px}
+@media(max-width:800px){.grid,.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.container{padding:0 10px 25px;margin-top:12px}.grid,.metric-grid{grid-template-columns:1fr}.card-body{padding:14px}.toolbar button{flex:1;min-width:calc(50% - 10px)}.actions button{flex:1}header{padding:18px 13px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <h1>DFS Saturation Camp Reporting Portal</h1>
+    <p>Branch-wise reporting • Gram Panchayat-wise tracking • Campaign reporting</p>
+    <div id="loading">Loading master data…</div>
+  </div>
+</header>
+
+<main class="container">
+  <div id="status" class="status" role="status" aria-live="polite"></div>
+
+  <div class="toolbar">
+    <button class="primary" id="newBtn" type="button">＋ New Report</button>
+    <button class="secondary" id="viewBtn" type="button">⌕ View Existing Report</button>
+    <button class="blue hidden" id="editBtn" type="button">✎ Edit Report</button>
+    <button class="secondary" id="reloadBtn" type="button">↻ Reload Master Data</button>
+  </div>
+
+  <section class="card" id="lookupCard">
+    <div class="card-head">Find Existing Report</div>
+    <div class="card-body">
+      <div class="grid">
+        <div class="field">
+          <label for="lookupDistrict">District</label>
+          <select id="lookupDistrict"><option value="">Select district</option></select>
+        </div>
+        <div class="field">
+          <label for="lookupBlock">Block</label>
+          <select id="lookupBlock" disabled><option value="">Select block</option></select>
+        </div>
+        <div class="field">
+          <label for="lookupGP">Gram Panchayat (GP)</label>
+          <select id="lookupGP" disabled><option value="">Select GP</option></select>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="primary" id="findBtn" type="button">View Report</button>
+      </div>
+      <p class="small">Only one report is permitted for each GP Code during the campaign. To correct an existing report, open it here and choose Edit Report.</p>
+    </div>
+  </section>
+
+  <form id="reportForm" class="hidden" autocomplete="off">
+    <section class="card">
+      <div class="card-head">1. Camp & Branch Details <span class="badge" id="modeBadge">New Report</span></div>
+      <div class="card-body">
+        <div class="grid">
+          <div class="field"><label for="campDate">Camp Date *</label><input type="date" id="campDate" required></div>
+          <div class="field"><label for="solId">SOL ID / Branch *</label><select id="solId" required><option value="">Select branch</option></select></div>
+          <div class="field"><label for="branchName">Branch Name</label><input id="branchName" readonly></div>
+          <div class="field"><label for="district">District *</label><select id="district" required><option value="">Select district</option></select></div>
+          <div class="field"><label for="blockName">Block Name *</label><select id="blockName" required disabled><option value="">Select block</option></select></div>
+          <div class="field"><label for="blockCode">Block Code</label><input id="blockCode" readonly></div>
+          <div class="field"><label for="gpName">Gram Panchayat (GP) *</label><select id="gpName" required disabled><option value="">Select GP</option></select></div>
+          <div class="field"><label for="gpCode">GP Code *</label><input id="gpCode" readonly required></div>
+          <div class="field"><label for="bankName">Bank Name *</label><input id="bankName" required placeholder="Enter bank name"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">2. PMJDY & Account Reactivation</div>
+      <div class="card-body"><div class="metric-grid" id="fieldsA"></div></div>
+    </section>
+    <section class="card">
+      <div class="card-head">3. Social Security Schemes</div>
+      <div class="card-body"><div class="metric-grid" id="fieldsB"></div></div>
+    </section>
+    <section class="card">
+      <div class="card-head">4. Re-KYC & Nomination</div>
+      <div class="card-body"><div class="metric-grid" id="fieldsC"></div></div>
+    </section>
+    <section class="card">
+      <div class="card-head">5. KCC, CKYC & DEAF Claims</div>
+      <div class="card-body"><div class="metric-grid" id="fieldsD"></div></div>
+    </section>
+    <div class="actions">
+      <button class="primary" id="saveBtn" type="submit">Submit Report</button>
+      <button class="secondary" id="cancelBtn" type="button">Cancel</button>
+      <button class="danger hidden" id="resetBtn" type="button">Clear Form</button>
+    </div>
+    <p class="small">Please verify all figures before submitting. Blank numeric fields are saved as zero. Reports are checked against the GP Code on the server.</p>
+  </form>
+
+  <section class="card hidden" id="resultCard">
+    <div class="card-head">Existing Report</div>
+    <div class="card-body">
+      <p id="resultSummary"></p>
+      <div class="actions">
+        <button class="blue" id="resultEditBtn" type="button">Edit This Report</button>
+      </div>
+    </div>
+  </section>
+  <footer>DFS Saturation Camp Reporting Portal</footer>
+</main>
+
+<script>
+'use strict';
+
+/* Your deployed Google Apps Script Web App URL */
+const API_URL = 'https://script.google.com/macros/s/AKfycbx2hgNtIUM7NcnWyOKPj7U0sXM9CFAVUPXcgfztUwMZfIRCXmQyxnWX8uPmXRt_4HVQ/exec';
+
+const NUMERIC_FIELDS = [
+  'PMJDY Applications Sourced',
+  'PMJDY Accounts Opened',
+  'PMJDY Applications Sourced - PVTG',
+  'PMJDY Accounts Opened - PVTG',
+  'Applications Received for Reactivation of Inoperative PMJDY Accounts',
+  'Inoperative PMJDY Accounts Reactivated',
+  'PMJJBY Applications Sourced',
+  'PMJJBY Enrolments',
+  'PMSBY Applications Sourced',
+  'PMSBY Enrolments',
+  'APY Applications Sourced',
+  'APY Subscriptions',
+  'Applications Received for Re-KYC of PMJDY Accounts',
+  'PMJDY Accounts for which Re-KYC Completed',
+  'Applications Received for Re-KYC of Other Savings Accounts',
+  'Other Savings Accounts for which Re-KYC Completed',
+  'Nomination Applications Received - PMJDY Accounts',
+  'Nominations Registered - PMJDY Accounts',
+  'Nomination Applications Received - Non-PMJDY Accounts',
+  'Nominations Registered - Non-PMJDY Accounts',
+  'Nomination Applications Received - Lockers',
+  'Locker Nominations Registered',
+  'KCC Applications Sourced for PM-Kisan Beneficiaries',
+  'KCC Applications Sanctioned for PM-Kisan Beneficiaries',
+  'CKYC ID Generation Applications Sourced',
+  'CKYC IDs Generated',
+  'Number of DEAF Claims Settled for claim amounts less than ₹1,00,000',
+  'Amount (in ₹) of DEAF Claims Settled for claim amounts less than ₹1,00,000',
+  'Number of DEAF Claims Settled for claim amounts ₹1,00,000 or more',
+  'Amount (in ₹) of DEAF Claims Settled for claim amounts ₹1,00,000 or more'
+];
+
+const FIELD_GROUPS = {
+  fieldsA: NUMERIC_FIELDS.slice(0, 6),
+  fieldsB: NUMERIC_FIELDS.slice(6, 12),
+  fieldsC: NUMERIC_FIELDS.slice(12, 22),
+  fieldsD: NUMERIC_FIELDS.slice(22)
+};
+
+let master = { districts: [], gpMaster: [], branches: [] };
+let mode = 'new';
+let originalGpCode = '';
+let currentlyLoadedReport = null;
+
+const $ = id => document.getElementById(id);
+
+function showStatus(message, type='info') {
+  const box = $('status');
+  box.textContent = message;
+  box.className = 'status ' + type;
+  box.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+function clearStatus() {
+  $('status').textContent = '';
+  $('status').className = 'status';
+}
+function setLoading(on) {
+  $('loading').style.display = on ? 'block' : 'none';
+  ['newBtn','viewBtn','findBtn','saveBtn','reloadBtn'].forEach(id => {
+    if ($(id)) $(id).disabled = on;
+  });
+}
+function option(value, label) {
+  const o = document.createElement('option');
+  o.value = value; o.textContent = label;
+  return o;
+}
+function fillSelect(select, items, valueFn, labelFn, placeholder) {
+  select.replaceChildren(option('', placeholder));
+  items.forEach(item => select.appendChild(option(valueFn(item), labelFn(item))));
+}
+function uniqueSorted(values) {
+  return [...new Set(values.filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+}
+function selectedGP(code) {
+  return master.gpMaster.find(g => String(g.gpCode) === String(code));
+}
+function selectedBranch(sol) {
+  return master.branches.find(b => String(b.solId) === String(sol));
+}
+function buildNumericFields() {
+  Object.keys(FIELD_GROUPS).forEach(groupId => {
+    const host = $(groupId);
+    FIELD_GROUPS[groupId].forEach((label, index) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'field';
+      const id = 'num_' + NUMERIC_FIELDS.indexOf(label);
+      const lab = document.createElement('label');
+      lab.htmlFor = id; lab.textContent = label;
+      const input = document.createElement('input');
+      input.type = 'number'; input.id = id; input.dataset.header = label;
+      input.min = '0'; input.step = 'any'; input.inputMode = 'decimal';
+      input.value = '0';
+      input.addEventListener('input', () => {
+        if (input.value !== '' && Number(input.value) < 0) input.value = '0';
+      });
+      wrap.append(lab, input);
+      host.appendChild(wrap);
+    });
+  });
+}
+function populateMaster() {
+  fillSelect($('solId'), master.branches,
+    b => b.solId, b => `${b.solId} — ${b.branchName}`, 'Select branch');
+  fillSelect($('district'), master.districts,
+    d => d, d => d, 'Select district');
+  fillSelect($('lookupDistrict'), master.districts,
+    d => d, d => d, 'Select district');
+  resetLocationFields();
+  resetLookupLocation();
+}
+function resetLocationFields() {
+  $('blockName').replaceChildren(option('', 'Select block'));
+  $('gpName').replaceChildren(option('', 'Select GP'));
+  $('blockName').disabled = true;
+  $('gpName').disabled = true;
+  $('blockCode').value = '';
+  $('gpCode').value = '';
+}
+function updateBlocks(prefix) {
+  const districtId = prefix === 'lookup' ? 'lookupDistrict' : 'district';
+  const blockId = prefix === 'lookup' ? 'lookupBlock' : 'blockName';
+  const gpId = prefix === 'lookup' ? 'lookupGP' : 'gpName';
+  const district = $(districtId).value;
+  const blocks = uniqueSorted(master.gpMaster
+    .filter(g => g.district === district).map(g => g.blockName));
+  fillSelect($(blockId), blocks, b => b, b => b, 'Select block');
+  $(blockId).disabled = !district;
+  fillSelect($(gpId), [], x => x, x => x, 'Select GP');
+  $(gpId).disabled = true;
+  if (prefix !== 'lookup') {
+    $('blockCode').value = '';
+    $('gpCode').value = '';
+  }
+}
+function updateGPs(prefix) {
+  const districtId = prefix === 'lookup' ? 'lookupDistrict' : 'district';
+  const blockId = prefix === 'lookup' ? 'lookupBlock' : 'blockName';
+  const gpId = prefix === 'lookup' ? 'lookupGP' : 'gpName';
+  const district = $(districtId).value;
+  const block = $(blockId).value;
+  const gps = master.gpMaster.filter(g =>
+    g.district === district && g.blockName === block);
+  fillSelect($(gpId), gps, g => g.gpCode,
+    g => `${g.gpName} — ${g.gpCode}`, 'Select GP');
+  $(gpId).disabled = !block;
+  if (prefix !== 'lookup') {
+    $('blockCode').value = '';
+    $('gpCode').value = '';
+  }
+}
+function onGPChanged() {
+  const gp = selectedGP($('gpName').value);
+  $('blockCode').value = gp ? gp.blockCode : '';
+  $('gpCode').value = gp ? gp.gpCode : '';
+}
+function resetLookupLocation() {
+  $('lookupBlock').replaceChildren(option('', 'Select block'));
+  $('lookupGP').replaceChildren(option('', 'Select GP'));
+  $('lookupBlock').disabled = true;
+  $('lookupGP').disabled = true;
+}
+async function api(action, extra={}) {
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: {'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify({action, ...extra})
+  });
+  if (!response.ok) throw new Error('Server returned HTTP ' + response.status);
+  const result = await response.json();
+  if (!result.success) throw new Error(result.message || 'Request failed.');
+  return result.data;
+}
+async function loadMaster() {
+  setLoading(true); clearStatus();
+  try {
+    const data = await api('getMasterData');
+    master = {
+      districts: Array.isArray(data.districts) ? data.districts : [],
+      gpMaster: Array.isArray(data.gpMaster) ? data.gpMaster : [],
+      branches: Array.isArray(data.branches) ? data.branches : []
+    };
+    if (!master.gpMaster.length) {
+      showStatus('Master data loaded, but no GP records were found. Add GP records to the GP sheet (columns A–E).', 'err');
+    } else if (!master.branches.length) {
+      showStatus('No branch list was returned. Check the deployed Code.gs version.', 'err');
+    } else {
+      populateMaster();
+      showStatus(`Master data loaded: ${master.branches.length} branches and ${master.gpMaster.length} GP records.`, 'ok');
+    }
+  } catch (err) {
+    showStatus('Unable to load master data.\n' + err.message +
+      '\n\nCheck that Code.gs is saved, deployed as a Web App, and the deployment URL is correct.', 'err');
+  } finally {
+    setLoading(false);
+  }
+}
+function setMode(newMode) {
+  mode = newMode;
+  $('modeBadge').textContent = newMode === 'edit' ? 'Edit Existing Report' : 'New Report';
+  $('saveBtn').textContent = newMode === 'edit' ? 'Update Existing Report' : 'Submit Report';
+  $('editBtn').classList.toggle('hidden', !(newMode === 'view' && currentlyLoadedReport));
+  $('resetBtn').classList.toggle('hidden', newMode === 'edit');
+}
+function showForm(newMode='new') {
+  setMode(newMode);
+  $('reportForm').classList.remove('hidden');
+  $('resultCard').classList.add('hidden');
+  $('reportForm').scrollIntoView({behavior:'smooth', block:'start'});
+}
+function hideForm() {
+  $('reportForm').classList.add('hidden');
+}
+function clearForm() {
+  $('reportForm').reset();
+  resetLocationFields();
+  $('branchName').value = '';
+  $('blockCode').value = '';
+  $('gpCode').value = '';
+  document.querySelectorAll('[data-header]').forEach(input => input.value = '0');
+  originalGpCode = '';
+  currentlyLoadedReport = null;
+  setMode('new');
+}
+function fillGPSelectors(gpCode) {
+  const gp = selectedGP(gpCode);
+  if (!gp) return false;
+  $('district').value = gp.district;
+  updateBlocks('');
+  $('blockName').value = gp.blockName;
+  updateGPs('');
+  $('gpName').value = gp.gpCode;
+  onGPChanged();
+  return true;
+}
+function fillReport(report) {
+  clearForm();
+  $('campDate').value = normalizeDate(report['Camp Date']);
+  $('solId').value = String(report['Sol ID'] || '');
+  const branch = selectedBranch($('solId').value);
+  $('branchName').value = branch ? branch.branchName : (report['Branch Name'] || '');
+  $('bankName').value = report['Bank Name'] || '';
+  const gpCode = String(report['Gram Panchayat (GP) Code'] || '');
+  fillGPSelectors(gpCode);
+  document.querySelectorAll('[data-header]').forEach(input => {
+    const val = report[input.dataset.header];
+    input.value = val === undefined || val === null || val === '' ? '0' : val;
+  });
+  originalGpCode = gpCode;
+  currentlyLoadedReport = report;
+}
+function normalizeDate(value) {
+  if (!value) return '';
+  const s = String(value);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  const m = s.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  return m ? `${m[3]}-${m[2]}-${m[1]}` : '';
+}
+async function findReport() {
+  const gpCode = $('lookupGP').value;
+  if (!gpCode) {
+    showStatus('Select a District, Block and GP first.', 'err');
+    return;
+  }
+  setLoading(true); clearStatus();
+  try {
+    const data = await api('getReportByGP', {gpCode});
+    if (!data.found) {
+      $('resultCard').classList.add('hidden');
+      hideForm();
+      showStatus('No report exists for this GP Code. You can create a new report using New Report.', 'info');
+      return;
+    }
+    currentlyLoadedReport = data.report;
+    originalGpCode = data.gpCode;
+    $('resultSummary').textContent =
+      `GP: ${data.report['Gram Panchayat (GP) Name']} (${data.gpCode}) | ` +
+      `Branch: ${data.report['Branch Name']} (${data.report['Sol ID']}) | ` +
+      `Camp Date: ${normalizeDate(data.report['Camp Date'])}`;
+    $('resultCard').classList.remove('hidden');
+    $('resultCard').scrollIntoView({behavior:'smooth', block:'start'});
+    showStatus('Existing report found. Select Edit This Report to make corrections.', 'ok');
+  } catch (err) {
+    showStatus('Unable to retrieve report.\n' + err.message, 'err');
+  } finally {
+    setLoading(false);
+  }
+}
+function collectPayload() {
+  const payload = {
+    'Camp Date': $('campDate').value,
+    'Sol ID': $('solId').value,
+    'Branch Name': $('branchName').value,
+    'Block Code': $('blockCode').value,
+    'Block Name': $('blockName').value,
+    'Gram Panchayat (GP) Code': $('gpCode').value,
+    'Gram Panchayat (GP) Name': $('gpName').selectedOptions[0]?.textContent.split(' — ')[0] || '',
+    'Bank Name': $('bankName').value.trim()
+  };
+  document.querySelectorAll('[data-header]').forEach(input => {
+    payload[input.dataset.header] = input.value === '' ? 0 : Number(input.value);
+  });
+  return payload;
+}
+async function saveReport(event) {
+  event.preventDefault();
+  clearStatus();
+  if (!$('reportForm').reportValidity()) return;
+  const payload = collectPayload();
+  if (!payload['Gram Panchayat (GP) Code']) {
+    showStatus('Select a valid Gram Panchayat.', 'err'); return;
+  }
+  const message = mode === 'edit'
+    ? 'Update the existing report with these values?'
+    : 'Submit this report? Only one report is allowed per GP Code.';
+  if (!window.confirm(message)) return;
+
+  setLoading(true);
+  try {
+    let result;
+    if (mode === 'edit') {
+      result = await api('updateReport', {payload, originalGpCode});
+    } else {
+      result = await api('submitReport', {payload});
+    }
+    showStatus(result.message || 'Operation completed successfully.', 'ok');
+    originalGpCode = payload['Gram Panchayat (GP) Code'];
+    currentlyLoadedReport = payload;
+    $('resultSummary').textContent =
+      `GP: ${payload['Gram Panchayat (GP) Name']} (${payload['Gram Panchayat (GP) Code']}) | ` +
+      `Branch: ${payload['Branch Name']} (${payload['Sol ID']}) | Camp Date: ${payload['Camp Date']}`;
+    $('resultCard').classList.remove('hidden');
+    hideForm();
+    $('resultCard').scrollIntoView({behavior:'smooth', block:'start'});
+  } catch (err) {
+    showStatus((mode === 'edit' ? 'Update failed: ' : 'Submission failed: ') + err.message, 'err');
+  } finally {
+    setLoading(false);
+  }
+}
+
+$('solId').addEventListener('change', () => {
+  const branch = selectedBranch($('solId').value);
+  $('branchName').value = branch ? branch.branchName : '';
+});
+$('district').addEventListener('change', () => updateBlocks(''));
+$('blockName').addEventListener('change', () => updateGPs(''));
+$('gpName').addEventListener('change', onGPChanged);
+$('lookupDistrict').addEventListener('change', () => updateBlocks('lookup'));
+$('lookupBlock').addEventListener('change', () => updateGPs('lookup'));
+$('newBtn').addEventListener('click', () => {
+  clearForm(); showForm('new');
+  $('resultCard').classList.add('hidden');
+  showStatus('Enter the camp details and reporting figures.', 'info');
+});
+$('viewBtn').addEventListener('click', () => {
+  $('lookupCard').scrollIntoView({behavior:'smooth', block:'start'});
+  $('resultCard').classList.add('hidden');
+});
+$('findBtn').addEventListener('click', findReport);
+$('editBtn').addEventListener('click', () => {
+  if (!currentlyLoadedReport) return;
+  const report = currentlyLoadedReport;
+  fillReport(report);
+  showForm('edit');
+});
+$('resultEditBtn').addEventListener('click', () => {
+  if (!currentlyLoadedReport) return;
+  const report = currentlyLoadedReport;
+  fillReport(report);
+  showForm('edit');
+});
+$('reloadBtn').addEventListener('click', loadMaster);
+$('cancelBtn').addEventListener('click', () => {
+  hideForm(); showStatus('Form closed.', 'info');
+});
+$('resetBtn').addEventListener('click', clearForm);
+$('reportForm').addEventListener('submit', saveReport);
+
+buildNumericFields();
+loadMaster();
+</script>
+</body>
+</html>
