@@ -316,19 +316,36 @@ function updateGPs(prefix) {
   const district = $(districtId).value;
   const block = $(blockId).value;
   const gps = master.gpMaster.filter(g =>
-    g.district === district && g.blockName === block);
+    String(g.district).trim() === String(district).trim() &&
+    String(g.blockName).trim() === String(block).trim());
   fillSelect($(gpId), gps, g => g.gpCode,
     g => `${g.gpName} — ${g.gpCode}`, 'Select GP');
   $(gpId).disabled = !block;
   if (prefix !== 'lookup') {
-    $('blockCode').value = '';
+    // Fetch Block Code as soon as a Block Name is selected.
+    // The GP master contains the Block Code for each GP in that block.
+    const blockRecord = gps.find(g => String(g.blockCode || '').trim() !== '');
+    $('blockCode').value = blockRecord ? String(blockRecord.blockCode).trim() : '';
+    // GP Code is filled only after a specific GP is selected.
     $('gpCode').value = '';
   }
 }
 function onGPChanged() {
   const gp = selectedGP($('gpName').value);
-  $('blockCode').value = gp ? gp.blockCode : '';
-  $('gpCode').value = gp ? gp.gpCode : '';
+  if (gp) {
+    $('blockCode').value = gp.blockCode == null ? '' : String(gp.blockCode).trim();
+    $('gpCode').value = gp.gpCode == null ? '' : String(gp.gpCode).trim();
+  } else {
+    $('gpCode').value = '';
+    // Keep the Block Code populated when GP selection is cleared.
+    const district = $('district').value;
+    const block = $('blockName').value;
+    const blockRecord = master.gpMaster.find(g =>
+      String(g.district).trim() === String(district).trim() &&
+      String(g.blockName).trim() === String(block).trim() &&
+      String(g.blockCode || '').trim() !== '');
+    $('blockCode').value = blockRecord ? String(blockRecord.blockCode).trim() : '';
+  }
 }
 function resetLookupLocation() {
   clearSelect($('lookupBlock'), 'Select block');
