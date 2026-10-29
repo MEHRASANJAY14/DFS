@@ -585,9 +585,12 @@ $('campPhotos').addEventListener('change', () => {
 });
 
 function collectPayload() {
+  // Send an explicit update timestamp separately from the user-selected Camp Date.
+  // Code.gs must map these values by header name, not by array position.
   const payload = {
+    'Update date': new Date().toISOString(),
     'Camp Date': $('campDate').value,
-    'Sol ID': $('solId').value,
+    'Sol ID': String($('solId').value || '').trim(),
     'Branch Name': $('branchName').value,
     'Block Code': $('blockCode').value,
     'Block Name': $('blockName').value,
