@@ -125,6 +125,16 @@ footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
       <div class="card-head">5. KCC, CKYC & DEAF Claims</div>
       <div class="card-body"><div class="metric-grid" id="fieldsD"></div></div>
     </section>
+    <section class="card">
+      <div class="card-head">6. Camp Photos</div>
+      <div class="card-body">
+        <div class="field">
+          <label for="campPhotos">Upload Camp Photos (1–5 images, maximum 8 MB each) *</label>
+          <input id="campPhotos" type="file" accept="image/*" multiple required>
+          <p class="small">All uploaded photo links will be saved together in the last column, photo_link. One selected photo produces one link; five photos produce five links.</p>
+        </div>
+      </div>
+    </section>
     <div class="actions">
       <button class="primary" id="saveBtn" type="submit">Submit Report</button>
       <button class="secondary" id="cancelBtn" type="button">Cancel</button>
@@ -512,14 +522,29 @@ function renderReportDetails(report) {
   panel.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
+async function collectCampPhotos() {
+  const input = $('campPhotos');
+  const files = input && input.files ? Array.from(input.files) : [];
+  if (files.length < 1 || files.length > 5) throw new Error('Please select between 1 and 5 camp photos.');
+  const result = [];
+  for (const file of files) {
+    if (!file.type || !file.type.startsWith('image/')) throw new Error('Only image files are allowed.');
+    if (file.size > 8 * 1024 * 1024) throw new Error('Each camp photo must be 8 MB or smaller.');
+    const data = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(new Error('Could not read photo: ' + file.name));
+      reader.readAsDataURL(file);
+    });
+    result.push({name:file.name, mimeType:file.type, data:data});
+  }
+  return result;
+}
+
 function collectPayload() {
-  const selectedCampDate = $('campDate').value;
-  const selectedSolId = String($('solId').value || '').trim();
   const payload = {
-    'Camp Date': selectedCampDate,
-    campDate: selectedCampDate, // compatibility alias for older deployed backend versions
-    'Sol ID': selectedSolId,
-    solId: selectedSolId, // compatibility alias for older deployed backend versions
+    'Camp Date': $('campDate').value,
+    'Sol ID': $('solId').value,
     'Branch Name': $('branchName').value,
     'Block Code': $('blockCode').value,
     'Block Name': $('blockName').value,
@@ -537,14 +562,13 @@ async function saveReport(event) {
   clearStatus();
   if (!$('reportForm').reportValidity()) return;
   const payload = collectPayload();
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(payload['Camp Date'])) {
-    showStatus('Please select a valid Camp Date before submitting.', 'err'); return;
-  }
-  if (!payload['Sol ID'] || !payload['Branch Name']) {
-    showStatus('Please select a valid branch / SOL ID.', 'err'); return;
-  }
   if (!payload['Gram Panchayat (GP) Code']) {
     showStatus('Select a valid Gram Panchayat.', 'err'); return;
+  }
+  try {
+    payload.campPhotos = await collectCampPhotos();
+  } catch (photoErr) {
+    showStatus(photoErr.message, 'err'); return;
   }
   const message = 'Submit this report? Only one report is allowed per GP Code.';
   if (!window.confirm(message)) return;
