@@ -316,7 +316,10 @@ function updateGPs(prefix) {
     g => `${g.gpName} — ${g.gpCode}`, 'Select GP');
   $(gpId).disabled = !block;
   if (prefix !== 'lookup') {
-    $('blockCode').value = '';
+    // Block Code belongs to the selected block, not only to the selected GP.
+    const matchedBlock = master.gpMaster.find(g =>
+      g.district === district && g.blockName === block);
+    $('blockCode').value = matchedBlock ? String(matchedBlock.blockCode || '') : '';
     $('gpCode').value = '';
   }
 }
