@@ -35,6 +35,14 @@ button:disabled{opacity:.55;cursor:not-allowed}
 .status.info{display:block;background:#eaf1ff;color:#234c91;border:1px solid #c9d8fb}
 .report-result{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--border)}.report-result:last-child{border-bottom:0}.report-result-details{font-size:14px;line-height:1.5;overflow-wrap:anywhere}.report-result button{flex-shrink:0}
 .small{font-size:12px;color:var(--muted);line-height:1.5}
+.photo-preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-top:12px}
+.photo-preview-item{border:1px solid var(--border);border-radius:9px;padding:7px;background:#fff;min-width:0}
+.photo-preview-item img{display:block;width:100%;height:125px;object-fit:cover;border-radius:6px;background:#f2f5f3}
+.photo-preview-item .photo-caption{font-size:12px;color:var(--muted);margin-top:6px;overflow-wrap:anywhere}
+.photo-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin:14px 0 20px}
+.photo-gallery a{display:block;border:1px solid var(--border);border-radius:10px;padding:8px;background:#fff;text-decoration:none;color:var(--green)}
+.photo-gallery img{display:block;width:100%;height:190px;object-fit:contain;border-radius:6px;background:#f2f5f3}
+.photo-gallery .photo-caption{font-size:12px;margin-top:7px;overflow-wrap:anywhere}
 .badge{display:inline-block;padding:4px 8px;border-radius:20px;background:#e5f3e9;color:var(--green);font-size:12px;font-weight:700}
 footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
 .hidden{display:none!important}
@@ -131,7 +139,8 @@ footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
         <div class="field">
           <label for="campPhotos">Upload Camp Photos (1–5 images, maximum 8 MB each) *</label>
           <input id="campPhotos" type="file" accept="image/*" multiple required>
-          <p class="small">All uploaded photo links will be saved together in the last column, photo_link. One selected photo produces one link; five photos produce five links.</p>
+          <div id="campPhotoPreview" class="photo-preview-grid" aria-live="polite"></div>
+          <p class="small">Selected photos appear here before submission. You can select 1–5 images; every uploaded photo will be displayed when viewing the saved report.</p>
         </div>
       </div>
     </section>
@@ -425,6 +434,7 @@ function hideForm() {
 }
 function clearForm() {
   $('reportForm').reset();
+  if ($('campPhotoPreview')) $('campPhotoPreview').replaceChildren();
   resetLocationFields();
   $('branchName').value = '';
   $('blockCode').value = '';
@@ -506,6 +516,24 @@ async function findReport() {
   }
 }
 
+function splitPhotoLinks(value) {
+  if (!value) return [];
+  return String(value).split(/[\n\r,]+/).map(v => v.trim()).filter(Boolean);
+}
+
+function getDrivePhotoId(url) {
+  const value = String(url || '');
+  let match = value.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (match) return match[1];
+  match = value.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  return match ? match[1] : '';
+}
+
+function photoDisplayUrl(url) {
+  const id = getDrivePhotoId(url);
+  return id ? `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w1200` : url;
+}
+
 function renderReportDetails(report) {
   const panel = $('reportDetails');
   if (!panel) return;
@@ -513,9 +541,48 @@ function renderReportDetails(report) {
   const title = document.createElement('h3');
   title.textContent = 'Complete Report — View Only';
   panel.appendChild(title);
+
+  const photoValue = report['photo_link'] || report['Camp Photos'] || '';
+  const photoLinks = splitPhotoLinks(photoValue);
+  const photoTitle = document.createElement('h3');
+  photoTitle.textContent = `Camp Photos (${photoLinks.length})`;
+  photoTitle.style.margin = '18px 0 8px';
+  panel.appendChild(photoTitle);
+
+  if (photoLinks.length) {
+    const gallery = document.createElement('div');
+    gallery.className = 'photo-gallery';
+    photoLinks.forEach((url, index) => {
+      const link = document.createElement('a');
+      link.href = url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.title = 'Open original photo';
+      const img = document.createElement('img');
+      img.src = photoDisplayUrl(url);
+      img.alt = `Camp photo ${index + 1}`;
+      img.loading = 'lazy';
+      img.onerror = () => {
+        // Fall back to the original Drive URL if thumbnail rendering is unavailable.
+        if (img.src !== url) img.src = url;
+      };
+      const caption = document.createElement('div');
+      caption.className = 'photo-caption';
+      caption.textContent = `Photo ${index + 1} — click to open`;
+      link.append(img, caption);
+      gallery.appendChild(link);
+    });
+    panel.appendChild(gallery);
+  } else {
+    const noPhotos = document.createElement('p');
+    noPhotos.className = 'small';
+    noPhotos.textContent = 'No camp photos are saved for this report.';
+    panel.appendChild(noPhotos);
+  }
+
   const table = document.createElement('table');
   table.style.cssText = 'width:100%;border-collapse:collapse;font-size:14px;';
-  Object.keys(report).filter(k => !k.startsWith('_')).forEach(key => {
+  Object.keys(report).filter(k => !k.startsWith('_') && k !== 'photo_link' && k !== 'Camp Photos').forEach(key => {
     const tr = document.createElement('tr');
     const th = document.createElement('th');
     const td = document.createElement('td');
@@ -528,6 +595,31 @@ function renderReportDetails(report) {
   panel.appendChild(table);
   panel.classList.remove('hidden');
   panel.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function previewSelectedPhotos() {
+  const host = $('campPhotoPreview');
+  const input = $('campPhotos');
+  if (!host || !input) return;
+  host.replaceChildren();
+  const files = Array.from(input.files || []);
+  if (!files.length) return;
+  files.forEach((file, index) => {
+    const item = document.createElement('div');
+    item.className = 'photo-preview-item';
+    const img = document.createElement('img');
+    img.alt = `Selected camp photo ${index + 1}`;
+    const objectUrl = URL.createObjectURL(file);
+    img.src = objectUrl;
+    img.onload = () => URL.revokeObjectURL(objectUrl);
+    const caption = document.createElement('div');
+    caption.className = 'photo-caption';
+    caption.textContent = `${index + 1}. ${file.name}`;
+    item.append(img, caption);
+    host.appendChild(item);
+  });
+  if (files.length > 5) showStatus('Please select no more than 5 camp photos.', 'err');
+  else showStatus(`${files.length} camp photo(s) selected. Preview them below before submitting.`, 'info');
 }
 
 async function collectCampPhotos() {
@@ -640,6 +732,7 @@ $('cancelBtn').addEventListener('click', () => {
 });
 $('resetBtn').addEventListener('click', clearForm);
 $('reportForm').addEventListener('submit', saveReport);
+$('campPhotos').addEventListener('change', previewSelectedPhotos);
 
 buildNumericFields();
 loadMaster();
