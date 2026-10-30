@@ -252,8 +252,21 @@ function fillSelect(select, items, valueFn, labelFn, placeholder) {
   select.appendChild(option('', placeholder));
   items.forEach(item => select.appendChild(option(valueFn(item), labelFn(item))));
 }
+function normalizeMasterText(value) {
+  return String(value == null ? '' : value)
+    .replace(/[\\u00A0\\u200B-\\u200D\\uFEFF]/g, ' ')
+    .replace(/\\s+/g, ' ')
+    .trim()
+    .toLocaleLowerCase();
+}
 function uniqueSorted(values) {
-  return [...new Set(values.filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+  const seen = new Map();
+  values.forEach(value => {
+    const display = String(value == null ? '' : value).replace(/[\\u00A0\\u200B-\\u200D\\uFEFF]/g, ' ').replace(/\\s+/g, ' ').trim();
+    const key = normalizeMasterText(display);
+    if (key && !seen.has(key)) seen.set(key, display);
+  });
+  return [...seen.values()].sort((a,b)=>a.localeCompare(b));
 }
 function selectedGP(code) {
   return master.gpMaster.find(g => String(g.gpCode) === String(code));
@@ -304,7 +317,7 @@ function updateBlocks(prefix) {
   const gpId = prefix === 'lookup' ? 'lookupGP' : 'gpName';
   const district = $(districtId).value;
   const blocks = uniqueSorted(master.gpMaster
-    .filter(g => g.district === district).map(g => g.blockName));
+    .filter(g => normalizeMasterText(g.district) === normalizeMasterText(district)).map(g => g.blockName));
   fillSelect($(blockId), blocks, b => b, b => b, 'Select block');
   $(blockId).disabled = !district;
   fillSelect($(gpId), [], x => x, x => x, 'Select GP');
@@ -321,14 +334,14 @@ function updateGPs(prefix) {
   const district = $(districtId).value;
   const block = $(blockId).value;
   const gps = master.gpMaster.filter(g =>
-    g.district === district && g.blockName === block);
+    normalizeMasterText(g.district) === normalizeMasterText(district) && normalizeMasterText(g.blockName) === normalizeMasterText(block));
   fillSelect($(gpId), gps, g => g.gpCode,
     g => `${g.gpName} — ${g.gpCode}`, 'Select GP');
   $(gpId).disabled = !block;
   if (prefix !== 'lookup') {
     // Block Code belongs to the selected block, not only to the selected GP.
     const matchedBlock = master.gpMaster.find(g =>
-      g.district === district && g.blockName === block);
+      normalizeMasterText(g.district) === normalizeMasterText(district) && normalizeMasterText(g.blockName) === normalizeMasterText(block));
     $('blockCode').value = matchedBlock ? String(matchedBlock.blockCode || '') : '';
     $('gpCode').value = '';
   }
@@ -401,7 +414,7 @@ async function loadMaster() {
     if (!master.branches.length || !master.gpMaster.length) {
       showStatus('Apps Script se branch ya GP master data nahi mila. Code.gs, spreadsheet ID, GP sheet headers aur deployment check karein.', 'err');
     } else {
-      showStatus(`Loaded ${master.branches.length} branches and ${master.gpMaster.length} GP records.`, 'ok');
+      showStatus(`Loaded ${master.branches.length} branches and ${master.gpMaster.length} GP records from GP Master. If a GP is still missing, verify its District, Block, GP Name and GP Code cells.`, 'ok');
     }
   } catch (err) {
     master = { districts: [], gpMaster: [], branches: [] };
