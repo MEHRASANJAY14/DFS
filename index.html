@@ -367,7 +367,11 @@ async function api(action, extra={}) {
   } catch (parseError) {
     throw new Error('Apps Script did not return JSON. Check the Web App deployment and Code.gs execution error. Response begins: ' + responseText.slice(0, 160));
   }
-  if (!result.success) throw new Error(result.message || 'Request failed.');
+  if (!result.success) {
+    const message = result.message || result.details || 'Request failed.';
+    const name = result.errorName ? result.errorName + ': ' : '';
+    throw new Error(name + message);
+  }
   return result.data;
 }
 async function loadMaster() {
