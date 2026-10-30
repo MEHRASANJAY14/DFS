@@ -254,15 +254,15 @@ function fillSelect(select, items, valueFn, labelFn, placeholder) {
 }
 function normalizeMasterText(value) {
   return String(value == null ? '' : value)
-    .replace(/[\\u00A0\\u200B-\\u200D\\uFEFF]/g, ' ')
-    .replace(/\\s+/g, ' ')
+    .replace(/[\u00A0\u200B-\u200D\uFEFF]/g, ' ')
+    .replace(/\s+/g, ' ')
     .trim()
     .toLocaleLowerCase();
 }
 function uniqueSorted(values) {
   const seen = new Map();
   values.forEach(value => {
-    const display = String(value == null ? '' : value).replace(/[\\u00A0\\u200B-\\u200D\\uFEFF]/g, ' ').replace(/\\s+/g, ' ').trim();
+    const display = String(value == null ? '' : value).replace(/[\u00A0\u200B-\u200D\uFEFF]/g, ' ').replace(/\s+/g, ' ').trim();
     const key = normalizeMasterText(display);
     if (key && !seen.has(key)) seen.set(key, display);
   });
