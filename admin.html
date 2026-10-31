@@ -3,683 +3,835 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DFS Saturation Camp | Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DFS Saturation Camp | Admin Dashboard</title>
 
 <style>
-:root{
-  --green:#075b35;
-  --green2:#0b8b50;
-  --bg:#f4f8f6;
-  --ink:#172820;
-  --muted:#718078;
-  --line:#e1eae4;
-  --red:#c63838;
-  --shadow:0 12px 34px rgba(10,55,32,.08);
-}
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;max-width:100%;overflow-x:hidden}
-body{
-  font:14px Inter,Segoe UI,Arial,sans-serif;
-  background:var(--bg);
-  color:var(--ink);
-  min-width:320px;
-}
-.hidden{display:none!important}
-
-.loginWrap{
-  min-height:100vh;
-  min-height:100dvh;
-  display:grid;
-  place-items:center;
-  padding:20px;
-  background:
-    radial-gradient(circle at 15% 15%,#d8f3e3,transparent 35%),
-    linear-gradient(135deg,#f6fbf8,#eaf4ee);
-}
-.login{
-  background:#fff;
-  padding:clamp(22px,5vw,38px);
-  border-radius:24px;
-  box-shadow:0 24px 70px #063d2420;
-  max-width:420px;
-  width:100%;
-  border:1px solid #fff;
-}
-.logo{
-  background:linear-gradient(135deg,var(--green),var(--green2));
-  color:white;
-  padding:18px 22px;
-  font-weight:800;
-  font-size:16px;
-  letter-spacing:1px;
-  border-radius:14px;
-  text-align:center;
-}
-.login h2{margin:25px 0 8px;color:var(--green);font-size:26px}
-.login p{color:var(--muted);line-height:1.5}
-label{display:block;font-weight:700;margin:13px 0 7px;color:#34483b}
-input,select{
-  width:100%;
-  padding:12px 13px;
-  border:1px solid #d3e0d7;
-  border-radius:10px;
-  background:#fff;
-  font:inherit;
-  outline:none;
-  max-width:100%;
-  min-width:0;
-}
-input:focus,select:focus{
-  border-color:#0b8b50;
-  box-shadow:0 0 0 3px #0b8b5018;
-}
-button{
-  border:0;
-  border-radius:10px;
-  padding:11px 16px;
-  background:linear-gradient(135deg,var(--green),var(--green2));
-  color:#fff;
-  font-weight:700;
-  cursor:pointer;
-  transition:.18s;
-  box-shadow:0 4px 12px #075b3520;
-  min-height:42px;
-  touch-action:manipulation;
-}
-button:hover{filter:brightness(1.05)}
-button.secondary{background:#eaf4ee;color:var(--green);box-shadow:none}
-button.danger{background:#c63838}
-button:disabled{opacity:.5;cursor:wait;transform:none}
-
-.layout{display:block;min-height:100vh}
-.sidebar{display:none}
-.main{
-  padding:clamp(14px,3vw,34px);
-  width:100%;
-  max-width:1600px;
-  margin:0 auto;
-  min-width:0;
-}
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-}
-.top h2{font-size:27px;letter-spacing:-.5px}
-
-.cards{
-  display:grid;
-  grid-template-columns:repeat(5,minmax(140px,1fr));
-  gap:16px;
-  margin:24px 0;
-}
-.card{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:20px;
-  box-shadow:var(--shadow);
-  min-width:0;
-  overflow:hidden;
-}
-.card .num{
-  font-size:32px;
-  font-weight:800;
-  color:var(--green);
-  margin-top:10px;
-}
-.filters{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(130px,1fr));
-  gap:12px;
-  background:white;
-  padding:18px;
-  border:1px solid var(--line);
-  border-radius:16px;
-  margin-bottom:16px;
-  box-shadow:var(--shadow);
-}
-.tableWrap{
-  overflow-x:auto;
-  overflow-y:visible;
-  background:white;
-  border:1px solid var(--line);
-  border-radius:16px;
-  box-shadow:var(--shadow);
-  max-width:100%;
-  -webkit-overflow-scrolling:touch;
-}
-table{border-collapse:collapse;width:100%;white-space:nowrap}
-th,td{
-  padding:12px 14px;
-  border-bottom:1px solid #edf2ee;
-  text-align:left;
-}
-th{
-  background:#dceee3;
-  color:#103d27;
-  position:sticky;
-  top:0;
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:.35px;
-  font-weight:900;
-  border-bottom:2px solid #075b35;
-}
-tr:hover td{background:#f7fbf8}
-tr.grand-total td{
-  background:#173b2b!important;
-  color:#fff!important;
-  font-weight:900!important;
-  border-color:#315b45!important;
-}
-tr.grand-total:hover td{background:#173b2b!important}
-.actions{display:flex;gap:6px}
-.small{padding:7px 10px;font-size:12px}
-.status{
-  margin:12px 0;
-  color:var(--red);
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-}
-.modal{
-  position:fixed;
-  inset:0;
-  background:#09271899;
-  backdrop-filter:blur(4px);
-  display:grid;
-  place-items:center;
-  padding:15px;
-  z-index:10;
-}
-.modalbox{
-  background:white;
-  border-radius:18px;
-  width:min(900px,100%);
-  max-height:90vh;
-  max-height:90dvh;
-  overflow:auto;
-  padding:24px;
-  box-shadow:0 25px 80px #0003;
-  overscroll-behavior:contain;
-}
-.formgrid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(150px,1fr));
-  gap:12px;
-}
-.modalhead{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  position:sticky;
-  top:0;
-  background:white;
-  padding-bottom:12px;
-  z-index:2;
-}
-.footer{
-  color:var(--muted);
-  margin-top:22px;
-  font-size:12px;
-  text-align:center;
+:root {
+  --green: #006633;
+  --dark: #004d26;
+  --light: #e8f5ec;
+  --border: #d9e5dc;
+  --text: #24352b;
+  --bg: #f4f7f5;
+  --red: #c62828;
+  --blue: #1c4fa3;
 }
 
-/* Tablet */
-@media(max-width:950px){
-  .main{width:100%;padding:18px}
-  .cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-  .filters{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .formgrid{grid-template-columns:1fr 1fr}
+* {
+  box-sizing: border-box;
 }
 
-/* Mobile-friendly layout */
-@media(max-width:600px){
-  .loginWrap{padding:16px}
-  .login{padding:24px 20px;border-radius:20px}
-  .logo{font-size:14px;padding:15px}
-  .login h2{font-size:23px}
-  .main{padding:12px}
-  .top{align-items:flex-start}
-  .top h2{font-size:23px}
-  .top>div:last-child{
-    width:100%;
-    display:grid!important;
-    grid-template-columns:1fr 1fr;
-    gap:8px!important;
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-width: 320px;
+}
+
+button, input, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* LOGIN */
+
+.loginView {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 18px;
+  background: linear-gradient(135deg, #004d26, #00994d);
+}
+
+.loginBox {
+  background: #fff;
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 35px #0002;
+}
+
+.loginBox h2 {
+  text-align: center;
+  color: var(--green);
+  margin: 0 0 8px;
+}
+
+.loginBox p {
+  text-align: center;
+  color: #66756b;
+  font-size: 13px;
+  margin-bottom: 25px;
+}
+
+.loginBox label {
+  display: block;
+  margin: 14px 0 6px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.loginBox input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.loginBtn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 13px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--green);
+  color: white;
+  font-weight: bold;
+}
+
+.loginBtn:hover {
+  background: var(--dark);
+}
+
+.message {
+  color: var(--red);
+  text-align: center;
+  font-size: 13px;
+  margin-top: 12px;
+  overflow-wrap: anywhere;
+}
+
+/* MAIN */
+
+.main {
+  width: 100%;
+  max-width: 1600px;
+  margin: auto;
+  padding: 20px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.heading h1 {
+  color: var(--green);
+  font-size: 25px;
+  margin: 0 0 5px;
+}
+
+.heading p {
+  margin: 0;
+  font-size: 13px;
+  color: #6b786f;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: none;
+  border-radius: 7px;
+  padding: 10px 15px;
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
+  background: var(--green);
+}
+
+.btn:hover {
+  opacity: .9;
+}
+
+.btn.blue {
+  background: var(--blue);
+}
+
+.btn.red {
+  background: var(--red);
+}
+
+.btn.gray {
+  background: #68756c;
+}
+
+/* DASHBOARD CARDS */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 2px 5px #00000005;
+}
+
+.card .label {
+  color: #718077;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.card .num {
+  color: var(--green);
+  font-size: 27px;
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+
+.card .sub {
+  font-size: 11px;
+  color: #89938c;
+  margin-top: 8px;
+}
+
+/* SECTIONS */
+
+.section {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 22px;
+  overflow: hidden;
+}
+
+.sectionHead {
+  background: #edf5ef;
+  padding: 15px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.sectionHead h3 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--green);
+}
+
+.sectionBody {
+  padding: 18px;
+}
+
+/* FILTERS */
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.filters input,
+.filters select,
+.formgrid input,
+.formgrid select {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #d5dfd8;
+  border-radius: 7px;
+  padding: 11px;
+  background: white;
+}
+
+.filterButtons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+/* TABLES */
+
+.tableWrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+table thead th {
+  background: var(--green);
+  color: white;
+  padding: 12px 10px;
+  text-align: left;
+  font-weight: bold;
+}
+
+table tbody td {
+  padding: 10px;
+  border-bottom: 1px solid #e7ece8;
+}
+
+table tbody tr:nth-child(even) {
+  background: #f8faf8;
+}
+
+table tbody tr:hover {
+  background: #edf7ef;
+}
+
+table tfoot td,
+.grandTotal td {
+  background: #004d26 !important;
+  color: white !important;
+  font-weight: bold;
+  padding: 12px;
+}
+
+.actionCell {
+  display: flex;
+  gap: 5px;
+}
+
+.smallBtn {
+  border: 0;
+  padding: 6px 9px;
+  color: white;
+  background: var(--blue);
+  border-radius: 5px;
+  font-size: 11px;
+}
+
+.smallBtn.delete {
+  background: var(--red);
+}
+
+/* MODAL */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: #0008;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}
+
+.modalbox {
+  background: white;
+  width: 100%;
+  max-width: 850px;
+  max-height: 92vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px #0003;
+}
+
+.modalHead {
+  background: var(--green);
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modalHead h3 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.closeBtn {
+  background: transparent;
+  color: white;
+  border: 0;
+  font-size: 25px;
+}
+
+.modalBody {
+  padding: 20px;
+}
+
+.formgrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.formfield label {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.formfield input,
+.formfield select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+
+.modalFoot {
+  padding: 15px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.loading {
+  text-align: center;
+  color: #69776d;
+  padding: 25px;
+}
+
+.footer {
+  text-align: center;
+  font-size: 12px;
+  color: #849087;
+  padding: 15px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+  .cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  .top>div:last-child button{
-    width:100%;
-    white-space:normal;
-    font-size:12px;
-    padding:10px 8px;
+
+  .filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .cards{grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
-  .card{padding:14px;border-radius:12px}
-  .card .num{font-size:25px}
-  .filters{grid-template-columns:1fr;gap:8px;padding:12px}
-  .formgrid{grid-template-columns:1fr}
-  .modal{padding:8px}
-  .modalbox{padding:16px;border-radius:14px}
-  .modalhead h3{font-size:17px}
-  .tableWrap{border-radius:10px}
-  th,td{padding:10px 12px;font-size:12px}
-  .actions{gap:5px}
-  .small{padding:8px 10px}
 }
 
-/* Analytics tables */
-#branchAnalytics,#districtAnalytics,#districtPerformance{
-  width:100%;
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
+@media (max-width: 650px) {
+  .main {
+    padding: 12px;
+  }
+
+  .top {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .heading h1 {
+    font-size: 21px;
+    line-height: 1.4;
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .actions .btn {
+    width: 100%;
+    padding: 11px 8px;
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .card {
+    padding: 13px;
+  }
+
+  .card .label {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .card .num {
+    font-size: 23px;
+  }
+
+  .filters {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionHead {
+    padding: 13px;
+  }
+
+  .sectionBody {
+    padding: 12px;
+  }
+
+  .formgrid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal {
+    padding: 8px;
+    align-items: center;
+  }
+
+  .modalbox {
+    max-height: 95vh;
+    border-radius: 9px;
+  }
+
+  .modalBody {
+    padding: 14px;
+  }
+
+  .modalFoot {
+    padding: 12px;
+  }
+
+  .modalFoot .btn {
+    flex: 1;
+  }
+
+  table {
+    font-size: 11px;
+  }
+
+  table thead th,
+  table tbody td {
+    padding: 9px 8px;
+  }
 }
-#branchAnalytics table,
-#districtAnalytics table,
-#districtPerformance table{
-  width:max-content;
-  min-width:100%;
+
+@media (max-width: 360px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="loginView" class="loginWrap">
-  <div class="login">
-    <div class="logo">DFS SATURATION CAMP</div>
+<!-- LOGIN VIEW -->
 
-    <h2 style="margin-top:20px">Admin Login</h2>
-    <p>Authorized administration only</p>
+<div id="loginView" class="loginView">
+  <div class="loginBox">
+    <h2>DFS Saturation Camp</h2>
+    <p>Regional Office Jabalpur | Admin Login</p>
 
-    <input id="username" autocomplete="username" value="admin" type="hidden">
+    <label for="username">Username</label>
+    <input id="username" type="text" value="admin"
+           autocomplete="username">
 
     <label for="password">Password</label>
-    <input
-      id="password"
-      type="password"
-      autocomplete="current-password"
-      placeholder="Enter admin password"
-    >
+    <input id="password" type="password"
+           placeholder="Enter admin password"
+           autocomplete="current-password">
 
-    <button
-      style="width:100%;margin-top:18px"
-      onclick="login()"
-      id="loginBtn"
-    >Sign in</button>
+    <button id="loginBtn" class="loginBtn" onclick="login()">
+      Sign in
+    </button>
 
-    <div id="loginMsg" class="status" role="alert"></div>
+    <div id="loginMsg" class="message"></div>
   </div>
 </div>
 
-<!-- ADMIN APPLICATION -->
-<div id="app" class="layout hidden">
+<!-- MAIN DASHBOARD -->
 
-  <main class="main">
+<div id="app" class="hidden">
+  <div class="main">
 
     <div class="top">
-      <div>
-        <h2 style="margin:0">Admin Dashboard</h2>
-        <p style="color:var(--muted);margin:6px 0">
-          DFS Saturation Camp Reporting & Analytics
-        </p>
+      <div class="heading">
+        <h1>DFS Saturation Camp Admin</h1>
+        <p>Regional Office Jabalpur | Monitoring Dashboard</p>
       </div>
 
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="secondary" onclick="showDashboard()">
-          Dashboard Overview
-        </button>
-
-        <button onclick="showReports()">
-          View All Camp Reports
-        </button>
-
-        <button class="secondary" onclick="exportCSV()">
-          Export Report Data
-        </button>
-
-        <button class="secondary" onclick="loadReports()">
-          ↻ Refresh Latest Data
-        </button>
-
-        <button class="danger" onclick="logout()">
-          Logout
-        </button>
+      <div class="actions">
+        <button class="btn" onclick="loadReports()">↻ Refresh</button>
+        <button class="btn blue" onclick="exportCSV()">⬇ Export CSV</button>
+        <button class="btn gray" onclick="logout()">Logout</button>
       </div>
     </div>
 
-    <!-- DASHBOARD -->
-    <section id="dashboard">
+    <!-- DASHBOARD CARDS -->
 
-      <p style="color:var(--muted);line-height:1.65;margin:12px 0 20px">
-        This dashboard provides a consolidated overview of DFS Saturation
-        Camp reporting across branches. Use the summary indicators to
-        review reporting coverage and branch-wise and district-wise progress.
-      </p>
+    <div class="cards">
 
-      <div class="cards">
-
-        <div class="card">
-          <strong>Total Camps Allotted</strong>
-          <p style="color:var(--muted);margin:6px 0">
-            Gram Panchayat camps as per GP Master.
-          </p>
-          <div class="num" id="totalAllottedCamps">0</div>
-        </div>
-
-        <div class="card">
-          <strong>Total Camps Submitted</strong>
-          <p style="color:var(--muted);margin:6px 0">
-            Camps reported by branches.
-          </p>
-          <div class="num" id="totalReports">0</div>
-        </div>
-
-        <div class="card">
-          <strong>Branches Reporting</strong>
-          <p style="color:var(--muted);margin:6px 0">
-            Unique branches that submitted reports.
-          </p>
-          <div class="num" id="branchCount">0</div>
-        </div>
-
-        <div class="card">
-          <strong>Gram Panchayats Covered</strong>
-          <p style="color:var(--muted);margin:6px 0">
-            Number of camp reports received.
-          </p>
-          <div class="num" id="gpCount">0</div>
-        </div>
-
-        <div class="card">
-          <strong>PMJDY Accounts Opened</strong>
-          <p style="color:var(--muted);margin:6px 0">
-            Total PMJDY accounts opened.
-          </p>
-          <div class="num" id="pmjdyTotal">0</div>
-        </div>
-
+      <div class="card">
+        <div class="label">Total Camps Allotted</div>
+        <div class="num" id="totalAllotted">0</div>
+        <div class="sub">As per GP Master</div>
       </div>
 
       <div class="card">
-        <h3>Branch-wise Reporting Summary</h3>
-        <p style="color:var(--muted)">
-          Compare camp reports received from each branch.
-        </p>
-        <div id="branchAnalytics">Loading...</div>
+        <div class="label">Total Camps Submitted</div>
+        <div class="num" id="totalSubmitted">0</div>
+        <div class="sub">Reports received</div>
       </div>
 
-      <div class="card" style="margin-top:14px">
-        <h3>District-wise Reporting Summary</h3>
-        <p style="color:var(--muted)">
-          Review reporting distribution by district.
-        </p>
-        <div id="districtAnalytics">Loading...</div>
+      <div class="card">
+        <div class="label">Branches Reporting</div>
+        <div class="num" id="branchesReporting">0</div>
+        <div class="sub">Unique branches</div>
       </div>
 
-      <div class="card" style="margin-top:14px">
-        <h3>District-wise Performance Report</h3>
-        <p style="color:var(--muted)">
-          Consolidated performance figures from submitted reports.
-        </p>
+      <div class="card">
+        <div class="label">GPs Covered</div>
+        <div class="num" id="gpsCovered">0</div>
+        <div class="sub">Camps conducted</div>
+      </div>
 
-        <div id="districtPerformance">Loading...</div>
+      <div class="card">
+        <div class="label">PMJDY Accounts</div>
+        <div class="num" id="pmjdyTotal">0</div>
+        <div class="sub">Total reported</div>
+      </div>
 
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
-          <button class="secondary" onclick="exportDistrictCSV()">
-            Export District-wise Summary (CSV)
-          </button>
+    </div>
 
-          <button class="secondary" onclick="showReports()">
-            Open Camp Reports
-          </button>
+    <!-- BRANCH SUMMARY -->
+
+    <div class="section">
+      <div class="sectionHead">
+        <h3>Branch-wise Summary</h3>
+      </div>
+
+      <div class="sectionBody">
+        <div class="tableWrap">
+          <table id="branchTable">
+            <thead>
+              <tr>
+                <th>Branch Name</th>
+                <th>SOL ID</th>
+                <th>Camps</th>
+              </tr>
+            </thead>
+            <tbody id="branchBody">
+              <tr><td colspan="3" class="loading">Loading...</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
+    </div>
 
-    </section>
+    <!-- DISTRICT SUMMARY -->
 
-    <!-- REPORTS -->
-    <section id="reportsSection" class="hidden">
+    <div class="section">
+      <div class="sectionHead">
+        <h3>District-wise Summary</h3>
+      </div>
 
-      <h2>All Camp Reports</h2>
-
-      <p style="color:var(--muted);line-height:1.6">
-        Search and filter submitted camp reports by branch, district,
-        or camp date. Select Edit to correct a report or Delete to
-        remove a submission.
-      </p>
-
-      <div class="filters">
-
-        <div>
-          <label for="search">Search</label>
-          <input
-            id="search"
-            placeholder="Branch, SOL, GP..."
-            oninput="renderTable()"
-          >
+      <div class="sectionBody">
+        <div class="tableWrap">
+          <table>
+            <thead>
+              <tr>
+                <th>District</th>
+                <th>Camps Allotted</th>
+                <th>Camps Conducted</th>
+                <th>Branches</th>
+                <th>BCs Participated</th>
+                <th>GPs Covered</th>
+              </tr>
+            </thead>
+            <tbody id="districtBody">
+              <tr><td colspan="6" class="loading">Loading...</td></tr>
+            </tbody>
+          </table>
         </div>
+      </div>
+    </div>
 
-        <div>
-          <label for="districtFilter">District</label>
-          <select id="districtFilter" onchange="renderTable()">
+    <!-- DISTRICT PERFORMANCE -->
+
+    <div class="section">
+      <div class="sectionHead">
+        <h3>District-wise Scheme Performance</h3>
+      </div>
+
+      <div class="sectionBody">
+        <div class="tableWrap">
+          <table>
+            <thead>
+              <tr>
+                <th>District</th>
+                <th>PMJDY</th>
+                <th>PMJJBY</th>
+                <th>PMSBY</th>
+                <th>APY</th>
+                <th>Camp Reports</th>
+              </tr>
+            </thead>
+            <tbody id="performanceBody">
+              <tr><td colspan="6" class="loading">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORT LIST -->
+
+    <div class="section">
+      <div class="sectionHead">
+        <h3>Camp Reporting Details</h3>
+        <span id="reportCount">0 Records</span>
+      </div>
+
+      <div class="sectionBody">
+
+        <div class="filters">
+          <input type="text" id="searchInput"
+                 placeholder="Search branch / SOL / GP..."
+                 oninput="applyFilters()">
+
+          <select id="districtFilter" onchange="applyFilters()">
             <option value="">All Districts</option>
           </select>
+
+          <input type="date" id="dateFrom"
+                 onchange="applyFilters()">
+
+          <input type="date" id="dateTo"
+                 onchange="applyFilters()">
         </div>
 
-        <div>
-          <label for="branchFilter">Branch</label>
-          <select id="branchFilter" onchange="renderTable()">
-            <option value="">All Branches</option>
-          </select>
+        <div class="filterButtons">
+          <button class="btn gray" onclick="clearFilters()">Clear Filters</button>
         </div>
 
-        <div>
-          <label for="dateFilter">Camp Date</label>
-          <input id="dateFilter" type="date" onchange="renderTable()">
+        <div class="tableWrap">
+          <table>
+            <thead id="reportHead"></thead>
+            <tbody id="reportBody">
+              <tr><td class="loading">Please login to load reports</td></tr>
+            </tbody>
+          </table>
         </div>
 
       </div>
+    </div>
 
-      <div class="top" style="margin-bottom:10px">
-        <span id="resultCount">0 reports</span>
-        <button onclick="exportCSV()">⬇ Export CSV</button>
-      </div>
+    <div class="footer">
+      DFS Saturation Camp | IT & FI Department | RO Jabalpur
+    </div>
 
-      <div class="tableWrap">
-        <table>
-          <thead id="tableHead"></thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-      </div>
-
-    </section>
-
-    <div class="footer">DFS Saturation Camp Admin Portal</div>
-
-  </main>
+  </div>
 </div>
 
 <!-- EDIT MODAL -->
-<div id="editModal" class="modal hidden">
 
+<div id="editModal" class="modal hidden">
   <div class="modalbox">
 
-    <div class="modalhead">
+    <div class="modalHead">
       <h3>Edit Camp Report</h3>
-      <button class="secondary" onclick="closeModal()">Close</button>
+      <button class="closeBtn" onclick="closeModal()">×</button>
     </div>
 
-    <div id="editFields" class="formgrid"></div>
+    <div class="modalBody">
+      <div id="editFields" class="formgrid"></div>
+    </div>
 
-    <p id="editMsg" class="status"></p>
-
-    <button onclick="saveEdit()" id="saveBtn">
-      Save Changes
-    </button>
+    <div class="modalFoot">
+      <button class="btn gray" onclick="closeModal()">Cancel</button>
+      <button class="btn" id="saveBtn" onclick="saveReport()">Save Changes</button>
+    </div>
 
   </div>
 </div>
 
 <script>
-"use strict";
 
-/* =========================================================
+/* =====================================================
    CONFIGURATION
-========================================================= */
+===================================================== */
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbwHkmc9qul-GOuWTTTCKD3QKUdRLLcn9Xv7xKP-0kC46DHfJ6fO5rYnDWOEPoq09uz-/exec";
 
 const HEADERS = [
-"Camp Date","Sol ID","Branch Name","Block Code","Block Name",
-"Gram Panchayat (GP) Code","Gram Panchayat (GP) Name","Bank Name",
-"No OF BC Participated","PMJDY Applications Sourced","PMJDY Accounts Opened",
-"PMJDY Applications Sourced - PVTG","PMJDY Accounts Opened - PVTG",
-"Applications Received for Reactivation of Inoperative PMJDY Accounts",
-"Inoperative PMJDY Accounts Reactivated","PMJJBY Applications Sourced",
-"PMJJBY En enrolments","PMSBY Applications Sourced","PMSBY Enrolments",
-"APY Applications Sourced","APY Subscriptions",
-"Applications Received for Re-KYC of PMJDY Accounts",
-"PMJDY Accounts for which Re-KYC Completed",
-"Applications Received for Re-KYC of Other Savings Accounts",
-"Other Savings Accounts for which Re-KYC Completed",
-"Nomination Applications Received - PMJDY Accounts",
-"Nominations Registered - PMJDY Accounts",
-"Nomination Applications Received - Non-PMJDY Accounts",
-"Nominations Registered - Non-PMJDY Accounts",
-"Nomination Applications Received - Lockers",
-"Locker Nominations Registered",
-"KCC Applications Sourced for PM-Kisan Beneficiaries",
-"KCC Applications Sanctioned for PM-Kisan Beneficiaries",
-"CKYC ID Generation Applications Sourced","CKYC IDs Generated",
-"Number of DEAF Claims Settled for claim amounts less than ₹1,00,000",
-"Amount (in ₹) of DEAF Claims Settled for claim amounts less than ₹1,00,000",
-"Number of DEAF Claims Settled for claim amounts ₹1,00,000 or more",
-"Amount (in ₹) of DEAF Claims Settled for claim amounts ₹1,00,000 or more",
-"Update date","photo_link"
+  "Timestamp",
+  "District",
+  "Block",
+  "Branch Name",
+  "SOL ID",
+  "BC Name",
+  "BC Code",
+  "GP Name",
+  "GP Code",
+  "Camp Date",
+  "No OF BC Participated",
+  "PMJDY",
+  "PMJJBY",
+  "PMSBY",
+  "APY",
+  "NPS Sanchay",
+  "Other Activities",
+  "Remarks"
 ];
 
-/* =========================================================
-   GLOBAL VARIABLES
-========================================================= */
+/* =====================================================
+   STATE
+===================================================== */
 
 let token = "";
-let reports = [];
-let filtered = [];
-let editing = null;
-let gpMasterData = [];
+let allReports = [];
+let filteredReports = [];
+let masterData = [];
+let currentEditRow = null;
 
-/* =========================================================
-   API REQUEST
-========================================================= */
+/* =====================================================
+   API
+===================================================== */
 
 async function api(body) {
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify(body)
+  });
 
-  let response;
-
-  try {
-
-    response = await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8"
-      },
-      body: JSON.stringify(body)
-    });
-
-  } catch (error) {
-
-    console.error("Network error:", error);
-
-    throw new Error(
-      "Unable to connect. Please check your internet connection."
-    );
-
-  }
-
-  if (!response.ok) {
-    throw new Error("Server returned HTTP " + response.status);
-  }
-
-  let result;
-
-  try {
-
-    result = await response.json();
-
-  } catch (error) {
-
-    console.error("Invalid API response:", error);
-
-    throw new Error(
-      "Invalid server response. Please check Apps Script deployment."
-    );
-
-  }
-
-  return result;
+  return await response.json();
 }
 
-/* =========================================================
-   LOGIN RESPONSE TOKEN DETECTION
-========================================================= */
-
-function extractToken(result) {
-
-  if (!result) return "";
-
-  /*
-    Supports multiple common Apps Script response structures.
-    Existing API response is not modified.
-  */
-
-  const possibleTokens = [
-
-    result.token,
-
-    result.sessionToken,
-
-    result.authToken,
-
-    result.data && result.data.token,
-
-    result.data && result.data.sessionToken,
-
-    result.data && result.data.authToken,
-
-    result.data && result.data.adminToken,
-
-    result.result && result.result.token,
-
-    result.result && result.result.sessionToken
-
-  ];
-
-  for (let i = 0; i < possibleTokens.length; i++) {
-
-    const value = possibleTokens[i];
-
-    if (
-      value !== undefined &&
-      value !== null &&
-      String(value).trim() !== ""
-    ) {
-      return String(value);
-    }
-
-  }
-
-  return "";
-}
-
-/* =========================================================
-   ADMIN LOGIN
-========================================================= */
+/* =====================================================
+   LOGIN
+===================================================== */
 
 async function login() {
 
@@ -695,11 +847,8 @@ async function login() {
   message.textContent = "";
 
   if (!password.trim()) {
-
     message.textContent = "Please enter your password.";
-
     document.getElementById("password").focus();
-
     return;
   }
 
@@ -709,67 +858,44 @@ async function login() {
   try {
 
     const result = await api({
-
       action: "adminLogin",
-
       username: username,
-
       password: password
-
     });
 
-    console.log("Admin login response:", result);
-
-    if (!result) {
-
+    if (!result || result.success !== true) {
       throw new Error(
-        "Empty response received from server."
+        result && result.message
+          ? result.message
+          : "Invalid username or password."
       );
-
-    }
-
-    if (result.success !== true) {
-
-      throw new Error(
-        result.message ||
-        result.error ||
-        "Invalid username or password."
-      );
-
     }
 
     /*
-      FIX:
-      Token can be returned in multiple possible locations.
+      IMPORTANT:
+      Keep the existing Code.gs response contract.
+    Do not change this token path unless backend is changed.
     */
 
-    const receivedToken = extractToken(result);
-
-    if (!receivedToken) {
-
-      console.error(
-        "Login succeeded but token was not found. Response:",
-        result
-      );
-
+    if (!result.data || !result.data.token) {
       throw new Error(
-        "Login succeeded, but session token was not returned. " +
-        "Please verify the adminLogin response in Code.gs."
+        "Login response did not contain a valid session token."
       );
-
     }
 
-    token = receivedToken;
+    token = result.data.token;
 
-    document.getElementById("loginView").classList.add("hidden");
+    document.getElementById("loginView")
+      .classList.add("hidden");
 
-    document.getElementById("app").classList.remove("hidden");
+    document.getElementById("app")
+      .classList.remove("hidden");
 
     await loadReports();
 
   } catch (error) {
 
-    console.error("Login error:", error);
+    console.error("Sign-in error:", error);
 
     message.textContent =
       error.message || "Sign in failed. Please try again.";
@@ -784,1274 +910,1078 @@ async function login() {
 
 /* ENTER KEY LOGIN */
 
-document.getElementById("password").addEventListener(
-  "keydown",
-  function(event) {
+document.getElementById("password")
+  .addEventListener("keydown", function(event) {
 
     if (event.key === "Enter") {
-
-      event.preventDefault();
-
       login();
-
     }
 
-  }
-);
+  });
 
-/* =========================================================
+/* =====================================================
    LOGOUT
-========================================================= */
+===================================================== */
 
 function logout() {
 
   token = "";
+  allReports = [];
+  filteredReports = [];
 
-  reports = [];
+  document.getElementById("app")
+    .classList.add("hidden");
 
-  filtered = [];
-
-  gpMasterData = [];
-
-  document.getElementById("app").classList.add("hidden");
-
-  document.getElementById("loginView").classList.remove("hidden");
+  document.getElementById("loginView")
+    .classList.remove("hidden");
 
   document.getElementById("password").value = "";
-
   document.getElementById("loginMsg").textContent = "";
 
 }
 
-/* =========================================================
+/* =====================================================
    LOAD REPORTS
-========================================================= */
+===================================================== */
 
 async function loadReports() {
+
+  if (!token) {
+    alert("Session expired. Please login again.");
+    logout();
+    return;
+  }
+
+  document.getElementById("reportBody").innerHTML =
+    '<tr><td colspan="20" class="loading">Loading reports...</td></tr>';
 
   try {
 
     const result = await api({
-
       action: "adminGetReports",
-
       token: token
-
     });
 
-    if (!result || !result.success) {
+    if (!result || result.success !== true) {
 
-      const message =
+      throw new Error(
         result && result.message
           ? result.message
-          : "Unable to load reports.";
-
-      if (
-        message.toLowerCase().includes("session") ||
-        message.toLowerCase().includes("token")
-      ) {
-
-        logout();
-
-      }
-
-      throw new Error(message);
+          : "Unable to load reports."
+      );
 
     }
 
-    reports =
+    /*
+      Accept common report response containers.
+      */
+
+    allReports =
       result.data && Array.isArray(result.data.reports)
         ? result.data.reports
-        : [];
+        : Array.isArray(result.data)
+          ? result.data
+          : Array.isArray(result.reports)
+            ? result.reports
+            : [];
 
-    /* LOAD GP MASTER */
+    /*
+      Master data is loaded separately.
+      */
 
     try {
 
-      const master = await api({
-
-        action: "getMasterData"
-
+      const masterResult = await api({
+        action: "getMasterData",
+        token: token
       });
 
-      if (master && master.success && master.data) {
+      if (masterResult && masterResult.success === true) {
 
-        gpMasterData =
-          master.data.gpMaster ||
-          master.data.gp ||
-          master.data.GP ||
-          master.data.gpMasterData ||
-          [];
-
-        if (!Array.isArray(gpMasterData)) {
-
-          gpMasterData = [];
-
-        }
-
-      } else {
-
-        gpMasterData = [];
+        masterData =
+          masterResult.data &&
+          Array.isArray(masterResult.data.GP)
+            ? masterResult.data.GP
+            : masterResult.data &&
+              Array.isArray(masterResult.data)
+              ? masterResult.data
+              : [];
 
       }
 
-    } catch (error) {
+    } catch (masterError) {
 
-      console.warn("GP Master loading failed:", error);
-
-      gpMasterData = [];
+      console.warn("Master data loading:", masterError);
 
     }
 
-    fillFilters();
-
+    populateDistrictFilter();
+    applyFilters();
     updateDashboard();
-
-    renderTable();
 
   } catch (error) {
 
-    console.error("Load reports error:", error);
+    console.error(error);
 
-    alert(error.message || "Unable to load reports.");
+    document.getElementById("reportBody").innerHTML =
+      '<tr><td colspan="20" class="loading">' +
+      escapeHtml(error.message) +
+      '</td></tr>';
+
+    if (
+      String(error.message).toLowerCase().includes("token") ||
+      String(error.message).toLowerCase().includes("session")
+    ) {
+      alert("Your session may have expired. Please login again.");
+      logout();
+    }
 
   }
 
 }
 
-/* =========================================================
-   SAFE VALUE
-========================================================= */
+/* =====================================================
+   NORMALIZE DATA
+===================================================== */
 
-function val(row, key) {
+function getValue(row, index, key) {
 
-  return row[key] === undefined || row[key] === null
-    ? ""
-    : String(row[key]);
+  if (Array.isArray(row)) {
+    return row[index] == null ? "" : row[index];
+  }
 
-}
+  if (row && typeof row === "object") {
 
-/* =========================================================
-   FILTER DROPDOWNS
-========================================================= */
+    if (row[key] != null) return row[key];
 
-function fillFilters() {
+    if (row[HEADERS[index]] != null) {
+      return row[HEADERS[index]];
+    }
 
-  const districtSelect =
-    document.getElementById("districtFilter");
+  }
 
-  const branchSelect =
-    document.getElementById("branchFilter");
-
-  const districts = [...new Set(
-
-    reports
-      .map(row => val(row, "District"))
-      .filter(Boolean)
-
-  )].sort();
-
-  const branches = [...new Set(
-
-    reports.map(row =>
-      val(row, "Branch Name") + "|" + val(row, "Sol ID")
-    )
-
-  )].sort();
-
-  districtSelect.innerHTML =
-    '<option value="">All Districts</option>' +
-
-    districts.map(value =>
-      `<option value="${esc(value)}">${esc(value)}</option>`
-    ).join("");
-
-  branchSelect.innerHTML =
-    '<option value="">All Branches</option>' +
-
-    branches.map(value => {
-
-      const label = value.replace("|", " — ");
-
-      return `<option value="${esc(value)}">${esc(label)}</option>`;
-
-    }).join("");
+  return "";
 
 }
 
-/* =========================================================
+function normalizeReport(row) {
+
+  if (Array.isArray(row)) {
+
+    return {
+      raw: row,
+      district: row[1] || "",
+      block: row[2] || "",
+      branch: row[3] || "",
+      sol: row[4] || "",
+      bcName: row[5] || "",
+      bcCode: row[6] || "",
+      gp: row[7] || "",
+      gpCode: row[8] || "",
+      campDate: row[9] || "",
+      bcParticipated: Number(row[10]) || 0,
+      pmjdy: Number(row[11]) || 0,
+      pmjjby: Number(row[12]) || 0,
+      pmsby: Number(row[13]) || 0,
+      apy: Number(row[14]) || 0,
+      nps: Number(row[15]) || 0,
+      other: row[16] || "",
+      remarks: row[17] || "",
+      rowNumber: row.rowNumber || row._rowNumber || ""
+    };
+
+  }
+
+  return {
+    raw: row,
+    district: getValue(row, 1, "district"),
+    block: getValue(row, 2, "block"),
+    branch: getValue(row, 3, "branch"),
+    sol: getValue(row, 4, "sol"),
+    bcName: getValue(row, 5, "bcName"),
+    bcCode: getValue(row, 6, "bcCode"),
+    gp: getValue(row, 7, "gp"),
+    gpCode: getValue(row, 8, "gpCode"),
+    campDate: getValue(row, 9, "campDate"),
+    bcParticipated: Number(getValue(row, 10, "bcParticipated")) || 0,
+    pmjdy: Number(getValue(row, 11, "pmjdy")) || 0,
+    pmjjby: Number(getValue(row, 12, "pmjjby")) || 0,
+    pmsby: Number(getValue(row, 13, "pmsby")) || 0,
+    apy: Number(getValue(row, 14, "apy")) || 0,
+    nps: Number(getValue(row, 15, "nps")) || 0,
+    other: getValue(row, 16, "other"),
+    remarks: getValue(row, 17, "remarks"),
+    rowNumber: row.rowNumber || row._rowNumber || row.id || ""
+  };
+
+}
+
+/* =====================================================
+   FILTERS
+===================================================== */
+
+function populateDistrictFilter() {
+
+  const select = document.getElementById("districtFilter");
+
+  const districts = new Set();
+
+  allReports.forEach(function(row) {
+    const r = normalizeReport(row);
+    if (r.district) districts.add(r.district);
+  });
+
+  const previous = select.value;
+
+  select.innerHTML = '<option value="">All Districts</option>';
+
+  Array.from(districts)
+    .sort()
+    .forEach(function(district) {
+
+      const option = document.createElement("option");
+      option.value = district;
+      option.textContent = district;
+      select.appendChild(option);
+
+    });
+
+  select.value = previous;
+
+}
+
+function applyFilters() {
+
+  const search =
+    document.getElementById("searchInput")
+      .value.trim().toLowerCase();
+
+  const district =
+    document.getElementById("districtFilter").value;
+
+  const from =
+    document.getElementById("dateFrom").value;
+
+  const to =
+    document.getElementById("dateTo").value;
+
+  filteredReports = allReports.filter(function(row) {
+
+    const r = normalizeReport(row);
+
+    const searchable = [
+      r.branch,
+      r.sol,
+      r.district,
+      r.block,
+      r.gp,
+      r.gpCode,
+      r.bcName,
+      r.bcCode
+    ].join(" ").toLowerCase();
+
+    if (search && searchable.indexOf(search) === -1) {
+      return false;
+    }
+
+    if (district && r.district !== district) {
+      return false;
+    }
+
+    const date = parseDate(r.campDate);
+
+    if (from && date && date < from) {
+      return false;
+    }
+
+    if (to && date && date > to) {
+      return false;
+    }
+
+    return true;
+
+  });
+
+  renderReports();
+
+}
+
+function clearFilters() {
+
+  document.getElementById("searchInput").value = "";
+  document.getElementById("districtFilter").value = "";
+  document.getElementById("dateFrom").value = "";
+  document.getElementById("dateTo").value = "";
+
+  applyFilters();
+
+}
+
+/* =====================================================
+   REPORT TABLE
+===================================================== */
+
+function renderReports() {
+
+  const head = document.getElementById("reportHead");
+  const body = document.getElementById("reportBody");
+
+  head.innerHTML = "";
+
+  const headerRow = document.createElement("tr");
+
+  const visibleHeaders = [
+    "District",
+    "Block",
+    "Branch Name",
+    "SOL ID",
+    "BC Name",
+    "GP Name",
+    "Camp Date",
+    "BC Participated",
+    "PMJDY",
+    "PMJJBY",
+    "PMSBY",
+    "APY",
+    "NPS Sanchay",
+    "Other Activities",
+    "Remarks",
+    "Actions"
+  ];
+
+  visibleHeaders.forEach(function(header) {
+
+    const th = document.createElement("th");
+    th.textContent = header;
+    headerRow.appendChild(th);
+
+  });
+
+  head.appendChild(headerRow);
+
+  body.innerHTML = "";
+
+  document.getElementById("reportCount").textContent =
+    filteredReports.length + " Records";
+
+  if (!filteredReports.length) {
+
+    body.innerHTML =
+      '<tr><td colspan="16" class="loading">No records found</td></tr>';
+
+    return;
+
+  }
+
+  filteredReports.forEach(function(row, index) {
+
+    const r = normalizeReport(row);
+    const tr = document.createElement("tr");
+
+    const values = [
+      r.district,
+      r.block,
+      r.branch,
+      r.sol,
+      r.bcName,
+      r.gp,
+      formatDate(r.campDate),
+      r.bcParticipated,
+      r.pmjdy,
+      r.pmjjby,
+      r.pmsby,
+      r.apy,
+      r.nps,
+      r.other,
+      r.remarks
+    ];
+
+    values.forEach(function(value) {
+
+      const td = document.createElement("td");
+      td.textContent = value == null ? "" : value;
+      tr.appendChild(td);
+
+    });
+
+    const actionTd = document.createElement("td");
+    actionTd.className = "actionCell";
+
+    const editButton = document.createElement("button");
+    editButton.className = "smallBtn";
+    editButton.textContent = "Edit";
+    editButton.onclick = function() {
+      openEdit(row, index);
+    };
+
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "smallBtn delete";
+    deleteButton.textContent = "Delete";
+    deleteButton.onclick = function() {
+      deleteReport(row);
+    };
+
+    actionTd.appendChild(editButton);
+    actionTd.appendChild(deleteButton);
+
+    tr.appendChild(actionTd);
+    body.appendChild(tr);
+
+  });
+
+}
+
+/* =====================================================
    DASHBOARD
-========================================================= */
+===================================================== */
 
 function updateDashboard() {
 
-  document.getElementById("totalReports").textContent =
-    reports.length.toLocaleString();
+  const reports = allReports.map(normalizeReport);
 
-  const districtNameFromGP = row => {
+  document.getElementById("totalSubmitted").textContent =
+    reports.length;
 
-    if (Array.isArray(row)) {
+  document.getElementById("gpsCovered").textContent =
+    reports.length;
 
-      return String(row[0] || "").trim();
+  const branches = new Set();
 
-    }
+  let pmjdy = 0;
 
-    return String(
+  reports.forEach(function(r) {
 
-      row.District ||
-      row.district ||
-      row["District Name"] ||
-      row["DISTRICT"] ||
-      ""
+    if (r.sol) branches.add(String(r.sol));
 
-    ).trim();
+    pmjdy += Number(r.pmjdy) || 0;
 
-  };
+  });
 
-  const totalAllottedCard = gpMasterData.reduce(
-
-    (count, row) =>
-      count + (districtNameFromGP(row) ? 1 : 0),
-
-    0
-
-  );
-
-  document.getElementById("totalAllottedCamps").textContent =
-    totalAllottedCard.toLocaleString();
-
-  document.getElementById("branchCount").textContent =
-
-    new Set(
-      reports.map(row => val(row, "Sol ID")).filter(Boolean)
-    ).size.toLocaleString();
-
-  document.getElementById("gpCount").textContent =
-    reports.length.toLocaleString();
+  document.getElementById("branchesReporting").textContent =
+    branches.size;
 
   document.getElementById("pmjdyTotal").textContent =
+    pmjdy.toLocaleString("en-IN");
 
-    reports.reduce(
+  renderBranchSummary(reports);
+  renderDistrictSummary(reports);
+  renderDistrictPerformance(reports);
 
-      (sum, row) =>
-        sum + (Number(row["PMJDY Accounts Opened"]) || 0),
+  /*
+    Total allotted is derived from loaded master data.
+    The exact GP master schema can differ; see below.
+  */
 
-      0
+  document.getElementById("totalAllotted").textContent =
+    getMasterCount().toLocaleString("en-IN");
 
-    ).toLocaleString();
+}
 
-  /* ALLOTTED CAMPS DISTRICT-WISE */
+/* =====================================================
+   BRANCH SUMMARY
+===================================================== */
 
-  const allotted = {};
+function renderBranchSummary(reports) {
 
-  gpMasterData.forEach(row => {
+  const summary = {};
 
-    const district = districtNameFromGP(row);
+  reports.forEach(function(r) {
 
-    if (district) {
+    const key = String(r.sol || r.branch || "Unknown");
 
-      allotted[district] =
-        (allotted[district] || 0) + 1;
+    if (!summary[key]) {
 
-    }
-
-  });
-
-  /* BRANCH-WISE REPORTING */
-
-  const branchMap = {};
-
-  reports.forEach(row => {
-
-    const branch =
-      val(row, "Branch Name") || "Not specified";
-
-    const sol =
-      val(row, "Sol ID") || "Not specified";
-
-    const key = branch + "||" + sol;
-
-    if (!branchMap[key]) {
-
-      branchMap[key] = {
-
-        branch: branch,
-
-        sol: sol,
-
+      summary[key] = {
+        branch: r.branch || "",
+        sol: r.sol || "",
         camps: 0
-
       };
 
     }
 
-    branchMap[key].camps++;
+    summary[key].camps++;
 
   });
 
-  const branchRows = Object.values(branchMap)
+  const body = document.getElementById("branchBody");
+  body.innerHTML = "";
 
-    .sort((a, b) =>
-      a.branch.localeCompare(b.branch) ||
-      a.sol.localeCompare(b.sol)
-    )
+  let total = 0;
 
-    .map(row => [
+  Object.values(summary)
+    .sort(function(a, b) {
+      return a.branch.localeCompare(b.branch);
+    })
+    .forEach(function(item) {
 
-      row.branch,
+      total += item.camps;
 
-      row.sol,
+      const tr = document.createElement("tr");
 
-      row.camps
+      tr.innerHTML =
+        "<td>" + escapeHtml(item.branch) + "</td>" +
+        "<td>" + escapeHtml(item.sol) + "</td>" +
+        "<td>" + item.camps + "</td>";
 
-    ]);
+      body.appendChild(tr);
 
-  branchRows.push([
+    });
 
-    "GRAND TOTAL",
+  const totalRow = document.createElement("tr");
+  totalRow.className = "grandTotal";
 
-    "",
+  totalRow.innerHTML =
+    "<td>Grand Total</td><td></td><td>" + total + "</td>";
 
-    reports.length
+  body.appendChild(totalRow);
 
-  ]);
+}
 
-  document.getElementById("branchAnalytics").innerHTML =
+/* =====================================================
+   DISTRICT SUMMARY
+===================================================== */
 
-    miniTable(
+function renderDistrictSummary(reports) {
 
-      ["Branch Name", "SOL ID", "Camps"],
+  const summary = {};
 
-      branchRows
+  reports.forEach(function(r) {
 
-    );
+    const district = r.district || "Unknown";
 
-  /* DISTRICT-WISE SUMMARY */
+    if (!summary[district]) {
 
-  const districts = new Set([
+      summary[district] = {
+        camps: 0,
+        branches: new Set(),
+        bc: 0,
+        gps: 0
+      };
 
-    ...Object.keys(allotted),
+    }
 
-    ...reports
-      .map(row => val(row, "District"))
-      .filter(Boolean)
+    summary[district].camps++;
+    summary[district].gps++;
 
-  ]);
+    if (r.sol) summary[district].branches.add(String(r.sol));
 
-  const districtMap = {};
-
-  districts.forEach(district => {
-
-    districtMap[district] = {
-
-      allotted: allotted[district] || 0,
-
-      camps: 0,
-
-      branches: new Set(),
-
-      bc: 0,
-
-      pmjdy: 0,
-
-      pmjjby: 0,
-
-      pmsby: 0,
-
-      apy: 0
-
-    };
+    summary[district].bc += Number(r.bcParticipated) || 0;
 
   });
 
-  reports.forEach(row => {
+  const body = document.getElementById("districtBody");
+  body.innerHTML = "";
+
+  let totalCamps = 0;
+  let totalBranches = new Set();
+  let totalBC = 0;
+  let totalGP = 0;
+
+  Object.keys(summary).sort().forEach(function(district) {
+
+    const s = summary[district];
+    const allotted = getDistrictAllotted(district);
+
+    totalCamps += s.camps;
+    totalBC += s.bc;
+    totalGP += s.gps;
+
+    s.branches.forEach(function(sol) {
+      totalBranches.add(sol);
+    });
+
+    const tr = document.createElement("tr");
+
+    tr.innerHTML =
+      "<td>" + escapeHtml(district) + "</td>" +
+      "<td>" + allotted + "</td>" +
+      "<td>" + s.camps + "</td>" +
+      "<td>" + s.branches.size + "</td>" +
+      "<td>" + s.bc + "</td>" +
+      "<td>" + s.gps + "</td>";
+
+    body.appendChild(tr);
+
+  });
+
+  const grand = document.createElement("tr");
+  grand.className = "grandTotal";
+
+  grand.innerHTML =
+    "<td>Grand Total</td>" +
+    "<td>" + getMasterCount() + "</td>" +
+    "<td>" + totalCamps + "</td>" +
+    "<td>" + totalBranches.size + "</td>" +
+    "<td>" + totalBC + "</td>" +
+    "<td>" + totalGP + "</td>";
+
+  body.appendChild(grand);
+
+}
+
+/* =====================================================
+   DISTRICT SCHEME PERFORMANCE
+===================================================== */
+
+function renderDistrictPerformance(reports) {
+
+  const summary = {};
+
+  reports.forEach(function(r) {
+
+    const district = r.district || "Unknown";
+
+    if (!summary[district]) {
+
+      summary[district] = {
+        pmjdy: 0,
+        pmjjby: 0,
+        pmsby: 0,
+        apy: 0,
+        camps: 0
+      };
+
+    }
+
+    summary[district].pmjdy += Number(r.pmjdy) || 0;
+    summary[district].pmjjby += Number(r.pmjjby) || 0;
+    summary[district].pmsby += Number(r.pmsby) || 0;
+    summary[district].apy += Number(r.apy) || 0;
+    summary[district].camps++;
+
+  });
+
+  const body = document.getElementById("performanceBody");
+  body.innerHTML = "";
+
+  let t1 = 0, t2 = 0, t3 = 0, t4 = 0, t5 = 0;
+
+  Object.keys(summary).sort().forEach(function(district) {
+
+    const s = summary[district];
+
+    t1 += s.pmjdy;
+    t2 += s.pmjjby;
+    t3 += s.pmsby;
+    t4 += s.apy;
+    t5 += s.camps;
+
+    const tr = document.createElement("tr");
+
+    tr.innerHTML =
+      "<td>" + escapeHtml(district) + "</td>" +
+      "<td>" + s.pmjdy + "</td>" +
+      "<td>" + s.pmjjby + "</td>" +
+      "<td>" + s.pmsby + "</td>" +
+      "<td>" + s.apy + "</td>" +
+      "<td>" + s.camps + "</td>";
+
+    body.appendChild(tr);
+
+  });
+
+  const grand = document.createElement("tr");
+  grand.className = "grandTotal";
+
+  grand.innerHTML =
+    "<td>Grand Total</td>" +
+    "<td>" + t1 + "</td>" +
+    "<td>" + t2 + "</td>" +
+    "<td>" + t3 + "</td>" +
+    "<td>" + t4 + "</td>" +
+    "<td>" + t5 + "</td>";
+
+  body.appendChild(grand);
+
+}
+
+/* =====================================================
+   MASTER DATA HELPERS
+===================================================== */
+
+function getMasterCount() {
+
+  if (!Array.isArray(masterData)) return 0;
+
+  return masterData.filter(function(row) {
 
     const district =
-      val(row, "District") || "Not specified";
+      Array.isArray(row)
+        ? row[0]
+        : row.district || row.District || "";
 
-    if (!districtMap[district]) {
+    return String(district || "").trim() !== "";
 
-      districtMap[district] = {
-
-        allotted: allotted[district] || 0,
-
-        camps: 0,
-
-        branches: new Set(),
-
-        bc: 0,
-
-        pmjdy: 0,
-
-        pmjjby: 0,
-
-        pmsby: 0,
-
-        apy: 0
-
-      };
-
-    }
-
-    const data = districtMap[district];
-
-    data.camps++;
-
-    const sol = val(row, "Sol ID");
-
-    if (sol) data.branches.add(sol);
-
-    data.bc +=
-      Number(row["No OF BC Participated"]) || 0;
-
-    data.pmjdy +=
-      Number(row["PMJDY Accounts Opened"]) || 0;
-
-    data.pmjjby +=
-      Number(row["PMJJBY En enrolments"]) ||
-      Number(row["PMJJBY Enrolments"]) || 0;
-
-    data.pmsby +=
-      Number(row["PMSBY Enrolments"]) || 0;
-
-    data.apy +=
-      Number(row["APY Subscriptions"]) || 0;
-
-  });
-
-  const ordered = Object.entries(districtMap)
-
-    .sort((a, b) =>
-      a[0].localeCompare(b[0])
-    );
-
-  const districtRows = ordered.map(([district, data]) => [
-
-    district,
-
-    data.allotted,
-
-    data.camps,
-
-    data.branches.size,
-
-    data.bc,
-
-    data.camps
-
-  ]);
-
-  const totalAllotted = Object.values(allotted)
-
-    .reduce((sum, value) => sum + value, 0);
-
-  const totalBranches = new Set(
-
-    reports
-      .map(row => val(row, "Sol ID"))
-      .filter(Boolean)
-
-  ).size;
-
-  const totalBC = reports.reduce(
-
-    (sum, row) =>
-      sum + (Number(row["No OF BC Participated"]) || 0),
-
-    0
-
-  );
-
-  districtRows.push([
-
-    "GRAND TOTAL",
-
-    totalAllotted,
-
-    reports.length,
-
-    totalBranches,
-
-    totalBC,
-
-    reports.length
-
-  ]);
-
-  document.getElementById("districtAnalytics").innerHTML =
-
-    miniTable(
-
-      [
-        "District",
-        "Camps Allotted",
-        "Camps Conducted",
-        "Branches Participated",
-        "BCs Participated",
-        "GPs Covered"
-      ],
-
-      districtRows
-
-    );
-
-  /* DISTRICT PERFORMANCE */
-
-  const performanceRows = ordered.map(([district, data]) => [
-
-    district,
-
-    data.allotted,
-
-    data.camps,
-
-    data.branches.size,
-
-    data.bc,
-
-    data.camps,
-
-    data.pmjdy.toLocaleString(),
-
-    data.pmjjby.toLocaleString(),
-
-    data.pmsby.toLocaleString(),
-
-    data.apy.toLocaleString()
-
-  ]);
-
-  performanceRows.push([
-
-    "GRAND TOTAL",
-
-    totalAllotted,
-
-    reports.length,
-
-    totalBranches,
-
-    totalBC,
-
-    reports.length,
-
-    reports.reduce(
-      (sum, row) =>
-        sum + (Number(row["PMJDY Accounts Opened"]) || 0),
-      0
-    ).toLocaleString(),
-
-    reports.reduce(
-      (sum, row) =>
-        sum +
-        (
-          Number(row["PMJJBY En enrolments"]) ||
-          Number(row["PMJJBY Enrolments"]) ||
-          0
-        ),
-      0
-    ).toLocaleString(),
-
-    reports.reduce(
-      (sum, row) =>
-        sum + (Number(row["PMSBY Enrolments"]) || 0),
-      0
-    ).toLocaleString(),
-
-    reports.reduce(
-      (sum, row) =>
-        sum + (Number(row["APY Subscriptions"]) || 0),
-      0
-    ).toLocaleString()
-
-  ]);
-
-  document.getElementById("districtPerformance").innerHTML =
-
-    miniTable(
-
-      [
-        "District",
-        "Camps Allotted",
-        "Camps Conducted",
-        "Branches Participated",
-        "BCs Participated",
-        "GPs Covered",
-        "PMJDY Accounts",
-        "PMJJBY Enrolments",
-        "PMSBY Enrolments",
-        "APY Subscriptions"
-      ],
-
-      performanceRows
-
-    );
+  }).length;
 
 }
 
-/* =========================================================
-   ANALYTICS TABLE
-========================================================= */
+function getDistrictAllotted(district) {
 
-function miniTable(headers, rows) {
+  if (!Array.isArray(masterData)) return 0;
 
-  return "<table><thead><tr>" +
+  return masterData.filter(function(row) {
 
-    headers.map(header =>
-      "<th>" + esc(header) + "</th>"
-    ).join("") +
+    const rowDistrict =
+      Array.isArray(row)
+        ? row[0]
+        : row.district || row.District || "";
 
-    "</tr></thead><tbody>" +
+    return String(rowDistrict || "").trim().toLowerCase() ===
+      String(district || "").trim().toLowerCase();
 
-    rows.map(row => {
-
-      const isGrandTotal =
-
-        String(row[0] || "")
-          .toUpperCase()
-          .indexOf("GRAND TOTAL") === 0;
-
-      return (
-
-        "<tr" +
-        (isGrandTotal ? ' class="grand-total"' : "") +
-        ">" +
-
-        row.map((value, index) =>
-
-          '<td data-label="' +
-          esc(headers[index] || "") +
-          '">' +
-
-          esc(String(value)) +
-
-          "</td>"
-
-        ).join("") +
-
-        "</tr>"
-
-      );
-
-    }).join("") +
-
-    "</tbody></table>";
+  }).length;
 
 }
 
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-function showDashboard() {
-
-  document.getElementById("dashboard")
-    .classList.remove("hidden");
-
-  document.getElementById("reportsSection")
-    .classList.add("hidden");
-
-}
-
-function showReports() {
-
-  document.getElementById("dashboard")
-    .classList.add("hidden");
-
-  document.getElementById("reportsSection")
-    .classList.remove("hidden");
-
-  renderTable();
-
-}
-
-/* =========================================================
-   REPORT FILTER AND TABLE
-========================================================= */
-
-function renderTable() {
-
-  const searchInput =
-    document.getElementById("search");
-
-  const districtFilter =
-    document.getElementById("districtFilter");
-
-  const branchFilter =
-    document.getElementById("branchFilter");
-
-  const dateFilter =
-    document.getElementById("dateFilter");
-
-  const query =
-    searchInput.value.toLowerCase();
-
-  const district =
-    districtFilter.value;
-
-  const branch =
-    branchFilter.value;
-
-  const date =
-    dateFilter.value;
-
-  filtered = reports.filter(row =>
-
-    (!query || [
-
-      "Branch Name",
-      "Sol ID",
-      "Gram Panchayat (GP) Name",
-      "Gram Panchayat (GP) Code",
-      "Block Name"
-
-    ].some(key =>
-
-      val(row, key)
-        .toLowerCase()
-        .includes(query)
-
-    )) &&
-
-    (!district ||
-      val(row, "District") === district) &&
-
-    (!branch ||
-
-      (
-        val(row, "Branch Name") +
-        "|" +
-        val(row, "Sol ID")
-      ) === branch
-
-    ) &&
-
-    (!date ||
-
-      val(row, "Camp Date")
-        .slice(0, 10) === date
-
-    )
-
-  );
-
-  document.getElementById("resultCount").textContent =
-    filtered.length + " camps";
-
-  const visibleColumns = [
-
-    "Camp Date",
-    "Sol ID",
-    "Branch Name",
-    "District",
-    "Block Name",
-    "Gram Panchayat (GP) Name",
-    "PMJDY Accounts Opened",
-    "PMJJBY Enrolments",
-    "PMSBY Enrolments",
-    "APY Subscriptions"
-
-  ];
-
-  document.getElementById("tableHead").innerHTML =
-
-    "<tr>" +
-
-    visibleColumns.map(key =>
-      "<th>" + esc(key) + "</th>"
-    ).join("") +
-
-    "<th>Actions</th></tr>";
-
-  document.getElementById("tableBody").innerHTML =
-
-    filtered.map((row, index) =>
-
-      "<tr>" +
-
-      visibleColumns.map(key =>
-
-        '<td data-label="' +
-        esc(key) +
-        '">' +
-
-        esc(val(row, key)) +
-
-        "</td>"
-
-      ).join("") +
-
-      '<td data-label="Actions">' +
-
-      '<div class="actions">' +
-
-      '<button class="small" onclick="editReport(' +
-      index +
-      ')">Edit</button>' +
-
-      '<button class="small danger" onclick="deleteReport(' +
-      index +
-      ')">Delete</button>' +
-
-      "</div></td></tr>"
-
-    ).join("");
-
-}
-
-/* =========================================================
+/* =====================================================
    EDIT REPORT
-========================================================= */
+===================================================== */
 
-function editReport(index) {
+function openEdit(row, index) {
 
-  editing = filtered[index];
+  currentEditRow = row;
 
-  const fields =
-    document.getElementById("editFields");
+  const r = normalizeReport(row);
+  const fields = document.getElementById("editFields");
 
   fields.innerHTML = "";
 
-  HEADERS.forEach(header => {
+  const editItems = [
+    ["District", r.district],
+    ["Block", r.block],
+    ["Branch Name", r.branch],
+    ["SOL ID", r.sol],
+    ["BC Name", r.bcName],
+    ["BC Code", r.bcCode],
+    ["GP Name", r.gp],
+    ["GP Code", r.gpCode],
+    ["Camp Date", parseDate(r.campDate)],
+    ["No OF BC Participated", r.bcParticipated],
+    ["PMJDY", r.pmjdy],
+    ["PMJJBY", r.pmjjby],
+    ["PMSBY", r.pmsby],
+    ["APY", r.apy],
+    ["NPS Sanchay", r.nps],
+    ["Other Activities", r.other],
+    ["Remarks", r.remarks]
+  ];
 
-    if (
-      ["Update date", "photo_link"].includes(header)
-    ) return;
+  editItems.forEach(function(item, i) {
 
-    const div =
-      document.createElement("div");
+    const div = document.createElement("div");
+    div.className = "formfield";
 
-    const label =
-      document.createElement("label");
+    const label = document.createElement("label");
+    label.textContent = item[0];
 
-    const input =
-      document.createElement("input");
+    const input = document.createElement("input");
+    input.id = "editField_" + i;
+    input.value = item[1] == null ? "" : item[1];
 
-    label.textContent = header;
-
-    input.dataset.header = header;
-
-    input.value = val(editing, header);
-
-    if (header === "Camp Date") {
-
+    if (i === 8) {
       input.type = "date";
-
+    } else if (i >= 9 && i <= 14) {
+      input.type = "number";
+      input.min = "0";
+    } else {
+      input.type = "text";
     }
 
     div.appendChild(label);
-
     div.appendChild(input);
-
     fields.appendChild(div);
 
   });
-
-  document.getElementById("editMsg").textContent = "";
 
   document.getElementById("editModal")
     .classList.remove("hidden");
 
 }
-
-/* CLOSE MODAL */
 
 function closeModal() {
 
   document.getElementById("editModal")
     .classList.add("hidden");
 
-  editing = null;
+  currentEditRow = null;
 
 }
 
-/* =========================================================
-   SAVE EDIT
-========================================================= */
+async function saveReport() {
 
-async function saveEdit() {
+  if (!currentEditRow) {
+    alert("No report selected.");
+    return;
+  }
 
-  if (!editing) return;
-
-  const payload = {};
-
-  document.querySelectorAll("#editFields input")
-
-    .forEach(input => {
-
-      payload[input.dataset.header] =
-        input.value;
-
-    });
-
-  payload["Gram Panchayat (GP) Code"] =
-
-    editing["Gram Panchayat (GP) Code"];
-
-  payload.gpCode =
-
-    payload["Gram Panchayat (GP) Code"];
-
-  const button =
-    document.getElementById("saveBtn");
-
-  const message =
-    document.getElementById("editMsg");
+  const button = document.getElementById("saveBtn");
 
   button.disabled = true;
-
-  message.textContent = "Saving...";
+  button.textContent = "Saving...";
 
   try {
+
+    const values = [];
+
+    for (let i = 0; i < 17; i++) {
+
+      const input = document.getElementById("editField_" + i);
+
+      values.push(input ? input.value : "");
+
+    }
 
     const result = await api({
 
       action: "adminUpdateReport",
-
       token: token,
 
-      payload: payload,
+      rowNumber:
+        currentEditRow.rowNumber ||
+        currentEditRow._rowNumber ||
+        currentEditRow.id,
 
-      originalGpCode:
-        val(editing, "Gram Panchayat (GP) Code")
+      data: values
 
     });
 
-    if (!result || !result.success) {
+    if (!result || result.success !== true) {
 
       throw new Error(
-
         result && result.message
           ? result.message
-          : "Update failed."
-
+          : "Unable to save report."
       );
 
     }
 
-    closeModal();
-
-    await loadReports();
-
     alert("Report updated successfully.");
+    closeModal();
+    await loadReports();
 
   } catch (error) {
 
-    message.textContent =
-      error.message || "Update failed.";
+    console.error(error);
+    alert(error.message || "Update failed.");
 
   } finally {
 
     button.disabled = false;
+    button.textContent = "Save Changes";
 
   }
 
 }
 
-/* =========================================================
+/* =====================================================
    DELETE REPORT
-========================================================= */
+===================================================== */
 
-async function deleteReport(index) {
+async function deleteReport(row) {
 
-  const row = filtered[index];
-
-  const gpCode =
-    val(row, "Gram Panchayat (GP) Code");
+  const r = normalizeReport(row);
 
   if (!confirm(
-
-    "Delete report for GP " +
-    gpCode +
-    "? This action cannot be undone."
-
-  )) return;
+    "Are you sure you want to delete this camp report?\n\n" +
+    "Branch: " + r.branch + "\n" +
+    "GP: " + r.gp
+  )) {
+    return;
+  }
 
   try {
 
     const result = await api({
 
       action: "adminDeleteReport",
-
       token: token,
 
-      gpCode: gpCode
+      rowNumber:
+        row.rowNumber ||
+        row._rowNumber ||
+        row.id
 
     });
 
-    if (!result || !result.success) {
+    if (!result || result.success !== true) {
 
       throw new Error(
-
         result && result.message
           ? result.message
-          : "Delete failed."
-
+          : "Unable to delete report."
       );
 
     }
 
+    alert("Report deleted successfully.");
     await loadReports();
-
-    alert("Report deleted.");
 
   } catch (error) {
 
+    console.error(error);
     alert(error.message || "Delete failed.");
 
   }
 
 }
 
-/* =========================================================
-   EXPORT DISTRICT SUMMARY
-========================================================= */
-
-function exportDistrictCSV() {
-
-  const grouped = {};
-
-  reports.forEach(row => {
-
-    const district =
-      val(row, "District") || "Not specified";
-
-    if (!grouped[district]) {
-
-      grouped[district] = {
-
-        district: district,
-
-        branches: new Set(),
-
-        reports: 0,
-
-        pmjdy: 0,
-
-        pmjjby: 0,
-
-        pmsby: 0,
-
-        apy: 0
-
-      };
-
-    }
-
-    const data = grouped[district];
-
-    data.reports++;
-
-    const sol = val(row, "Sol ID");
-
-    if (sol) data.branches.add(sol);
-
-    data.pmjdy +=
-      Number(row["PMJDY Accounts Opened"]) || 0;
-
-    data.pmjjby +=
-      Number(row["PMJJBY En enrolments"]) ||
-      Number(row["PMJJBY Enrolments"]) || 0;
-
-    data.pmsby +=
-      Number(row["PMSBY Enrolments"]) || 0;
-
-    data.apy +=
-      Number(row["APY Subscriptions"]) || 0;
-
-  });
-
-  const rows = Object.values(grouped)
-
-    .sort((a, b) =>
-      a.district.localeCompare(b.district)
-    )
-
-    .map(data => [
-
-      data.district,
-
-      data.branches.size,
-
-      data.reports,
-
-      data.pmjdy,
-
-      data.pmjjby,
-
-      data.pmsby,
-
-      data.apy
-
-    ]);
-
-  const headers = [
-
-    "District",
-    "Reporting Branches",
-    "Camp Reports",
-    "PMJDY Accounts Opened",
-    "PMJJBY Enrolments",
-    "PMSBY Enrolments",
-    "APY Subscriptions"
-
-  ];
-
-  const csv = [headers, ...rows]
-
-    .map(row => row.map(value =>
-
-      '"' +
-      String(value).replace(/"/g, '""') +
-      '"'
-
-    ).join(","))
-
-    .join("\r\n");
-
-  downloadCSV(
-    csv,
-    "DFS_District_Wise_Summary"
-  );
-
-}
-
-/* =========================================================
-   EXPORT ALL REPORTS
-========================================================= */
+/* =====================================================
+   CSV EXPORT
+===================================================== */
 
 function exportCSV() {
 
-  if (!filtered.length && !reports.length) {
-
-    alert("No reports to export.");
-
+  if (!filteredReports.length) {
+    alert("No records available for export.");
     return;
-
   }
 
-  const isReportsHidden =
+  const headers = [
+    "District",
+    "Block",
+    "Branch Name",
+    "SOL ID",
+    "BC Name",
+    "BC Code",
+    "GP Name",
+    "GP Code",
+    "Camp Date",
+    "No OF BC Participated",
+    "PMJDY",
+    "PMJJBY",
+    "PMSBY",
+    "APY",
+    "NPS Sanchay",
+    "Other Activities",
+    "Remarks"
+  ];
 
-    document.getElementById("reportsSection")
-      .classList.contains("hidden");
+  const rows = filteredReports.map(function(row) {
 
-  const rows =
+    const r = normalizeReport(row);
 
-    isReportsHidden
-      ? reports
-      : filtered;
+    return [
+      r.district,
+      r.block,
+      r.branch,
+      r.sol,
+      r.bcName,
+      r.bcCode,
+      r.gp,
+      r.gpCode,
+      r.campDate,
+      r.bcParticipated,
+      r.pmjdy,
+      r.pmjjby,
+      r.pmsby,
+      r.apy,
+      r.nps,
+      r.other,
+      r.remarks
+    ];
 
-  const keys = HEADERS.filter(header =>
+  });
 
-    rows.some(row =>
-      row[header] !== undefined
-    )
+  const csv = [headers].concat(rows)
+    .map(function(row) {
 
-  );
+      return row.map(function(value) {
 
-  const csv = [
+        const text = String(value == null ? "" : value);
 
-    keys,
+        return '"' + text.replace(/"/g, '""') + '"';
 
-    ...rows.map(row =>
-      keys.map(key =>
-        row[key] ?? ""
-      )
-    )
+      }).join(",");
 
-  ]
-
-    .map(row => row.map(value =>
-
-      '"' +
-      String(value).replace(/"/g, '""') +
-      '"'
-
-    ).join(","))
-
-    .join("\r\n");
-
-  downloadCSV(
-    csv,
-    "DFS_Saturation_Camp_Reports"
-  );
-
-}
-
-/* =========================================================
-   CSV DOWNLOAD
-========================================================= */
-
-function downloadCSV(csv, filename) {
+    }).join("\r\n");
 
   const blob = new Blob(
-
-    ["﻿" + csv],
-
-    {
-      type: "text/csv;charset=utf-8;"
-    }
-
+    ["\uFEFF" + csv],
+    { type: "text/csv;charset=utf-8;" }
   );
 
-  const link =
-    document.createElement("a");
-
-  const url =
-    URL.createObjectURL(blob);
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
 
   link.href = url;
-
-  link.download =
-
-    filename +
-    "_" +
-    new Date().toISOString().slice(0, 10) +
-    ".csv";
+  link.download = "DFS_Camp_Reports.csv";
 
   document.body.appendChild(link);
-
   link.click();
+  document.body.removeChild(link);
 
-  link.remove();
-
-  setTimeout(
-
-    () => URL.revokeObjectURL(url),
-
-    1000
-
-  );
+  URL.revokeObjectURL(url);
 
 }
 
-/* =========================================================
-   HTML ESCAPE
-========================================================= */
+/* =====================================================
+   DATE HELPERS
+===================================================== */
 
-function esc(value) {
+function parseDate(value) {
 
-  return String(value).replace(
+  if (!value) return "";
 
-    /[&<>"']/g,
+  const text = String(value).trim();
 
-    character => ({
+  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
+    return text;
+  }
 
-      "&": "&amp;",
+  const dmy = text.match(/^(\d{2})[-/](\d{2})[-/](\d{4})$/);
 
-      "<": "&lt;",
+  if (dmy) {
+    return dmy[3] + "-" + dmy[2] + "-" + dmy[1];
+  }
 
-      ">": "&gt;",
+  const date = new Date(value);
 
-      '"': "&quot;",
+  if (isNaN(date.getTime())) return "";
 
-      "'": "&#39;"
-
-    }[character])
-
-  );
+  return date.getFullYear() + "-" +
+    String(date.getMonth() + 1).padStart(2, "0") + "-" +
+    String(date.getDate()).padStart(2, "0");
 
 }
+
+function formatDate(value) {
+
+  const date = parseDate(value);
+
+  if (!date) return value || "";
+
+  const parts = date.split("-");
+
+  return parts[2] + "-" + parts[1] + "-" + parts[0];
+
+}
+
+/* =====================================================
+   HTML ESCAPING
+===================================================== */
+
+function escapeHtml(value) {
+
+  return String(value == null ? "" : value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+/* =====================================================
+   INITIALIZATION
+===================================================== */
+
+document.addEventListener("DOMContentLoaded", function() {
+
+  document.getElementById("username").value = "admin";
+
+});
+
 </script>
 
 </body>
