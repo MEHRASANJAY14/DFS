@@ -157,6 +157,38 @@ input,select{max-width:100%;min-width:0}
 }
 @media(max-width:360px){.cards{grid-template-columns:1fr!important}.top>div:last-child{grid-template-columns:1fr!important}}
 
+
+/* Mobile: preserve the desktop layout; allow horizontal scrolling instead of stacking */
+@media(max-width:700px){
+  html,body{min-width:1024px!important;width:1024px!important;overflow-x:auto!important}
+  .main{width:100%!important;max-width:1600px!important;min-width:1000px!important;padding:18px!important;margin:0!important}
+  .top{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;flex-wrap:wrap!important}
+  .top>div:last-child{display:flex!important;grid-template-columns:none!important;flex-direction:row!important;flex-wrap:wrap!important;width:auto!important;gap:10px!important}
+  .top>div:last-child button{width:auto!important;min-width:0!important;white-space:nowrap!important;font-size:14px!important;padding:11px 16px!important}
+  .cards{display:grid!important;grid-template-columns:repeat(5,minmax(140px,1fr))!important;gap:16px!important;margin:24px 0!important}
+  .card{padding:20px!important;border-radius:16px!important}
+  .card .num{font-size:32px!important}
+  .filters{display:grid!important;grid-template-columns:repeat(4,minmax(130px,1fr))!important;gap:12px!important;padding:18px!important}
+  .formgrid{display:grid!important;grid-template-columns:repeat(3,minmax(150px,1fr))!important;gap:12px!important}
+  .tableWrap{overflow-x:auto!important;overflow-y:visible!important}
+  .tableWrap table{display:table!important;width:max-content!important;min-width:760px!important}
+  .tableWrap thead{display:table-header-group!important}
+  .tableWrap tbody{display:table-row-group!important}
+  .tableWrap tr{display:table-row!important;background:transparent!important;border:0!important;border-radius:0!important;padding:0!important;box-shadow:none!important}
+  .tableWrap th,.tableWrap td{display:table-cell!important;white-space:nowrap!important;padding:12px 14px!important}
+  .tableWrap td:before{content:none!important;display:none!important}
+  #branchAnalytics,#districtAnalytics,#districtPerformance{width:100%!important;overflow-x:auto!important}
+  #branchAnalytics table,#districtAnalytics table,#districtPerformance table{display:table!important;width:max-content!important;min-width:100%!important;max-width:none!important}
+  #branchAnalytics thead,#districtAnalytics thead,#districtPerformance thead{display:table-header-group!important}
+  #branchAnalytics tbody,#districtAnalytics tbody,#districtPerformance tbody{display:table-row-group!important}
+  #branchAnalytics tr,#districtAnalytics tr,#districtPerformance tr{display:table-row!important;border:0!important;padding:0!important;box-shadow:none!important;background:transparent!important}
+  #branchAnalytics th,#districtAnalytics th,#districtPerformance th{display:table-cell!important;white-space:nowrap!important}
+  #branchAnalytics td,#districtAnalytics td,#districtPerformance td{display:table-cell!important;white-space:nowrap!important;text-align:left!important}
+  #branchAnalytics td:before,#districtAnalytics td:before,#districtPerformance td:before{content:none!important;display:none!important}
+  .modalbox{width:min(900px,100%)!important;padding:24px!important}
+  .formgrid{grid-template-columns:repeat(3,minmax(150px,1fr))!important}
+}
+
 </style></head><body>
 <div id="loginView" class="loginWrap"><div class="login"><div class="logo">DFS SATURATION CAMP</div><h2 style="margin-top:20px">Admin Login</h2><p style="color:#667">Authorized administration only</p><input id="username" autocomplete="username" value="admin" type="hidden"><label>Password</label><input id="password" type="password" autocomplete="current-password"><button style="width:100%;margin-top:18px" onclick="login()" id="loginBtn">Sign in</button><div id="loginMsg" class="status"></div></div></div>
 <div id="app" class="layout hidden"><aside class="sidebar"><h3>DFS Admin</h3><button class="active" onclick="showDashboard(this)">Dashboard</button><button onclick="showReports(this)">All Reports</button><button onclick="exportCSV()">Excel Export</button><button onclick="logout()">Logout</button></aside><main class="main"><div class="top"><div><h2 style="margin:0">Admin Dashboard</h2><p style="color:var(--muted);margin:6px 0">DFS Saturation Camp Reporting & Analytics</p></div><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="secondary" onclick="showDashboard()">Dashboard Overview</button><button onclick="showReports()">View All Camp Reports</button><button class="secondary" onclick="exportCSV()">Export Report Data</button><button class="secondary" onclick="loadReports()">↻ Refresh Latest Data</button><button class="danger" onclick="logout()">Logout</button></div></div>
