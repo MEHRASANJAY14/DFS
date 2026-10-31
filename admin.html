@@ -47,26 +47,146 @@
   .filters{grid-template-columns:repeat(2,minmax(0,1fr))}
   .formgrid{grid-template-columns:1fr 1fr}
 }
+
+/* Complete responsive/mobile enhancements */
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth }
+body{overflow-x:hidden;min-width:320px}
+button,input,select{touch-action:manipulation}
+button{min-height:42px}
+.main{padding:clamp(12px,2.5vw,30px)}
+.top{align-items:center}
+.top h2{overflow-wrap:anywhere}
+.card{min-width:0;overflow:hidden}
+.card table{min-width:100%;width:max-content;max-width:100%;}
+.card table th,.card table td{white-space:normal;overflow-wrap:anywhere}
+.tableWrap{max-width:100%;-webkit-overflow-scrolling:touch}
+.tableWrap table{min-width:760px}
+.filters>*{min-width:0}
+input,select{max-width:100%;min-width:0}
+.modalbox{overscroll-behavior:contain}
+@media(max-width:700px){
+ .main{padding:12px}
+ .top{display:flex;flex-direction:column;align-items:stretch}
+ .top>div:last-child{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important;width:100%}
+ .top>div:last-child button{width:100%;white-space:normal;min-height:44px;padding:10px 8px;font-size:12px}
+ .cards{gap:9px;margin:14px 0}
+ .card{padding:12px;border-radius:12px}
+ .card h3{font-size:17px;line-height:1.35;margin-top:5px}
+ .card p{line-height:1.45}
+ .card .num{font-size:clamp(20px,6vw,28px)}
+ .filters{grid-template-columns:1fr!important;padding:12px;gap:8px}
+ .filters input,.filters select{width:100%;font-size:16px}
+ #reportsSection .top{flex-direction:row;align-items:center;justify-content:space-between}
+ #reportsSection .top button{width:auto}
+ /* Dashboard summary tables become readable stacked cards */
+ .card table,.card table thead,.card table tbody,.card table tr,.card table td{display:block;width:100%;}
+ .card table{width:100%;}
+ .card table thead{display:none}
+ .card table tbody{display:grid;grid-template-columns:1fr;gap:8px}
+ .card table tr{border:1px solid var(--line);border-radius:10px;padding:8px 11px;background:#fff;white-space:normal}
+ .card table td{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid #edf2ee;text-align:right;white-space:normal;overflow-wrap:anywhere}
+ .card table td:before{content:attr(data-label);font-weight:700;color:#52675a;text-align:left;flex:0 0 43%}
+ .card table tr:last-child td{font-weight:800;color:var(--green)}
+ .card table td:last-child{border-bottom:0}
+ .tableWrap{overflow:visible}
+ .tableWrap table,.tableWrap thead,.tableWrap tbody,.tableWrap tr,.tableWrap td{display:block;width:100%}
+ .tableWrap thead{display:none}
+ .tableWrap tbody{display:grid;grid-template-columns:1fr;gap:10px}
+ .tableWrap tr{background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 12px;box-shadow:var(--shadow);white-space:normal}
+ .tableWrap td{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid #edf2ee;text-align:right;overflow-wrap:anywhere}
+ .tableWrap td:before{content:attr(data-label);font-weight:700;color:#52675a;text-align:left;flex:0 0 44%}
+ .tableWrap td:last-child{border-bottom:0}
+ .actions{justify-content:flex-end}
+ .modal{padding:7px}
+ .modalbox{padding:13px;width:100%;max-height:96dvh}
+ .formgrid{grid-template-columns:1fr!important}
+ .modalhead{gap:8px}
+ .modalhead h3{font-size:17px}
+}
+@media(max-width:380px){
+ .cards{grid-template-columns:1fr 1fr}
+ .card{padding:10px}
+ .top>div:last-child{grid-template-columns:1fr}
+ #reportsSection .top{align-items:flex-start;flex-direction:column}
+ #reportsSection .top button{width:100%}
+}
+@media(min-width:701px) and (max-width:1024px){
+ .top>div:last-child{gap:8px!important}
+ .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 </style></head><body>
 <div id="loginView" class="loginWrap"><div class="login"><div class="logo">DFS SATURATION CAMP</div><h2 style="margin-top:20px">Admin Login</h2><p style="color:#667">Authorized administration only</p><input id="username" autocomplete="username" value="admin" type="hidden"><label>Password</label><input id="password" type="password" autocomplete="current-password"><button style="width:100%;margin-top:18px" onclick="login()" id="loginBtn">Sign in</button><div id="loginMsg" class="status"></div></div></div>
 <div id="app" class="layout hidden"><aside class="sidebar"><h3>DFS Admin</h3><button class="active" onclick="showDashboard(this)">Dashboard</button><button onclick="showReports(this)">All Reports</button><button onclick="exportCSV()">Excel Export</button><button onclick="logout()">Logout</button></aside><main class="main"><div class="top"><div><h2 style="margin:0">Admin Dashboard</h2><p style="color:var(--muted);margin:6px 0">DFS Saturation Camp Reporting & Analytics</p></div><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="secondary" onclick="showDashboard()">Dashboard Overview</button><button onclick="showReports()">View All Camp Reports</button><button class="secondary" onclick="exportCSV()">Export Report Data</button><button class="secondary" onclick="loadReports()">↻ Refresh Latest Data</button><button class="danger" onclick="logout()">Logout</button></div></div>
-<section id="dashboard"><p style="color:var(--muted);line-height:1.65;margin:12px 0 20px">This dashboard provides a consolidated overview of DFS Saturation Camp reporting across branches. Use the summary indicators to review reporting coverage and the branch-wise and district-wise breakdowns to identify progress and follow-up requirements.</p><div class="cards"><div class="card"><strong>Total Camp Reports Submitted</strong><p style="color:var(--muted);margin:6px 0">Number of reporting submissions received in the portal.</p><div class="num" id="totalReports">0</div></div><div class="card"><strong>Branches Reporting</strong><p style="color:var(--muted);margin:6px 0">Unique branches that have submitted camp reports.</p><div class="num" id="branchCount">0</div></div><div class="card"><strong>Gram Panchayats Covered</strong><p style="color:var(--muted);margin:6px 0">Unique GPs represented in submitted reports.</p><div class="num" id="gpCount">0</div></div><div class="card"><strong>PMJDY Accounts Opened</strong><p style="color:var(--muted);margin:6px 0">Total PMJDY accounts reported opened through camps.</p><div class="num" id="pmjdyTotal">0</div></div></div><div class="card"><h3>Branch-wise Reporting Summary</h3><p style="color:var(--muted)">Compare the number of camp reports received from each branch.</p><div id="branchAnalytics">Loading...</div></div><div class="card" style="margin-top:14px"><h3>District-wise Reporting Summary</h3><p style="color:var(--muted)">Review submissions by district to understand reporting distribution.</p><div id="districtAnalytics">Loading...</div></div><div class="card" style="margin-top:14px"><h3>District-wise Performance Report</h3><p style="color:var(--muted)">District-level consolidated figures based on submitted camp reports. Figures are summed from the submitted branch reports.</p><div id="districtPerformance">Loading...</div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><button class="secondary" onclick="exportDistrictCSV()">Export District-wise Summary (CSV)</button><button class="secondary" onclick="showReports()">Open District-filtered Camp Reports</button></div></div></section>
+<section id="dashboard"><p style="color:var(--muted);line-height:1.65;margin:12px 0 20px">This dashboard provides a consolidated overview of DFS Saturation Camp reporting across branches. Use the summary indicators to review reporting coverage and the branch-wise and district-wise breakdowns to identify progress and follow-up requirements.</p><div class="cards"><div class="card"><strong>Total Camps Submitted</strong><p style="color:var(--muted);margin:6px 0">Total camps reported by branches in the portal.</p><div class="num" id="totalReports">0</div></div><div class="card"><strong>Branches Reporting</strong><p style="color:var(--muted);margin:6px 0">Unique branches that have submitted camp reports.</p><div class="num" id="branchCount">0</div></div><div class="card"><strong>Gram Panchayats Covered</strong><p style="color:var(--muted);margin:6px 0">Unique GPs represented in submitted reports.</p><div class="num" id="gpCount">0</div></div><div class="card"><strong>PMJDY Accounts Opened</strong><p style="color:var(--muted);margin:6px 0">Total PMJDY accounts reported opened through camps.</p><div class="num" id="pmjdyTotal">0</div></div></div><div class="card"><h3>Branch-wise Reporting Summary</h3><p style="color:var(--muted)">Compare the number of camp reports received from each branch.</p><div id="branchAnalytics">Loading...</div></div><div class="card" style="margin-top:14px"><h3>District-wise Reporting Summary</h3><p style="color:var(--muted)">Review submissions by district to understand reporting distribution.</p><div id="districtAnalytics">Loading...</div></div><div class="card" style="margin-top:14px"><h3>District-wise Performance Report</h3><p style="color:var(--muted)">District-level consolidated figures based on submitted camp reports. Figures are summed from the submitted branch reports.</p><div id="districtPerformance">Loading...</div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><button class="secondary" onclick="exportDistrictCSV()">Export District-wise Summary (CSV)</button><button class="secondary" onclick="showReports()">Open District-filtered Camp Reports</button></div></div></section>
 <section id="reportsSection" class="hidden"><h2>All Camp Reports</h2><p style="color:var(--muted);line-height:1.6">Search and filter submitted camp reports by branch, district, or camp date. Select <b>Edit</b> to correct a report or <b>Delete</b> to remove a submission. Export the filtered results for offline review.</p><div class="filters"><div><label>Search</label><input id="search" placeholder="Branch, SOL, GP..." oninput="renderTable()"></div><div><label>District</label><select id="districtFilter" onchange="renderTable()"><option value="">All Districts</option></select></div><div><label>Branch</label><select id="branchFilter" onchange="renderTable()"><option value="">All Branches</option></select></div><div><label>Camp Date</label><input id="dateFilter" type="date" onchange="renderTable()"></div></div><div class="top" style="margin-bottom:10px"><span id="resultCount">0 reports</span><button onclick="exportCSV()">⬇ Export Excel (CSV)</button></div><div class="tableWrap"><table><thead id="tableHead"></thead><tbody id="tableBody"></tbody></table></div></section><div class="footer">DFS Saturation Camp Admin Portal</div></main></div>
 <div id="editModal" class="modal hidden"><div class="modalbox"><div class="modalhead"><h3>Edit Camp Report</h3><button class="secondary" onclick="closeModal()">Close</button></div><div id="editFields" class="formgrid"></div><p id="editMsg" class="status"></p><button onclick="saveEdit()" id="saveBtn">Save Changes</button></div></div>
 <script>
 const API_URL='https://script.google.com/macros/s/AKfycbwHkmc9qul-GOuWTTTCKD3QKUdRLLcn9Xv7xKP-0kC46DHfJ6fO5rYnDWOEPoq09uz-/exec';
 const HEADERS=['Camp Date','Sol ID','Branch Name','Block Code','Block Name','Gram Panchayat (GP) Code','Gram Panchayat (GP) Name','Bank Name','No OF BC Participated','PMJDY Applications Sourced','PMJDY Accounts Opened','PMJDY Applications Sourced - PVTG','PMJDY Accounts Opened - PVTG','Applications Received for Reactivation of Inoperative PMJDY Accounts','Inoperative PMJDY Accounts Reactivated','PMJJBY Applications Sourced','PMJJBY En enrolments','PMSBY Applications Sourced','PMSBY Enrolments','APY Applications Sourced','APY Subscriptions','Applications Received for Re-KYC of PMJDY Accounts','PMJDY Accounts for which Re-KYC Completed','Applications Received for Re-KYC of Other Savings Accounts','Other Savings Accounts for which Re-KYC Completed','Nomination Applications Received - PMJDY Accounts','Nominations Registered - PMJDY Accounts','Nomination Applications Received - Non-PMJDY Accounts','Nominations Registered - Non-PMJDY Accounts','Nomination Applications Received - Lockers','Locker Nominations Registered','KCC Applications Sourced for PM-Kisan Beneficiaries','KCC Applications Sanctioned for PM-Kisan Beneficiaries','CKYC ID Generation Applications Sourced','CKYC IDs Generated','Number of DEAF Claims Settled for claim amounts less than ₹1,00,000','Amount (in ₹) of DEAF Claims Settled for claim amounts less than ₹1,00,000','Number of DEAF Claims Settled for claim amounts ₹1,00,000 or more','Amount (in ₹) of DEAF Claims Settled for claim amounts ₹1,00,000 or more','Update date','photo_link'];
-let token='',reports=[],filtered=[],editing=null;
+let token='',reports=[],filtered=[],editing=null,gpMasterData=[];
 async function api(body){const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});return r.json()}
 async function login(){let b=document.getElementById('loginBtn');b.disabled=true;b.textContent='Signing in...';try{let x=await api({action:'adminLogin',username:document.getElementById('username').value,password:document.getElementById('password').value});if(!x.success)throw Error(x.message||'Login failed');token=x.data.token;document.getElementById('loginView').classList.add('hidden');document.getElementById('app').classList.remove('hidden');await loadReports()}catch(e){document.getElementById('loginMsg').textContent=e.message}finally{b.disabled=false;b.textContent='Sign in'}}
 function logout(){token='';reports=[];document.getElementById('app').classList.add('hidden');document.getElementById('loginView').classList.remove('hidden');document.getElementById('password').value=''}
-async function loadReports(){try{let x=await api({action:'adminGetReports',token});if(!x.success){if((x.message||'').includes('session'))logout();throw Error(x.message||'Could not load reports')}reports=x.data.reports||[];fillFilters();updateDashboard();renderTable()}catch(e){alert(e.message)}}
+async function loadReports(){try{let x=await api({action:'adminGetReports',token});if(!x.success){if((x.message||'').includes('session'))logout();throw Error(x.message||'Could not load reports')}reports=x.data.reports||[];try{const mx=await api({action:'getMasterData'});if(mx&&mx.success&&mx.data){gpMasterData=mx.data.gpMaster||mx.data.gp||mx.data.GP||mx.data.gpMasterData||[];if(!Array.isArray(gpMasterData))gpMasterData=[];}}catch(_){gpMasterData=[];}fillFilters();updateDashboard();renderTable()}catch(e){alert(e.message)}}
 function val(r,k){return r[k]===undefined||r[k]===null?'':String(r[k])}
 function fillFilters(){let ds=[...new Set(reports.map(r=>val(r,'District')).filter(Boolean))].sort();let bs=[...new Set(reports.map(r=>val(r,'Branch Name')+'|'+val(r,'Sol ID')).filter(Boolean))].sort();districtFilter.innerHTML='<option value="">All Districts</option>'+ds.map(x=>`<option>${esc(x)}</option>`).join('');branchFilter.innerHTML='<option value="">All Branches</option>'+bs.map(x=>`<option value="${esc(x)}">${esc(x.replace('|',' — '))}</option>`).join('')}
-function updateDashboard(){totalReports.textContent=reports.length;branchCount.textContent=new Set(reports.map(r=>val(r,'Sol ID')).filter(Boolean)).size;gpCount.textContent=new Set(reports.map(r=>val(r,'Gram Panchayat (GP) Code')).filter(Boolean)).size;pmjdyTotal.textContent=reports.reduce((a,r)=>a+(Number(r['PMJDY Accounts Opened'])||0),0).toLocaleString();function agg(key){let m={};reports.forEach(r=>{let k=val(r,key)||'Not specified';m[k]=(m[k]||0)+1});return Object.entries(m).sort((a,b)=>b[1]-a[1])}branchAnalytics.innerHTML=miniTable(['Branch','Reports'],agg('Branch Name').map(x=>[x[0],x[1]]));districtAnalytics.innerHTML=miniTable(['District','Reports'],agg('District').map(x=>[x[0],x[1]]));let dm={};reports.forEach(r=>{let d=val(r,'District')||'Not specified';if(!dm[d])dm[d]={branches:new Set(),reports:0,pmjdy:0,pmjjby:0,pmsby:0,apy:0};let a=dm[d];a.branches.add(val(r,'Sol ID'));a.reports++;a.pmjdy+=Number(r['PMJDY Accounts Opened'])||0;a.pmjjby+=Number(r['PMJJBY En enrolments'])||Number(r['PMJJBY Enrolments'])||0;a.pmsby+=Number(r['PMSBY Enrolments'])||0;a.apy+=Number(r['APY Subscriptions'])||0});let drows=Object.entries(dm).sort((a,b)=>b[1].reports-a[1].reports).map(([d,a])=>[d,a.branches.size,a.reports,a.pmjdy.toLocaleString(),a.pmjjby.toLocaleString(),a.pmsby.toLocaleString(),a.apy.toLocaleString()]);districtPerformance.innerHTML=miniTable(['District','Branches','Camp Reports','PMJDY Accounts','PMJJBY Enrolments','PMSBY Enrolments','APY Subscriptions'],drows)}
-function miniTable(h,rows){return '<table><thead><tr>'+h.map(x=>'<th>'+esc(x)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+r.map(x=>'<td>'+esc(String(x))+'</td>').join('')+'</tr>').join('')+'</tbody></table>'}
+function updateDashboard(){
+  totalReports.textContent=reports.length;
+  branchCount.textContent=new Set(reports.map(r=>val(r,'Sol ID')).filter(Boolean)).size;
+  gpCount.textContent=reports.length; // Each conducted camp counts as one GP covered as requested.
+  pmjdyTotal.textContent=reports.reduce((a,r)=>a+(Number(r['PMJDY Accounts Opened'])||0),0).toLocaleString();
+
+  // GP sheet master: one GP row = one camp allotted for that district.
+  const districtNameFromGP=row=>{
+    if(Array.isArray(row)) return String(row[0]||'').trim();
+    return String(row.District||row.district||row['District Name']||row['DISTRICT']||'').trim();
+  };
+  const allotted={};
+  gpMasterData.forEach(row=>{const d=districtNameFromGP(row);if(d)allotted[d]=(allotted[d]||0)+1;});
+
+  // Branch-wise: count camp reports, with Branch Name and SOL ID separate.
+  const branchMap={};
+  reports.forEach(r=>{const branch=val(r,'Branch Name')||'Not specified',sol=val(r,'Sol ID')||'Not specified',key=branch+'||'+sol;if(!branchMap[key])branchMap[key]={branch,sol,camps:0};branchMap[key].camps++;});
+  const branchRows=Object.values(branchMap).sort((a,b)=>a.branch.localeCompare(b.branch)||a.sol.localeCompare(b.sol)).map(a=>[a.branch,a.sol,a.camps]);
+  branchRows.push(['GRAND TOTAL','',reports.length]);
+  branchAnalytics.innerHTML=miniTable(['Branch Name','SOL ID','Camps'],branchRows);
+
+  // Union districts from GP allocation and actual camp reporting.
+  const districts=new Set([...Object.keys(allotted),...reports.map(r=>val(r,'District')).filter(Boolean)]);
+  const dm={};
+  districts.forEach(d=>dm[d]={allotted:allotted[d]||0,camps:0,branches:new Set(),bc:0,pmjdy:0,pmjjby:0,pmsby:0,apy:0});
+  reports.forEach(r=>{
+    const d=val(r,'District')||'Not specified';
+    if(!dm[d])dm[d]={allotted:allotted[d]||0,camps:0,branches:new Set(),bc:0,pmjdy:0,pmjjby:0,pmsby:0,apy:0};
+    const a=dm[d];a.camps++;
+    const sol=val(r,'Sol ID');if(sol)a.branches.add(sol);
+    a.bc+=Number(r['No OF BC Participated'])||0;
+    a.pmjdy+=Number(r['PMJDY Accounts Opened'])||0;
+    a.pmjjby+=Number(r['PMJJBY En enrolments'])||Number(r['PMJJBY Enrolments'])||0;
+    a.pmsby+=Number(r['PMSBY Enrolments'])||0;
+    a.apy+=Number(r['APY Subscriptions'])||0;
+  });
+  const ordered=Object.entries(dm).sort((a,b)=>a[0].localeCompare(b[0]));
+  const districtRows=ordered.map(([d,a])=>[d,a.allotted,a.camps,a.branches.size,a.bc,a.camps]);
+  const totalAllotted=Object.values(allotted).reduce((n,v)=>n+v,0);
+  const totalBranches=new Set(reports.map(r=>val(r,'Sol ID')).filter(Boolean)).size;
+  const totalBC=reports.reduce((n,r)=>n+(Number(r['No OF BC Participated'])||0),0);
+  districtRows.push(['GRAND TOTAL',totalAllotted,reports.length,totalBranches,totalBC,reports.length]);
+  districtAnalytics.innerHTML=miniTable(['District','Camps Allotted','Camps Conducted','Branches Participated','BCs Participated','GPs Covered'],districtRows);
+
+  // District-wise performance includes camp allocation/reporting metrics plus scheme totals.
+  const drows=ordered.map(([d,a])=>[d,a.allotted,a.camps,a.branches.size,a.bc,a.camps,a.pmjdy.toLocaleString(),a.pmjjby.toLocaleString(),a.pmsby.toLocaleString(),a.apy.toLocaleString()]);
+  drows.push(['GRAND TOTAL',totalAllotted,reports.length,totalBranches,totalBC,reports.length,
+    reports.reduce((n,r)=>n+(Number(r['PMJDY Accounts Opened'])||0),0).toLocaleString(),
+    reports.reduce((n,r)=>n+(Number(r['PMJJBY En enrolments'])||Number(r['PMJJBY Enrolments'])||0),0).toLocaleString(),
+    reports.reduce((n,r)=>n+(Number(r['PMSBY Enrolments'])||0),0).toLocaleString(),
+    reports.reduce((n,r)=>n+(Number(r['APY Subscriptions'])||0),0).toLocaleString()]);
+  districtPerformance.innerHTML=miniTable(['District','Camps Allotted','Camps Conducted','Branches Participated','BCs Participated','GPs Covered','PMJDY Accounts','PMJJBY Enrolments','PMSBY Enrolments','APY Subscriptions'],drows);
+}
+function miniTable(h,rows){return '<table><thead><tr>'+h.map(x=>'<th>'+esc(x)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+r.map((x,i)=>'<td data-label="'+esc(h[i]||'')+'">'+esc(String(x))+'</td>').join('')+'</tr>').join('')+'</tbody></table>'}
 function showDashboard(){dashboard.classList.remove('hidden');reportsSection.classList.add('hidden')}function showReports(){dashboard.classList.add('hidden');reportsSection.classList.remove('hidden');renderTable()}function setActive(el){}
-function renderTable(){let q=search.value.toLowerCase(),d=districtFilter.value,b=branchFilter.value,date=dateFilter.value;filtered=reports.filter(r=>(!q||['Branch Name','Sol ID','Gram Panchayat (GP) Name','Gram Panchayat (GP) Code','Block Name'].some(k=>val(r,k).toLowerCase().includes(q)))&&(!d||val(r,'District')===d)&&(!b||(val(r,'Branch Name')+'|'+val(r,'Sol ID'))===b)&&(!date||val(r,'Camp Date').slice(0,10)===date));resultCount.textContent=filtered.length+' reports';let visible=['Camp Date','Sol ID','Branch Name','District','Block Name','Gram Panchayat (GP) Name','PMJDY Accounts Opened','PMJJBY Enrolments','PMSBY Enrolments','APY Subscriptions'];tableHead.innerHTML='<tr>'+visible.map(k=>'<th>'+esc(k)+'</th>').join('')+'<th>Actions</th></tr>';tableBody.innerHTML=filtered.map((r,i)=>'<tr>'+visible.map(k=>'<td data-label="'+esc(k)+'">'+esc(val(r,k))+'</td>').join('')+'<td data-label="Actions"><div class="actions"><button class="small" onclick="editReport('+i+')">Edit</button><button class="small danger" onclick="deleteReport('+i+')">Delete</button></div></td></tr>').join('')}
+function renderTable(){let q=search.value.toLowerCase(),d=districtFilter.value,b=branchFilter.value,date=dateFilter.value;filtered=reports.filter(r=>(!q||['Branch Name','Sol ID','Gram Panchayat (GP) Name','Gram Panchayat (GP) Code','Block Name'].some(k=>val(r,k).toLowerCase().includes(q)))&&(!d||val(r,'District')===d)&&(!b||(val(r,'Branch Name')+'|'+val(r,'Sol ID'))===b)&&(!date||val(r,'Camp Date').slice(0,10)===date));resultCount.textContent=filtered.length+' camps';let visible=['Camp Date','Sol ID','Branch Name','District','Block Name','Gram Panchayat (GP) Name','PMJDY Accounts Opened','PMJJBY Enrolments','PMSBY Enrolments','APY Subscriptions'];tableHead.innerHTML='<tr>'+visible.map(k=>'<th>'+esc(k)+'</th>').join('')+'<th>Actions</th></tr>';tableBody.innerHTML=filtered.map((r,i)=>'<tr>'+visible.map(k=>'<td data-label="'+esc(k)+'">'+esc(val(r,k))+'</td>').join('')+'<td data-label="Actions"><div class="actions"><button class="small" onclick="editReport('+i+')">Edit</button><button class="small danger" onclick="deleteReport('+i+')">Delete</button></div></td></tr>').join('')}
 function editReport(i){editing=filtered[i];editFields.innerHTML='';HEADERS.forEach(h=>{if(['Update date','photo_link'].includes(h))return;let div=document.createElement('div'),lab=document.createElement('label'),inp=document.createElement('input');lab.textContent=h;inp.dataset.header=h;inp.value=val(editing,h);if(h==='Camp Date')inp.type='date';div.append(lab,inp);editFields.append(div)});editModal.classList.remove('hidden')}
 function closeModal(){editModal.classList.add('hidden');editing=null}
 async function saveEdit(){let payload={};editFields.querySelectorAll('input').forEach(i=>payload[i.dataset.header]=i.value);payload['Gram Panchayat (GP) Code']=editing['Gram Panchayat (GP) Code'];payload.gpCode=payload['Gram Panchayat (GP) Code'];let btn=saveBtn;btn.disabled=true;editMsg.textContent='Saving...';try{let x=await api({action:'adminUpdateReport',token,payload,originalGpCode:val(editing,'Gram Panchayat (GP) Code')});if(!x.success)throw Error(x.message||'Update failed');closeModal();await loadReports();alert('Report updated successfully')}catch(e){editMsg.textContent=e.message}finally{btn.disabled=false}}
