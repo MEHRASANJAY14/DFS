@@ -137,17 +137,18 @@ function val(r,k){return r[k]===undefined||r[k]===null?'':String(r[k])}
 function fillFilters(){let ds=[...new Set(reports.map(r=>val(r,'District')).filter(Boolean))].sort();let bs=[...new Set(reports.map(r=>val(r,'Branch Name')+'|'+val(r,'Sol ID')).filter(Boolean))].sort();districtFilter.innerHTML='<option value="">All Districts</option>'+ds.map(x=>`<option>${esc(x)}</option>`).join('');branchFilter.innerHTML='<option value="">All Branches</option>'+bs.map(x=>`<option value="${esc(x)}">${esc(x.replace('|',' — '))}</option>`).join('')}
 function updateDashboard(){
   totalReports.textContent=reports.length;
-  const totalAllottedCard=Object.values(gpMasterData.reduce((acc,row)=>{const d=districtNameFromGP(row);if(d)acc[d]=(acc[d]||0)+1;return acc;},{})).reduce((n,v)=>n+v,0);
+  // Define helper before first use to avoid temporal-dead-zone ReferenceError.
+  const districtNameFromGP=row=>{
+    if(Array.isArray(row)) return String(row[0]||'').trim();
+    return String(row.District||row.district||row['District Name']||row['DISTRICT']||'').trim();
+  };
+  const totalAllottedCard=gpMasterData.reduce((n,row)=>n+(districtNameFromGP(row)?1:0),0);
   document.getElementById("totalAllottedCamps").textContent=totalAllottedCard.toLocaleString();
   branchCount.textContent=new Set(reports.map(r=>val(r,'Sol ID')).filter(Boolean)).size;
   gpCount.textContent=reports.length; // Each conducted camp counts as one GP covered as requested.
   pmjdyTotal.textContent=reports.reduce((a,r)=>a+(Number(r['PMJDY Accounts Opened'])||0),0).toLocaleString();
 
   // GP sheet master: one GP row = one camp allotted for that district.
-  const districtNameFromGP=row=>{
-    if(Array.isArray(row)) return String(row[0]||'').trim();
-    return String(row.District||row.district||row['District Name']||row['DISTRICT']||'').trim();
-  };
   const allotted={};
   gpMasterData.forEach(row=>{const d=districtNameFromGP(row);if(d)allotted[d]=(allotted[d]||0)+1;});
 
