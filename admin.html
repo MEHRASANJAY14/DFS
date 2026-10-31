@@ -10,7 +10,6 @@
 :root{
   --green:#075b35;
   --green2:#0b8b50;
-  --mint:#e9f7ef;
   --bg:#f4f8f6;
   --ink:#172820;
   --muted:#718078;
@@ -18,960 +17,82 @@
   --red:#c63838;
   --shadow:0 12px 34px rgba(10,55,32,.08);
 }
-
 *{box-sizing:border-box}
-
-html,body{
-  margin:0;
-  width:100%;
-  max-width:100%;
-  overflow-x:hidden;
-  -webkit-text-size-adjust:100%;
-  scroll-behavior:smooth;
-}
-
-body{
-  font:14px Inter,Segoe UI,Arial,sans-serif;
-  background:var(--bg);
-  color:var(--ink);
-  min-width:320px;
-}
-
+html,body{margin:0;width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%}
+body{font:14px Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink);min-width:320px}
 .hidden{display:none!important}
 
 .loginWrap{
-  min-height:100vh;
-  display:grid;
-  place-items:center;
-  padding:24px;
-  background:radial-gradient(circle at 15% 15%,#d8f3e3,transparent 35%),
-             linear-gradient(135deg,#f6fbf8,#eaf4ee);
+  min-height:100vh;display:grid;place-items:center;padding:24px;
+  background:radial-gradient(circle at 15% 15%,#d8f3e3,transparent 35%),linear-gradient(135deg,#f6fbf8,#eaf4ee)
 }
-
 .login{
-  background:#fff;
-  padding:38px;
-  border-radius:24px;
-  box-shadow:0 24px 70px #063d2420;
-  max-width:420px;
-  width:100%;
-  border:1px solid #ffffff;
+  background:#fff;padding:38px;border-radius:24px;
+  box-shadow:0 24px 70px #063d2420;max-width:420px;width:100%;border:1px solid #fff
 }
-
 .logo{
-  background:linear-gradient(135deg,var(--green),var(--green2));
-  color:white;
-  padding:18px 22px;
-  font-weight:800;
-  font-size:16px;
-  letter-spacing:1px;
-  border-radius:14px;
-  text-align:center;
+  background:linear-gradient(135deg,var(--green),var(--green2));color:white;
+  padding:18px 22px;font-weight:800;font-size:16px;letter-spacing:1px;border-radius:14px;text-align:center
 }
-
-.login h2{
-  margin:25px 0 8px;
-  color:var(--green);
-  font-size:26px;
-}
-
-.login p{
-  color:var(--muted);
-  line-height:1.5;
-}
-
-label{
-  display:block;
-  font-weight:700;
-  margin:13px 0 7px;
-  color:#34483b;
-}
-
+.login h2{margin:25px 0 8px;color:var(--green);font-size:26px}
+.login p{color:var(--muted);line-height:1.5}
+label{display:block;font-weight:700;margin:13px 0 7px;color:#34483b}
 input,select{
-  width:100%;
-  padding:12px 13px;
-  border:1px solid #d3e0d7;
-  border-radius:10px;
-  background:#fff;
-  font:inherit;
-  outline:none;
-  max-width:100%;
-  min-width:0;
+  width:100%;padding:12px 13px;border:1px solid #d3e0d7;border-radius:10px;
+  background:#fff;font:inherit;outline:none;max-width:100%;min-width:0
 }
-
-input:focus,select:focus{
-  border-color:#0b8b50;
-  box-shadow:0 0 0 3px #0b8b5018;
-}
-
+input:focus,select:focus{border-color:#0b8b50;box-shadow:0 0 0 3px #0b8b5018}
 button{
-  border:0;
-  border-radius:10px;
-  padding:11px 16px;
-  background:linear-gradient(135deg,var(--green),var(--green2));
-  color:#fff;
-  font-weight:700;
-  cursor:pointer;
-  transition:.18s;
-  box-shadow:0 4px 12px #075b3520;
-  min-height:42px;
-  touch-action:manipulation;
+  border:0;border-radius:10px;padding:11px 16px;
+  background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;
+  font-weight:700;cursor:pointer;transition:.18s;box-shadow:0 4px 12px #075b3520;
+  min-height:42px;touch-action:manipulation
 }
-
-button:hover{
-  transform:translateY(-1px);
-  filter:brightness(1.05);
-}
-
-button.secondary{
-  background:#eaf4ee;
-  color:var(--green);
-  box-shadow:none;
-}
-
+button:hover{transform:translateY(-1px);filter:brightness(1.05)}
+button.secondary{background:#eaf4ee;color:var(--green);box-shadow:none}
 button.danger{background:#c63838}
-
-button:disabled{
-  opacity:.5;
-  cursor:wait;
-  transform:none;
-}
-
-.layout{
-  display:block;
-  min-height:100vh;
-}
-
+button:disabled{opacity:.5;cursor:wait;transform:none}
+.layout{display:block;min-height:100vh}
 .sidebar{display:none}
-
-.sidebar h3{
-  margin:10px 8px 32px;
-  font-size:19px;
-  letter-spacing:.4px;
-}
-
-.sidebar button{
-  width:100%;
-  text-align:left;
-  margin:6px 0;
-  background:transparent;
-  box-shadow:none;
-  color:#e4f4e9;
-  padding:13px 14px;
-}
-
-.sidebar button.active,
-.sidebar button:hover{
-  background:#ffffff20;
-  color:#fff;
-}
-
-.main{
-  padding:clamp(14px,3vw,34px);
-  width:100%;
-  max-width:1600px;
-  margin:0 auto;
-  min-width:0;
-}
-
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-}
-
-.top h2{
-  font-size:27px;
-  letter-spacing:-.5px;
-}
-
-.cards{
-  display:grid;
-  grid-template-columns:repeat(5,minmax(140px,1fr));
-  gap:16px;
-  margin:24px 0;
-}
-
-.card{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:20px;
-  box-shadow:var(--shadow);
-  min-width:0;
-  overflow:hidden;
-}
-
-.card .num{
-  font-size:32px;
-  font-weight:800;
-  color:var(--green);
-  margin-top:10px;
-}
-
+.main{padding:clamp(14px,3vw,34px);width:100%;max-width:1600px;margin:0 auto;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.top h2{font-size:27px;letter-spacing:-.5px}
+.cards{display:grid;grid-template-columns:repeat(5,minmax(140px,1fr));gap:16px;margin:24px 0}
+.card{background:white;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow);min-width:0;overflow:hidden}
+.card .num{font-size:32px;font-weight:800;color:var(--green);margin-top:10px}
 .filters{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(130px,1fr));
-  gap:12px;
-  background:white;
-  padding:18px;
-  border:1px solid var(--line);
-  border-radius:16px;
-  margin-bottom:16px;
-  box-shadow:var(--shadow);
+  display:grid;grid-template-columns:repeat(4,minmax(130px,1fr));gap:12px;
+  background:white;padding:18px;border:1px solid var(--line);border-radius:16px;margin-bottom:16px;box-shadow:var(--shadow)
 }
-
-.tableWrap{
-  overflow-x:auto;
-  overflow-y:visible;
-  background:white;
-  border:1px solid var(--line);
-  border-radius:16px;
-  box-shadow:var(--shadow);
-  max-width:100%;
-  -webkit-overflow-scrolling:touch;
-}
-
-table{
-  border-collapse:collapse;
-  width:100%;
-  white-space:nowrap;
-}
-
-th,td{
-  padding:12px 14px;
-  border-bottom:1px solid #edf2ee;
-  text-align:left;
-}
-
-th{
-  background:#dceee3;
-  color:#103d27;
-  position:sticky;
-  top:0;
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:.35px;
-  font-weight:900;
-  border-bottom:2px solid #075b35;
-}
-
-.card table thead th{font-weight:900}
-
+.tableWrap{overflow-x:auto;overflow-y:visible;background:white;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);max-width:100%;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;white-space:nowrap}
+th,td{padding:12px 14px;border-bottom:1px solid #edf2ee;text-align:left}
+th{background:#dceee3;color:#103d27;position:sticky;top:0;font-size:12px;text-transform:uppercase;letter-spacing:.35px;font-weight:900;border-bottom:2px solid #075b35}
 tr:hover td{background:#f7fbf8}
+tr.grand-total td{background:#173b2b!important;color:#fff!important;font-weight:900!important;border-color:#315b45!important}
+tr.grand-total:hover td{background:#173b2b!important}
+.actions{display:flex;gap:6px}
+.small{padding:7px 10px;font-size:12px}
+.status{margin:12px 0;color:var(--red);white-space:pre-wrap;overflow-wrap:anywhere}
+.modal{position:fixed;inset:0;background:#09271899;backdrop-filter:blur(4px);display:grid;place-items:center;padding:15px;z-index:10}
+.modalbox{background:white;border-radius:18px;width:min(900px,100%);max-height:90vh;overflow:auto;padding:24px;box-shadow:0 25px 80px #0003;overscroll-behavior:contain}
+.formgrid{display:grid;grid-template-columns:repeat(3,minmax(150px,1fr));gap:12px}
+.modalhead{display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:white;padding-bottom:12px}
+.footer{color:var(--muted);margin-top:22px;font-size:12px;text-align:center}
 
-.card table tr.grand-total td,
-.card table tr.grand-total td:before{
-  background:#173b2b!important;
-  color:#fff!important;
-  font-weight:900!important;
-  border-color:#315b45!important;
-}
-
-.card table tr.grand-total td{
-  padding-top:14px;
-  padding-bottom:14px;
-}
-
-.card table tr.grand-total:hover td{
-  background:#173b2b!important;
-}
-
-/* Grand Total: all analytics tables */
-tr.grand-total td{
-  background:#173b2b!important;
-  color:#fff!important;
-  font-weight:900!important;
-  border-color:#315b45!important;
-}
-
-.actions{
-  display:flex;
-  gap:6px;
-}
-
-.small{
-  padding:7px 10px;
-  font-size:12px;
-}
-
-.status{
-  margin:12px 0;
-  color:var(--red);
-}
-
-.modal{
-  position:fixed;
-  inset:0;
-  background:#09271899;
-  backdrop-filter:blur(4px);
-  display:grid;
-  place-items:center;
-  padding:15px;
-  z-index:10;
-}
-
-.modalbox{
-  background:white;
-  border-radius:18px;
-  width:min(900px,100%);
-  max-height:90vh;
-  overflow:auto;
-  padding:24px;
-  box-shadow:0 25px 80px #0003;
-  overscroll-behavior:contain;
-}
-
-.formgrid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(150px,1fr));
-  gap:12px;
-}
-
-.modalhead{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  position:sticky;
-  top:0;
-  background:white;
-  padding-bottom:12px;
-}
-
-.footer{
-  color:var(--muted);
-  margin-top:22px;
-  font-size:12px;
-  text-align:center;
-}
-
-/* Tablet */
 @media(max-width:950px){
-  .main{
-    width:100%;
-    padding:18px;
-  }
-
-  .cards{
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:12px;
-  }
-
-  .filters{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-
-  .formgrid{
-    grid-template-columns:1fr 1fr;
-  }
+  .main{width:100%;padding:18px}
+  .cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  .filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .formgrid{grid-template-columns:1fr 1fr}
 }
 
-/* Mobile */
-@media(max-width:600px){
-
-  body{font-size:14px}
-
-  .main{
-    width:100%;
-    max-width:100%;
-    padding:12px!important;
-  }
-
-  /* Header */
-  .top{
-    display:flex;
-    flex-direction:column;
-    align-items:stretch;
-    gap:12px;
-  }
-
-  .top h2{
-    font-size:21px;
-    line-height:1.3;
-    overflow-wrap:anywhere;
-  }
-
-  .top p{
-    font-size:12px;
-    max-width:100%;
-  }
-
-  /* Header buttons */
-  .top>div:last-child{
-    display:grid!important;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:8px!important;
-    width:100%;
-  }
-
-  .top>div:last-child button{
-    width:100%;
-    min-width:0;
-    min-height:44px;
-    padding:9px 7px;
-    font-size:12px;
-    white-space:normal;
-  }
-
-  /* Dashboard cards */
-  .cards{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr))!important;
-    gap:9px;
-    margin:14px 0;
-  }
-
-  .card{
-    padding:12px!important;
-    border-radius:12px;
-    min-width:0;
-  }
-
-  .card strong{
-    font-size:13px;
-    line-height:1.4;
-    display:block;
-  }
-
-  .card h3{
-    font-size:17px;
-    line-height:1.35;
-    margin-top:5px;
-  }
-
-  .card p{
-    font-size:12px;
-    line-height:1.45;
-  }
-
-  .card .num{
-    font-size:clamp(20px,6vw,28px)!important;
-    line-height:1.2;
-    overflow-wrap:anywhere;
-  }
-
-  /* Analytics: normal desktop-style tables with horizontal scroll */
-  #branchAnalytics,
-  #districtAnalytics,
-  #districtPerformance{
-    width:100%;
-    overflow-x:auto!important;
-    overflow-y:visible!important;
-    -webkit-overflow-scrolling:touch;
-  }
-
-  #branchAnalytics table,
-  #districtAnalytics table,
-  #districtPerformance table{
-    display:table!important;
-    width:max-content!important;
-    min-width:760px!important;
-    max-width:none!important;
-    border-collapse:collapse;
-  }
-
-  #branchAnalytics thead,
-  #districtAnalytics thead,
-  #districtPerformance thead{
-    display:table-header-group!important;
-  }
-
-  #branchAnalytics tbody,
-  #districtAnalytics tbody,
-  #districtPerformance tbody{
-    display:table-row-group!important;
-  }
-
-  #branchAnalytics tr,
-  #districtAnalytics tr,
-  #districtPerformance tr{
-    display:table-row!important;
-    padding:0!important;
-    border:0!important;
-    border-radius:0!important;
-    box-shadow:none!important;
-    background:transparent!important;
-  }
-
-  #branchAnalytics th,
-  #districtAnalytics th,
-  #districtPerformance th{
-    display:table-cell!important;
-    position:static!important;
-    padding:10px!important;
-    font-size:11px;
-    white-space:nowrap!important;
-  }
-
-  #branchAnalytics td,
-  #districtAnalytics td,
-  #districtPerformance td{
-    display:table-cell!important;
-    padding:10px!important;
-    text-align:left!important;
-    white-space:nowrap!important;
-    border-bottom:1px solid #e7eee9;
-  }
-
-  #branchAnalytics td:before,
-  #districtAnalytics td:before,
-  #districtPerformance td:before{
-    content:none!important;
-    display:none!important;
-  }
-
-  #branchAnalytics tr.grand-total td,
-  #districtAnalytics tr.grand-total td,
-  #districtPerformance tr.grand-total td{
-    background:#173b2b!important;
-    color:white!important;
-    font-weight:900!important;
-  }
-
-  /* All Reports table */
-  .tableWrap{
-    overflow-x:auto!important;
-    overflow-y:visible!important;
-    max-width:100%;
-  }
-
-  .tableWrap table{
-    display:table!important;
-    width:max-content!important;
-    min-width:760px!important;
-  }
-
-  .tableWrap thead{
-    display:table-header-group!important;
-  }
-
-  .tableWrap tbody{
-    display:table-row-group!important;
-  }
-
-  .tableWrap tr{
-    display:table-row!important;
-    padding:0!important;
-    border:0!important;
-    border-radius:0!important;
-    box-shadow:none!important;
-  }
-
-  .tableWrap th,
-  .tableWrap td{
-    display:table-cell!important;
-    white-space:nowrap!important;
-    padding:10px!important;
-  }
-
-  .tableWrap td:before{
-    content:none!important;
-    display:none!important;
-  }
-
-  /* Filters */
-  .filters{
-    grid-template-columns:1fr!important;
-    gap:9px;
-    padding:12px;
-    border-radius:12px;
-  }
-
-  label{margin:8px 0 5px}
-
-  input,select{
-    padding:11px;
-    font-size:16px;
-    min-height:42px;
-  }
-
-  /* Reports section */
-  #reportsSection .top{
-    flex-direction:row;
-    flex-wrap:wrap;
-    align-items:center;
-    justify-content:space-between;
-  }
-
-  #reportsSection .top button{
-    width:auto;
-  }
-
-  /* Modal */
-  .modal{
-    padding:8px;
-    place-items:center;
-  }
-
-  .modalbox{
-    width:100%;
-    max-height:95dvh;
-    padding:14px!important;
-    border-radius:14px;
-  }
-
-  .formgrid{
-    grid-template-columns:1fr!important;
-    gap:5px;
-  }
-
-  .modalhead{
-    gap:8px;
-  }
-
-  .modalhead h3{font-size:17px}
-
-  .actions{
-    justify-content:flex-end;
-    flex-wrap:wrap;
-    gap:6px;
-  }
-
-  .small{
-    font-size:12px;
-    padding:8px 12px;
-  }
-
-  .footer{
-    margin:16px 0;
-    font-size:11px;
-  }
-}
-
-/* Very small phones */
-@media(max-width:360px){
-
-  .cards{
-    grid-template-columns:1fr 1fr!important;
-    gap:7px;
-  }
-
-  .card{padding:9px!important}
-
-  .card .num{font-size:20px!important}
-
-  .top>div:last-child{
-    grid-template-columns:1fr!important;
-  }
-}
-</style>
-</head>
-
-<body>
-
-<div id="loginView" class="loginWrap">
-  <div class="login">
-    <div class="logo">DFS SATURATION CAMP</div>
-    <h2 style="margin-top:20px">Admin Login</h2>
-    <p style="color:#667">Authorized administration only</p>
-
-    <input id="username" autocomplete="username" value="admin" type="hidden">
-
-    <label>Password</label>
-    <input id="password" type="password" autocomplete="current-password">
-
-    <button style="width:100%;margin-top:18px" onclick="login()" id="loginBtn">
-      Sign in
-    </button>
-
-    <div id="loginMsg" class="status"></div>
-  </div>
-</div>
-
-<div id="app" class="layout hidden">
-
-  <aside class="sidebar">
-    <h3>DFS Admin</h3>
-    <button class="active" onclick="showDashboard(this)">Dashboard</button>
-    <button onclick="showReports(this)">All Reports</button>
-    <button onclick="exportCSV()">Excel Export</button>
-    <button onclick="logout()">Logout</button>
-  </aside>
-
-  <main class="main">
-
-    <div class="top">
-      <div>
-        <h2 style="margin:0">Admin Dashboard</h2>
-        <p style="color:var(--muted);margin:6px 0">
-          DFS Saturation Camp Reporting & Analytics
-        </p>
-      </div>
-
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="secondary" onclick="showDashboard()">Dashboard Overview</button>
-        <button onclick="showReports()">View All Camp Reports</button>
-        <button class="secondary" onclick="exportCSV()">Export Report Data</button>
-        <button class="secondary" onclick="loadReports()">↻ Refresh Latest Data</button>
-        <button class="danger" onclick="logout()">Logout</button>
-      </div>
-    </div>
-
-    <section id="dashboard">
-
-      <p style="color:var(--muted);line-height:1.65;margin:12px 0 20px">
-        This dashboard provides a consolidated overview of DFS Saturation Camp reporting across branches. Use the summary indicators to review reporting coverage and the branch-wise and district-wise breakdowns to identify progress and follow-up requirements.
-      </p>
-
-      <div class="cards">
-
-        <div class="card">
-          <strong>Total Camps Allotted</strong>
-          <p style="color:var(--muted);margin:6px 0">
-            Total Gram Panchayat camps allotted as per GP Master.
-          </p>
-          <div class="num" id="totalAllottedCamps">0</div>
-        </div>
-
-        <div class="card">
-          <strong>Total Camps Submitted</strong>
-          <p style="color:var(--muted);margin:6px 0">
-            Total camps reported by branches in the portal.
-          </p>
-          <div class="num" id="totalReports">0</div>
-        </div>
-
-        <div class="card">
-          <strong>Branches Reporting</strong>
-          <p style="color:var(--muted);margin:6px 0">
-            Unique branches that have submitted camp reports.
-          </p>
-          <div class="num" id="branchCount">0</div>
-        </div>
-
-        <div class="card">
-          <strong>Gram Panchayats Covered</strong>
-          <p style="color:var(--muted);margin:6px 0">
-            Unique GPs represented in submitted reports.
-          </p>
-          <div class="num" id="gpCount">0</div>
-        </div>
-
-        <div class="card">
-          <strong>PMJDY Accounts Opened</strong>
-          <p style="color:var(--muted);margin:6px 0">
-            Total PMJDY accounts reported opened through camps.
-          </p>
-          <div class="num" id="pmjdyTotal">0</div>
-        </div>
-
-      </div>
-
-      <div class="card">
-        <h3>Branch-wise Reporting Summary</h3>
-        <p style="color:var(--muted)">
-          Compare the number of camp reports received from each branch.
-        </p>
-        <div id="branchAnalytics">Loading...</div>
-      </div>
-
-      <div class="card" style="margin-top:14px">
-        <h3>District-wise Reporting Summary</h3>
-        <p style="color:var(--muted)">
-          Review submissions by district to understand reporting distribution.
-        </p>
-        <div id="districtAnalytics">Loading...</div>
-      </div>
-
-      <div class="card" style="margin-top:14px">
-        <h3>District-wise Performance Report</h3>
-        <p style="color:var(--muted)">
-          District-level consolidated figures based on submitted camp reports. Figures are summed from the submitted branch reports.
-        </p>
-        <div id="districtPerformance">Loading...</div>
-
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
-          <button class="secondary" onclick="exportDistrictCSV()">Export District-wise Summary (CSV)</button>
-          <button class="secondary" onclick="showReports()">Open District-filtered Camp Reports</button>
-        </div>
-      </div>
-
-    </section>
-
-    <section id="reportsSection" class="hidden">
-
-      <h2>All Camp Reports</h2>
-
-      <p style="color:var(--muted);line-height:1.6">
-        Search and filter submitted camp reports by branch, district, or camp date. Select <b>Edit</b> to correct a report or <b>Delete</b> to remove a submission. Export the filtered results for offline review.
-      </p>
-
-      <div class="filters">
-
-        <div>
-          <label>Search</label>
-          <input id="search" placeholder="Branch, SOL, GP..." oninput="renderTable()">
-        </div>
-
-        <div>
-          <label>District</label>
-          <select id="districtFilter" onchange="renderTable()">
-            <option value="">All Districts</option>
-          </select>
-        </div>
-
-        <div>
-          <label>Branch</label>
-          <select id="branchFilter" onchange="renderTable()">
-            <option value="">All Branches</option>
-          </select>
-        </div>
-
-        <div>
-          <label>Camp Date</label>
-          <input id="dateFilter" type="date" onchange="renderTable()">
-        </div>
-
-      </div>
-
-      <div class="top" style="margin-bottom:10px">
-        <span id="resultCount">0 reports</span>
-        <button onclick="exportCSV()">⬇ Export Excel (CSV)</button>
-      </div>
-
-      <div class="tableWrap">
-        <table>
-          <thead id="tableHead"></thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-      </div>
-
-    </section>
-
-    <div class="footer">DFS Saturation Camp Admin Portal</div>
-
-  </main>
-</div>
-
-<div id="editModal" class="modal hidden">
-  <div class="modalbox">
-    <div class="modalhead">
-      <h3>Edit Camp Report</h3>
-      <button class="secondary" onclick="closeModal()">Close</button>
-    </div>
-
-    <div id="editFields" class="formgrid"></div>
-    <p id="editMsg" class="status"></p>
-
-    <button onclick="saveEdit()" id="saveBtn">Save Changes</button>
-  </div>
-</div>
-
-<script>
-const API_URL='https://script.google.com/macros/s/AKfycbwHkmc9qul-GOuWTTTCKD3QKUdRLLcn9Xv7xKP-0kC46DHfJ6fO5rYnDWOEPoq09uz-/exec';
-
-const HEADERS=[
-'Camp Date','Sol ID','Branch Name','Block Code','Block Name',
-'Gram Panchayat (GP) Code','Gram Panchayat (GP) Name','Bank Name',
-'No OF BC Participated','PMJDY Applications Sourced','PMJDY Accounts Opened',
-'PMJDY Applications Sourced - PVTG','PMJDY Accounts Opened - PVTG',
-'Applications Received for Reactivation of Inoperative PMJDY Accounts',
-'Inoperative PMJDY Accounts Reactivated','PMJJBY Applications Sourced',
-'PMJJBY En enrolments','PMSBY Applications Sourced','PMSBY Enrolments',
-'APY Applications Sourced','APY Subscriptions',
-'Applications Received for Re-KYC of PMJDY Accounts',
-'PMJDY Accounts for which Re-KYC Completed',
-'Applications Received for Re-KYC of Other Savings Accounts',
-'Other Savings Accounts for which Re-KYC Completed',
-'Nomination Applications Received - PMJDY Accounts',
-'Nominations Registered - PMJDY Accounts',
-'Nomination Applications Received - Non-PMJDY Accounts',
-'Nominations Registered - Non-PMJDY Accounts',
-'Nomination Applications Received - Lockers',
-'Locker Nominations Registered',
-'KCC Applications Sourced for PM-Kisan Beneficiaries',
-'KCC Applications Sanctioned for PM-Kisan Beneficiaries',
-'CKYC ID Generation Applications Sourced','CKYC IDs Generated',
-'Number of DEAF Claims Settled for claim amounts less than ₹1,00,000',
-'Amount (in ₹) of DEAF Claims Settled for claim amounts less than ₹1,00,000',
-'Number of DEAF Claims Settled for claim amounts ₹1,00,000 or more',
-'Amount (in ₹) of DEAF Claims Settled for claim amounts ₹1,00,000 or more',
-'Update date','photo_link'
-];
-
-let token='',reports=[],filtered=[],editing=null,gpMasterData=[];
-
-async function api(body){
-  const r=await fetch(API_URL,{
-    method:'POST',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify(body)
-  });
-  return r.json();
-}
-
-async function login(){
-  let b=document.getElementById('loginBtn');
-  b.disabled=true;
-  b.textContent='Signing in...';
-
-  try{
-    let x=await api({
-      action:'adminLogin',
-      username:document.getElementById('username').value,
-      password:document.getElementById('password').value
-    });
-
-    if(!x.success)throw Error(x.message||'Login failed');
-
-    token=x.data.token;
-
-    document.getElementById('loginView').classList.add('hidden');
-    documreportsSection .top{align-items:flex-start;flex-direction:column}
- #reportsSection .top button{width:100%}
-}
-@media(min-width:701px) and (max-width:1024px){
- .top>div:last-child{gap:8px!important}
- .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
- .filters{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-
-/* Clean mobile layout overrides */
-@media(max-width:700px){
-  body{font-size:14px;overflow-x:hidden}
-  .main{padding:10px!important;width:100%;max-width:100%}
-  .top{display:flex;flex-direction:column;align-items:stretch;gap:12px}
-  .top h2{font-size:22px}
-  .top>div:last-child{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important;width:100%}
-  .top>div:last-child button{width:100%;min-width:0;white-space:normal;font-size:12px;padding:10px 7px}
-  .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px;margin:12px 0}
-  .card{padding:12px!important;border-radius:12px;min-width:0}
-  .card strong{font-size:13px;line-height:1.35;display:block}
-  .card p{font-size:12px;line-height:1.4}
-  .card .num{font-size:24px!important;line-height:1.2;overflow-wrap:anywhere}
-  #dashboard>.card{margin-top:10px!important}
-  /* Keep analytics tables as real tables and scroll horizontally, not broken into cramped cells */
-  #branchAnalytics,#districtAnalytics,#districtPerformance{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  #branchAnalytics table,#districtAnalytics table,#districtPerformance table{display:table!important;width:max-content!important;min-width:100%;max-width:none;border-collapse:collapse}
-  #branchAnalytics thead,#districtAnalytics thead,#districtPerformance thead{display:table-header-group!important}
-  #branchAnalytics tbody,#districtAnalytics tbody,#districtPerformance tbody{display:table-row-group!important}
-  #branchAnalytics tr,#districtAnalytics tr,#districtPerformance tr{display:table-row!important;border:0!important;border-radius:0!important;padding:0!important;box-shadow:none!important;background:transparent!important}
-  #branchAnalytics th,#districtAnalytics th,#districtPerformance th{display:table-cell!important;position:static!important;padding:9px 10px!important;font-size:11px;white-space:normal;max-width:150px}
-  #branchAnalytics td,#districtAnalytics td,#districtPerformance td{display:table-cell!important;padding:9px 10px!important;text-align:left!important;white-space:nowrap!important;border-bottom:1px solid #e7eee9}
-  #branchAnalytics td:before,#districtAnalytics td:before,#districtPerformance td:before{content:none!important;display:none!important}
-  #branchAnalytics tr.grand-total td,#districtAnalytics tr.grand-total td,#districtPerformance tr.grand-total td{background:#173b2b!important;color:white!important;font-weight:900!important}
-  .tableWrap{overflow-x:auto!important;overflow-y:visible!important}
-  .tableWrap table{min-width:700px!important}
-  .tableWrap thead{display:table-header-group!important}
-  .tableWrap tbody{display:table-row-group!important}
-  .tableWrap tr{display:table-row!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important}
-  .tableWrap th,.tableWrap td{display:table-cell!important;white-space:nowrap!important;padding:9px 10px!important}
-  .tableWrap td:before{content:none!important;display:none!important}
-  .filters{grid-template-columns:1fr!important}
-  .modalbox{padding:12px!important;width:100%;max-height:95dvh}
-  .formgrid{grid-template-columns:1fr!important}
-}
-@media(max-width:360px){.cards{grid-template-columns:1fr!important}.top>div:last-child{grid-template-columns:1fr!important}}
-
-
-/* Mobile: preserve the desktop layout; allow horizontal scrolling instead of stacking */
+/* Mobile: desktop-style layout with horizontal scrolling */
 @media(max-width:700px){
   html,body{min-width:1024px!important;width:1024px!important;overflow-x:auto!important}
   .main{width:100%!important;max-width:1600px!important;min-width:1000px!important;padding:18px!important;margin:0!important}
   .top{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;flex-wrap:wrap!important}
-  .top>div:last-child{display:flex!important;grid-template-columns:none!important;flex-direction:row!important;flex-wrap:wrap!important;width:auto!important;gap:10px!important}
+  .top>div:last-child{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;width:auto!important;gap:10px!important}
   .top>div:last-child button{width:auto!important;min-width:0!important;white-space:nowrap!important;font-size:14px!important;padding:11px 16px!important}
   .cards{display:grid!important;grid-template-columns:repeat(5,minmax(140px,1fr))!important;gap:16px!important;margin:24px 0!important}
   .card{padding:20px!important;border-radius:16px!important}
@@ -996,104 +117,933 @@ async function login(){
   .modalbox{width:min(900px,100%)!important;padding:24px!important}
   .formgrid{grid-template-columns:repeat(3,minmax(150px,1fr))!important}
 }
+</style>
+</head>
 
-</style></head><body>
-<div id="loginView" class="loginWrap"><div class="login"><div class="logo">DFS SATURATION CAMP</div><h2 style="margin-top:20px">Admin Login</h2><p style="color:#667">Authorized administration only</p><input id="username" autocomplete="username" value="admin" type="hidden"><label>Password</label><input id="password" type="password" autocomplete="current-password"><button style="width:100%;margin-top:18px" onclick="login()" id="loginBtn">Sign in</button><div id="loginMsg" class="status"></div></div></div>
-<div id="app" class="layout hidden"><aside class="sidebar"><h3>DFS Admin</h3><button class="active" onclick="showDashboard(this)">Dashboard</button><button onclick="showReports(this)">All Reports</button><button onclick="exportCSV()">Excel Export</button><button onclick="logout()">Logout</button></aside><main class="main"><div class="top"><div><h2 style="margin:0">Admin Dashboard</h2><p style="color:var(--muted);margin:6px 0">DFS Saturation Camp Reporting & Analytics</p></div><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="secondary" onclick="showDashboard()">Dashboard Overview</button><button onclick="showReports()">View All Camp Reports</button><button class="secondary" onclick="exportCSV()">Export Report Data</button><button class="secondary" onclick="loadReports()">↻ Refresh Latest Data</button><button class="danger" onclick="logout()">Logout</button></div></div>
-<section id="dashboard"><p style="color:var(--muted);line-height:1.65;margin:12px 0 20px">This dashboard provides a consolidated overview of DFS Saturation Camp reporting across branches. Use the summary indicators to review reporting coverage and the branch-wise and district-wise breakdowns to identify progress and follow-up requirements.</p><div class="cards"><div class="card"><strong>Total Camps Allotted</strong><p style="color:var(--muted);margin:6px 0">Total Gram Panchayat camps allotted as per GP Master.</p><div class="num" id="totalAllottedCamps">0</div></div><div class="card"><strong>Total Camps Submitted</strong><p style="color:var(--muted);margin:6px 0">Total camps reported by branches in the portal.</p><div class="num" id="totalReports">0</div></div><div class="card"><strong>Branches Reporting</strong><p style="color:var(--muted);margin:6px 0">Unique branches that have submitted camp reports.</p><div class="num" id="branchCount">0</div></div><div class="card"><strong>Gram Panchayats Covered</strong><p style="color:var(--muted);margin:6px 0">Unique GPs represented in submitted reports.</p><div class="num" id="gpCount">0</div></div><div class="card"><strong>PMJDY Accounts Opened</strong><p style="color:var(--muted);margin:6px 0">Total PMJDY accounts reported opened through camps.</p><div class="num" id="pmjdyTotal">0</div></div></div><div class="card"><h3>Branch-wise Reporting Summary</h3><p style="color:var(--muted)">Compare the number of camp reports received from each branch.</p><div id="branchAnalytics">Loading...</div></div><div class="card" style="margin-top:14px"><h3>District-wise Reporting Summary</h3><p style="color:var(--muted)">Review submissions by district to understand reporting distribution.</p><div id="districtAnalytics">Loading...</div></div><div class="card" style="margin-top:14px"><h3>District-wise Performance Report</h3><p style="color:var(--muted)">District-level consolidated figures based on submitted camp reports. Figures are summed from the submitted branch reports.</p><div id="districtPerformance">Loading...</div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><button class="secondary" onclick="exportDistrictCSV()">Export District-wise Summary (CSV)</button><button class="secondary" onclick="showReports()">Open District-filtered Camp Reports</button></div></div></section>
-<section id="reportsSection" class="hidden"><h2>All Camp Reports</h2><p style="color:var(--muted);line-height:1.6">Search and filter submitted camp reports by branch, district, or camp date. Select <b>Edit</b> to correct a report or <b>Delete</b> to remove a submission. Export the filtered results for offline review.</p><div class="filters"><div><label>Search</label><input id="search" placeholder="Branch, SOL, GP..." oninput="renderTable()"></div><div><label>District</label><select id="districtFilter" onchange="renderTable()"><option value="">All Districts</option></select></div><div><label>Branch</label><select id="branchFilter" onchange="renderTable()"><option value="">All Branches</option></select></div><div><label>Camp Date</label><input id="dateFilter" type="date" onchange="renderTable()"></div></div><div class="top" style="margin-bottom:10px"><span id="resultCount">0 reports</span><button onclick="exportCSV()">⬇ Export Excel (CSV)</button></div><div class="tableWrap"><table><thead id="tableHead"></thead><tbody id="tableBody"></tbody></table></div></section><div class="footer">DFS Saturation Camp Admin Portal</div></main></div>
-<div id="editModal" class="modal hidden"><div class="modalbox"><div class="modalhead"><h3>Edit Camp Report</h3><button class="secondary" onclick="closeModal()">Close</button></div><div id="editFields" class="formgrid"></div><p id="editMsg" class="status"></p><button onclick="saveEdit()" id="saveBtn">Save Changes</button></div></div>
+<body>
+
+<div id="loginView" class="loginWrap">
+  <div class="login">
+    <div class="logo">DFS SATURATION CAMP</div>
+    <h2 style="margin-top:20px">Admin Login</h2>
+    <p style="color:#667">Authorized administration only</p>
+
+    <input id="username" autocomplete="username" value="admin" type="hidden">
+
+    <label for="password">Password</label>
+    <input id="password" type="password" autocomplete="current-password">
+
+    <button style="width:100%;margin-top:18px" onclick="login()" id="loginBtn">
+      Sign in
+    </button>
+
+    <div id="loginMsg" class="status"></div>
+  </div>
+</div>
+
+<div id="app" class="layout hidden">
+  <aside class="sidebar">
+    <h3>DFS Admin</h3>
+    <button class="active" onclick="showDashboard(this)">Dashboard</button>
+    <button onclick="showReports(this)">All Reports</button>
+    <button onclick="exportCSV()">Excel Export</button>
+    <button onclick="logout()">Logout</button>
+  </aside>
+
+  <main class="main">
+    <div class="top">
+      <div>
+        <h2 style="margin:0">Admin Dashboard</h2>
+        <p style="color:var(--muted);margin:6px 0">DFS Saturation Camp Reporting & Analytics</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="secondary" onclick="showDashboard()">Dashboard Overview</button>
+        <button onclick="showReports()">View All Camp Reports</button>
+        <button class="secondary" onclick="exportCSV()">Export Report Data</button>
+        <button class="secondary" onclick="loadReports()">↻ Refresh Latest Data</button>
+        <button class="danger" onclick="logout()">Logout</button>
+      </div>
+    </div>
+
+    <section id="dashboard">
+      <p style="color:var(--muted);line-height:1.65;margin:12px 0 20px">
+        This dashboard provides a consolidated overview of DFS Saturation Camp reporting across branches. Use the summary indicators to review reporting coverage and the branch-wise and district-wise breakdowns to identify progress and follow-up requirements.
+      </p>
+
+      <div class="cards">
+        <div class="card">
+          <strong>Total Camps Allotted</strong>
+          <p style="color:var(--muted);margin:6px 0">Total Gram Panchayat camps allotted as per GP Master.</p>
+          <div class="num" id="totalAllottedCamps">0</div>
+        </div>
+        <div class="card">
+          <strong>Total Camps Submitted</strong>
+          <p style="color:var(--muted);margin:6px 0">Total camps reported by branches in the portal.</p>
+          <div class="num" id="totalReports">0</div>
+        </div>
+        <div class="card">
+          <strong>Branches Reporting</strong>
+          <p style="color:var(--muted);margin:6px 0">Unique branches that have submitted camp reports.</p>
+          <div class="num" id="branchCount">0</div>
+        </div>
+        <div class="card">
+          <strong>Gram Panchayats Covered</strong>
+          <p style="color:var(--muted);margin:6px 0">Unique GPs represented in submitted reports.</p>
+          <div class="num" id="gpCount">0</div>
+        </div>
+        <div class="card">
+          <strong>PMJDY Accounts Opened</strong>
+          <p style="color:var(--muted);margin:6px 0">Total PMJDY accounts reported opened through camps.</p>
+          <div class="num" id="pmjdyTotal">0</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Branch-wise Reporting Summary</h3>
+        <p style="color:var(--muted)">Compare the number of camp reports received from each branch.</p>
+        <div id="branchAnalytics">Loading...</div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h3>District-wise Reporting Summary</h3>
+        <p style="color:var(--muted)">Review submissions by district to understand reporting distribution.</p>
+        <div id="districtAnalytics">Loading...</div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h3>District-wise Performance Report</h3>
+        <p style="color:var(--muted)">District-level consolidated figures based on submitted camp reports. Figures are summed from the submitted branch reports.</p>
+        <div id="districtPerformance">Loading...</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+          <button class="secondary" onclick="exportDistrictCSV()">Export District-wise Summary (CSV)</button>
+          <button class="secondary" onclick="showReports()">Open District-filtered Camp Reports</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="reportsSection" class="hidden">
+      <h2>All Camp Reports</h2>
+      <p style="color:var(--muted);line-height:1.6">
+        Search and filter submitted camp reports by branch, district, or camp date. Select <b>Edit</b> to correct a report or <b>Delete</b> to remove a submission. Export the filtered results for offline review.
+      </p>
+
+      <div class="filters">
+        <div>
+          <label>Search</label>
+          <input id="search" placeholder="Branch, SOL, GP..." oninput="renderTable()">
+        </div>
+        <div>
+          <label>District</label>
+          <select id="districtFilter" onchange="renderTable()">
+            <option value="">All Districts</option>
+          </select>
+        </div>
+        <div>
+          <label>Branch</label>
+          <select id="branchFilter" onchange="renderTable()">
+            <option value="">All Branches</option>
+          </select>
+        </div>
+        <div>
+          <label>Camp Date</label>
+          <input id="dateFilter" type="date" onchange="renderTable()">
+        </div>
+      </div>
+
+      <div class="top" style="margin-bottom:10px">
+        <span id="resultCount">0 reports</span>
+        <button onclick="exportCSV()">⬇ Export Excel (CSV)</button>
+      </div>
+
+      <div class="tableWrap">
+        <table>
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="footer">DFS Saturation Camp Admin Portal</div>
+  </main>
+</div>
+
+<div id="editModal" class="modal hidden">
+  <div class="modalbox">
+    <div class="modalhead">
+      <h3>Edit Camp Report</h3>
+      <button class="secondary" onclick="closeModal()">Close</button>
+    </div>
+    <div id="editFields" class="formgrid"></div>
+    <p id="editMsg" class="status"></p>
+    <button onclick="saveEdit()" id="saveBtn">Save Changes</button>
+  </div>
+</div>
+
 <script>
-const API_URL='https://script.google.com/macros/s/AKfycbwHkmc9qul-GOuWTTTCKD3QKUdRLLcn9Xv7xKP-0kC46DHfJ6fO5rYnDWOEPoq09uz-/exec';
-const HEADERS=['Camp Date','Sol ID','Branch Name','Block Code','Block Name','Gram Panchayat (GP) Code','Gram Panchayat (GP) Name','Bank Name','No OF BC Participated','PMJDY Applications Sourced','PMJDY Accounts Opened','PMJDY Applications Sourced - PVTG','PMJDY Accounts Opened - PVTG','Applications Received for Reactivation of Inoperative PMJDY Accounts','Inoperative PMJDY Accounts Reactivated','PMJJBY Applications Sourced','PMJJBY En enrolments','PMSBY Applications Sourced','PMSBY Enrolments','APY Applications Sourced','APY Subscriptions','Applications Received for Re-KYC of PMJDY Accounts','PMJDY Accounts for which Re-KYC Completed','Applications Received for Re-KYC of Other Savings Accounts','Other Savings Accounts for which Re-KYC Completed','Nomination Applications Received - PMJDY Accounts','Nominations Registered - PMJDY Accounts','Nomination Applications Received - Non-PMJDY Accounts','Nominations Registered - Non-PMJDY Accounts','Nomination Applications Received - Lockers','Locker Nominations Registered','KCC Applications Sourced for PM-Kisan Beneficiaries','KCC Applications Sanctioned for PM-Kisan Beneficiaries','CKYC ID Generation Applications Sourced','CKYC IDs Generated','Number of DEAF Claims Settled for claim amounts less than ₹1,00,000','Amount (in ₹) of DEAF Claims Settled for claim amounts less than ₹1,00,000','Number of DEAF Claims Settled for claim amounts ₹1,00,000 or more','Amount (in ₹) of DEAF Claims Settled for claim amounts ₹1,00,000 or more','Update date','photo_link'];
-let token='',reports=[],filtered=[],editing=null,gpMasterData=[];
-async function api(body){const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});return r.json()}
-async function login(){let b=document.getElementById('loginBtn');b.disabled=true;b.textContent='Signing in...';try{let x=await api({action:'adminLogin',username:document.getElementById('username').value,password:document.getElementById('password').value});if(!x.success)throw Error(x.message||'Login failed');token=x.data.token;document.getElementById('loginView').classList.add('hidden');document.getElementById('app').classList.remove('hidden');await loadReports()}catch(e){document.getElementById('loginMsg').textContent=e.message}finally{b.disabled=false;b.textContent='Sign in'}}
-function logout(){token='';reports=[];document.getElementById('app').classList.add('hidden');document.getElementById('loginView').classList.remove('hidden');document.getElementById('password').value=''}
-async function loadReports(){try{let x=await api({action:'adminGetReports',token});if(!x.success){if((x.message||'').includes('session'))logout();throw Error(x.message||'Could not load reports')}reports=x.data.reports||[];try{const mx=await api({action:'getMasterData'});if(mx&&mx.success&&mx.data){gpMasterData=mx.data.gpMaster||mx.data.gp||mx.data.GP||mx.data.gpMasterData||[];if(!Array.isArray(gpMasterData))gpMasterData=[];}}catch(_){gpMasterData=[];}fillFilters();updateDashboard();renderTable()}catch(e){alert(e.message)}}
-function val(r,k){return r[k]===undefined||r[k]===null?'':String(r[k])}
-function fillFilters(){let ds=[...new Set(reports.map(r=>val(r,'District')).filter(Boolean))].sort();let bs=[...new Set(reports.map(r=>val(r,'Branch Name')+'|'+val(r,'Sol ID')).filter(Boolean))].sort();districtFilter.innerHTML='<option value="">All Districts</option>'+ds.map(x=>`<option>${esc(x)}</option>`).join('');branchFilter.innerHTML='<option value="">All Branches</option>'+bs.map(x=>`<option value="${esc(x)}">${esc(x.replace('|',' — '))}</option>`).join('')}
-function updateDashboard(){
-  totalReports.textContent=reports.length;
-  // Define helper before first use to avoid temporal-dead-zone ReferenceError.
-  const districtNameFromGP=row=>{
-    if(Array.isArray(row)) return String(row[0]||'').trim();
-    return String(row.District||row.district||row['District Name']||row['DISTRICT']||'').trim();
+"use strict";
+
+const API_URL = "https://script.google.com/macros/s/AKfycbwHkmc9qul-GOuWTTTCKD3QKUdRLLcn9Xv7xKP-0kC46DHfJ6fO5rYnDWOEPoq09uz-/exec";
+
+const HEADERS = [
+"Camp Date","Sol ID","Branch Name","Block Code","Block Name",
+"Gram Panchayat (GP) Code","Gram Panchayat (GP) Name","Bank Name",
+"No OF BC Participated","PMJDY Applications Sourced","PMJDY Accounts Opened",
+"PMJDY Applications Sourced - PVTG","PMJDY Accounts Opened - PVTG",
+"Applications Received for Reactivation of Inoperative PMJDY Accounts",
+"Inoperative PMJDY Accounts Reactivated","PMJJBY Applications Sourced",
+"PMJJBY En enrolments","PMSBY Applications Sourced","PMSBY Enrolments",
+"APY Applications Sourced","APY Subscriptions",
+"Applications Received for Re-KYC of PMJDY Accounts",
+"PMJDY Accounts for which Re-KYC Completed",
+"Applications Received for Re-KYC of Other Savings Accounts",
+"Other Savings Accounts for which Re-KYC Completed",
+"Nomination Applications Received - PMJDY Accounts",
+"Nominations Registered - PMJDY Accounts",
+"Nomination Applications Received - Non-PMJDY Accounts",
+"Nominations Registered - Non-PMJDY Accounts",
+"Nomination Applications Received - Lockers",
+"Locker Nominations Registered",
+"KCC Applications Sourced for PM-Kisan Beneficiaries",
+"KCC Applications Sanctioned for PM-Kisan Beneficiaries",
+"CKYC ID Generation Applications Sourced","CKYC IDs Generated",
+"Number of DEAF Claims Settled for claim amounts less than ₹1,00,000",
+"Amount (in ₹) of DEAF Claims Settled for claim amounts less than ₹1,00,000",
+"Number of DEAF Claims Settled for claim amounts ₹1,00,000 or more",
+"Amount (in ₹) of DEAF Claims Settled for claim amounts ₹1,00,000 or more",
+"Update date","photo_link"
+];
+
+let token = "";
+let reports = [];
+let filtered = [];
+let editing = null;
+let gpMasterData = [];
+
+/* API REQUEST */
+async function api(body) {
+  let response;
+
+  try {
+    response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(body)
+    });
+  } catch (error) {
+    console.error("Network error:", error);
+    throw new Error("Unable to connect. Please check internet connection.");
+  }
+
+  if (!response.ok) {
+    throw new Error("Server returned HTTP " + response.status);
+  }
+
+  let result;
+
+  try {
+    result = await response.json();
+  } catch (error) {
+    console.error("Invalid API response:", error);
+    throw new Error("Invalid server response. Please check Apps Script deployment.");
+  }
+
+  return result;
+}
+
+/* ADMIN LOGIN */
+async function login() {
+  const button = document.getElementById("loginBtn");
+  const message = document.getElementById("loginMsg");
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value;
+
+  message.textContent = "";
+
+  if (!password.trim()) {
+    message.textContent = "Please enter your password.";
+    document.getElementById("password").focus();
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Signing in...";
+
+  try {
+    const result = await api({
+      action: "adminLogin",
+      username: username,
+      password: password
+    });
+
+    if (!result || result.success !== true) {
+      throw new Error(result && result.message ? result.message : "Invalid username or password.");
+    }
+
+    if (!result.data || !result.data.token) {
+      throw new Error("Login response did not contain a valid session token.");
+    }
+
+    token = result.data.token;
+
+    document.getElementById("loginView").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
+
+    await loadReports();
+
+  } catch (error) {
+    console.error("Sign-in error:", error);
+    message.textContent = error.message || "Sign in failed. Please try again.";
+
+  } finally {
+    button.disabled = false;
+    button.textContent = "Sign in";
+  }
+}
+
+/* PRESS ENTER TO LOGIN */
+document.getElementById("password").addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    login();
+  }
+});
+
+/* LOGOUT */
+function logout() {
+  token = "";
+  reports = [];
+  filtered = [];
+
+  document.getElementById("app").classList.add("hidden");
+  document.getElementById("loginView").classList.remove("hidden");
+  document.getElementById("password").value = "";
+  document.getElementById("loginMsg").textContent = "";
+}
+
+/* LOAD REPORTS */
+async function loadReports() {
+  try {
+    const result = await api({
+      action: "adminGetReports",
+      token: token
+    });
+
+    if (!result || !result.success) {
+      const message = result && result.message ? result.message : "Unable to load reports.";
+
+      if (message.toLowerCase().includes("session") ||
+          message.toLowerCase().includes("token")) {
+        logout();
+      }
+
+      throw new Error(message);
+    }
+
+    reports = result.data && Array.isArray(result.data.reports)
+      ? result.data.reports
+      : [];
+
+    try {
+      const master = await api({ action: "getMasterData" });
+
+      if (master && master.success && master.data) {
+        gpMasterData =
+          master.data.gpMaster ||
+          master.data.gp ||
+          master.data.GP ||
+          master.data.gpMasterData ||
+          [];
+
+        if (!Array.isArray(gpMasterData)) gpMasterData = [];
+      } else {
+        gpMasterData = [];
+      }
+
+    } catch (error) {
+      console.warn("GP Master loading failed:", error);
+      gpMasterData = [];
+    }
+
+    fillFilters();
+    updateDashboard();
+    renderTable();
+
+  } catch (error) {
+    console.error("Load reports error:", error);
+    alert(error.message || "Unable to load reports.");
+  }
+}
+
+/* SAFE VALUE */
+function val(row, key) {
+  return row[key] === undefined || row[key] === null
+    ? ""
+    : String(row[key]);
+}
+
+/* FILTER DROPDOWNS */
+function fillFilters() {
+  const districtSelect = document.getElementById("districtFilter");
+  const branchSelect = document.getElementById("branchFilter");
+
+  const districts = [...new Set(
+    reports.map(row => val(row, "District")).filter(Boolean)
+  )].sort();
+
+  const branches = [...new Set(
+    reports.map(row => val(row, "Branch Name") + "|" + val(row, "Sol ID"))
+      .filter(Boolean)
+  )].sort();
+
+  districtSelect.innerHTML =
+    '<option value="">All Districts</option>' +
+    districts.map(value =>
+      `<option value="${esc(value)}">${esc(value)}</option>`
+    ).join("");
+
+  branchSelect.innerHTML =
+    '<option value="">All Branches</option>' +
+    branches.map(value => {
+      const label = value.replace("|", " — ");
+      return `<option value="${esc(value)}">${esc(label)}</option>`;
+    }).join("");
+}
+
+/* DASHBOARD */
+function updateDashboard() {
+  document.getElementById("totalReports").textContent =
+    reports.length.toLocaleString();
+
+  const districtNameFromGP = row => {
+    if (Array.isArray(row)) {
+      return String(row[0] || "").trim();
+    }
+
+    return String(
+      row.District ||
+      row.district ||
+      row["District Name"] ||
+      row["DISTRICT"] ||
+      ""
+    ).trim();
   };
-  const totalAllottedCard=gpMasterData.reduce((n,row)=>n+(districtNameFromGP(row)?1:0),0);
-  document.getElementById("totalAllottedCamps").textContent=totalAllottedCard.toLocaleString();
-  branchCount.textContent=new Set(reports.map(r=>val(r,'Sol ID')).filter(Boolean)).size;
-  gpCount.textContent=reports.length; // Each conducted camp counts as one GP covered as requested.
-  pmjdyTotal.textContent=reports.reduce((a,r)=>a+(Number(r['PMJDY Accounts Opened'])||0),0).toLocaleString();
 
-  // GP sheet master: one GP row = one camp allotted for that district.
-  const allotted={};
-  gpMasterData.forEach(row=>{const d=districtNameFromGP(row);if(d)allotted[d]=(allotted[d]||0)+1;});
+  const totalAllottedCard = gpMasterData.reduce(
+    (count, row) => count + (districtNameFromGP(row) ? 1 : 0),
+    0
+  );
 
-  // Branch-wise: count camp reports, with Branch Name and SOL ID separate.
-  const branchMap={};
-  reports.forEach(r=>{const branch=val(r,'Branch Name')||'Not specified',sol=val(r,'Sol ID')||'Not specified',key=branch+'||'+sol;if(!branchMap[key])branchMap[key]={branch,sol,camps:0};branchMap[key].camps++;});
-  const branchRows=Object.values(branchMap).sort((a,b)=>a.branch.localeCompare(b.branch)||a.sol.localeCompare(b.sol)).map(a=>[a.branch,a.sol,a.camps]);
-  branchRows.push(['GRAND TOTAL','',reports.length]);
-  branchAnalytics.innerHTML=miniTable(['Branch Name','SOL ID','Camps'],branchRows);
+  document.getElementById("totalAllottedCamps").textContent =
+    totalAllottedCard.toLocaleString();
 
-  // Union districts from GP allocation and actual camp reporting.
-  const districts=new Set([...Object.keys(allotted),...reports.map(r=>val(r,'District')).filter(Boolean)]);
-  const dm={};
-  districts.forEach(d=>dm[d]={allotted:allotted[d]||0,camps:0,branches:new Set(),bc:0,pmjdy:0,pmjjby:0,pmsby:0,apy:0});
-  reports.forEach(r=>{
-    const d=val(r,'District')||'Not specified';
-    if(!dm[d])dm[d]={allotted:allotted[d]||0,camps:0,branches:new Set(),bc:0,pmjdy:0,pmjjby:0,pmsby:0,apy:0};
-    const a=dm[d];a.camps++;
-    const sol=val(r,'Sol ID');if(sol)a.branches.add(sol);
-    a.bc+=Number(r['No OF BC Participated'])||0;
-    a.pmjdy+=Number(r['PMJDY Accounts Opened'])||0;
-    a.pmjjby+=Number(r['PMJJBY En enrolments'])||Number(r['PMJJBY Enrolments'])||0;
-    a.pmsby+=Number(r['PMSBY Enrolments'])||0;
-    a.apy+=Number(r['APY Subscriptions'])||0;
+  document.getElementById("branchCount").textContent =
+    new Set(reports.map(row => val(row, "Sol ID")).filter(Boolean)).size;
+
+  document.getElementById("gpCount").textContent =
+    reports.length;
+
+  document.getElementById("pmjdyTotal").textContent =
+    reports.reduce(
+      (sum, row) => sum + (Number(row["PMJDY Accounts Opened"]) || 0),
+      0
+    ).toLocaleString();
+
+  const allotted = {};
+
+  gpMasterData.forEach(row => {
+    const district = districtNameFromGP(row);
+    if (district) allotted[district] = (allotted[district] || 0) + 1;
   });
-  const ordered=Object.entries(dm).sort((a,b)=>a[0].localeCompare(b[0]));
-  const districtRows=ordered.map(([d,a])=>[d,a.allotted,a.camps,a.branches.size,a.bc,a.camps]);
-  const totalAllotted=Object.values(allotted).reduce((n,v)=>n+v,0);
-  const totalBranches=new Set(reports.map(r=>val(r,'Sol ID')).filter(Boolean)).size;
-  const totalBC=reports.reduce((n,r)=>n+(Number(r['No OF BC Participated'])||0),0);
-  districtRows.push(['GRAND TOTAL',totalAllotted,reports.length,totalBranches,totalBC,reports.length]);
-  districtAnalytics.innerHTML=miniTable(['District','Camps Allotted','Camps Conducted','Branches Participated','BCs Participated','GPs Covered'],districtRows);
 
-  // District-wise performance includes camp allocation/reporting metrics plus scheme totals.
-  const drows=ordered.map(([d,a])=>[d,a.allotted,a.camps,a.branches.size,a.bc,a.camps,a.pmjdy.toLocaleString(),a.pmjjby.toLocaleString(),a.pmsby.toLocaleString(),a.apy.toLocaleString()]);
-  drows.push(['GRAND TOTAL',totalAllotted,reports.length,totalBranches,totalBC,reports.length,
-    reports.reduce((n,r)=>n+(Number(r['PMJDY Accounts Opened'])||0),0).toLocaleString(),
-    reports.reduce((n,r)=>n+(Number(r['PMJJBY En enrolments'])||Number(r['PMJJBY Enrolments'])||0),0).toLocaleString(),
-    reports.reduce((n,r)=>n+(Number(r['PMSBY Enrolments'])||0),0).toLocaleString(),
-    reports.reduce((n,r)=>n+(Number(r['APY Subscriptions'])||0),0).toLocaleString()]);
-  districtPerformance.innerHTML=miniTable(['District','Camps Allotted','Camps Conducted','Branches Participated','BCs Participated','GPs Covered','PMJDY Accounts','PMJJBY Enrolments','PMSBY Enrolments','APY Subscriptions'],drows);
-}
-function miniTable(h,rows){return '<table><thead><tr>'+h.map(x=>'<th>'+esc(x)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>{const isGrand=String(r[0]||'').toUpperCase().indexOf('GRAND TOTAL')===0;return '<tr'+(isGrand?' class="grand-total"':'')+'>'+r.map((x,i)=>'<td data-label="'+esc(h[i]||'')+'">'+esc(String(x))+'</td>').join('')+'</tr>';}).join('')+'</tbody></table>'}
-function showDashboard(){dashboard.classList.remove('hidden');reportsSection.classList.add('hidden')}function showReports(){dashboard.classList.add('hidden');reportsSection.classList.remove('hidden');renderTable()}function setActive(el){}
-function renderTable(){let q=search.value.toLowerCase(),d=districtFilter.value,b=branchFilter.value,date=dateFilter.value;filtered=reports.filter(r=>(!q||['Branch Name','Sol ID','Gram Panchayat (GP) Name','Gram Panchayat (GP) Code','Block Name'].some(k=>val(r,k).toLowerCase().includes(q)))&&(!d||val(r,'District')===d)&&(!b||(val(r,'Branch Name')+'|'+val(r,'Sol ID'))===b)&&(!date||val(r,'Camp Date').slice(0,10)===date));resultCount.textContent=filtered.length+' camps';let visible=['Camp Date','Sol ID','Branch Name','District','Block Name','Gram Panchayat (GP) Name','PMJDY Accounts Opened','PMJJBY Enrolments','PMSBY Enrolments','APY Subscriptions'];tableHead.innerHTML='<tr>'+visible.map(k=>'<th>'+esc(k)+'</th>').join('')+'<th>Actions</th></tr>';tableBody.innerHTML=filtered.map((r,i)=>'<tr>'+visible.map(k=>'<td data-label="'+esc(k)+'">'+esc(val(r,k))+'</td>').join('')+'<td data-label="Actions"><div class="actions"><button class="small" onclick="editReport('+i+')">Edit</button><button class="small danger" onclick="deleteReport('+i+')">Delete</button></div></td></tr>').join('')}
-function editReport(i){editing=filtered[i];editFields.innerHTML='';HEADERS.forEach(h=>{if(['Update date','photo_link'].includes(h))return;let div=document.createElement('div'),lab=document.createElement('label'),inp=document.createElement('input');lab.textContent=h;inp.dataset.header=h;inp.value=val(editing,h);if(h==='Camp Date')inp.type='date';div.append(lab,inp);editFields.append(div)});editModal.classList.remove('hidden')}
-function closeModal(){editModal.classList.add('hidden');editing=null}
-async function saveEdit(){let payload={};editFields.querySelectorAll('input').forEach(i=>payload[i.dataset.header]=i.value);payload['Gram Panchayat (GP) Code']=editing['Gram Panchayat (GP) Code'];payload.gpCode=payload['Gram Panchayat (GP) Code'];let btn=saveBtn;btn.disabled=true;editMsg.textContent='Saving...';try{let x=await api({action:'adminUpdateReport',token,payload,originalGpCode:val(editing,'Gram Panchayat (GP) Code')});if(!x.success)throw Error(x.message||'Update failed');closeModal();await loadReports();alert('Report updated successfully')}catch(e){editMsg.textContent=e.message}finally{btn.disabled=false}}
-async function deleteReport(i){let r=filtered[i],gp=val(r,'Gram Panchayat (GP) Code');if(!confirm('Delete report for GP '+gp+'? This action cannot be undone.'))return;try{let x=await api({action:'adminDeleteReport',token,gpCode:gp});if(!x.success)throw Error(x.message||'Delete failed');await loadReports();alert('Report deleted')}catch(e){alert(e.message)}}
-function exportDistrictCSV(){
-  const grouped={};
-  reports.forEach(r=>{
-    const district=val(r,'District')||'Not specified';
-    if(!grouped[district]) grouped[district]={district,branches:new Set(),reports:0,pmjdy:0,pmjjby:0,pmsby:0,apy:0};
-    const a=grouped[district]; a.reports++;
-    const sol=val(r,'Sol ID'); if(sol) a.branches.add(sol);
-    a.pmjdy+=Number(r['PMJDY Accounts Opened'])||0;
-    a.pmjjby+=Number(r['PMJJBY En enrolments'])||Number(r['PMJJBY Enrolments'])||0;
-    a.pmsby+=Number(r['PMSBY Enrolments'])||0;
-    a.apy+=Number(r['APY Subscriptions'])||0;
+  /* Branch-wise reporting */
+  const branchMap = {};
+
+  reports.forEach(row => {
+    const branch = val(row, "Branch Name") || "Not specified";
+    const sol = val(row, "Sol ID") || "Not specified";
+    const key = branch + "||" + sol;
+
+    if (!branchMap[key]) {
+      branchMap[key] = { branch, sol, camps: 0 };
+    }
+
+    branchMap[key].camps++;
   });
-  const rows=Object.values(grouped).sort((a,b)=>a.district.localeCompare(b.district)).map(a=>[a.district,a.branches.size,a.reports,a.pmjdy,a.pmjjby,a.pmsby,a.apy]);
-  const headers=['District','Reporting Branches','Camp Reports','PMJDY Accounts Opened','PMJJBY Enrolments','PMSBY Enrolments','APY Subscriptions'];
-  const csv=[headers,...rows].map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');
-  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'}); const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);a.download='DFS_District_Wise_Summary_'+new Date().toISOString().slice(0,10)+'.csv';a.click();URL.revokeObjectURL(a.href);
+
+  const branchRows = Object.values(branchMap)
+    .sort((a, b) =>
+      a.branch.localeCompare(b.branch) || a.sol.localeCompare(b.sol)
+    )
+    .map(row => [row.branch, row.sol, row.camps]);
+
+  branchRows.push(["GRAND TOTAL", "", reports.length]);
+
+  document.getElementById("branchAnalytics").innerHTML =
+    miniTable(["Branch Name", "SOL ID", "Camps"], branchRows);
+
+  /* District-wise summary */
+  const districts = new Set([
+    ...Object.keys(allotted),
+    ...reports.map(row => val(row, "District")).filter(Boolean)
+  ]);
+
+  const districtMap = {};
+
+  districts.forEach(district => {
+    districtMap[district] = {
+      allotted: allotted[district] || 0,
+      camps: 0,
+      branches: new Set(),
+      bc: 0,
+      pmjdy: 0,
+      pmjjby: 0,
+      pmsby: 0,
+      apy: 0
+    };
+  });
+
+  reports.forEach(row => {
+    const district = val(row, "District") || "Not specified";
+
+    if (!districtMap[district]) {
+      districtMap[district] = {
+        allotted: allotted[district] || 0,
+        camps: 0,
+        branches: new Set(),
+        bc: 0,
+        pmjdy: 0,
+        pmjjby: 0,
+        pmsby: 0,
+        apy: 0
+      };
+    }
+
+    const data = districtMap[district];
+
+    data.camps++;
+
+    const sol = val(row, "Sol ID");
+    if (sol) data.branches.add(sol);
+
+    data.bc += Number(row["No OF BC Participated"]) || 0;
+    data.pmjdy += Number(row["PMJDY Accounts Opened"]) || 0;
+    data.pmjjby += Number(row["PMJJBY En enrolments"]) ||
+                   Number(row["PMJJBY Enrolments"]) || 0;
+    data.pmsby += Number(row["PMSBY Enrolments"]) || 0;
+    data.apy += Number(row["APY Subscriptions"]) || 0;
+  });
+
+  const ordered = Object.entries(districtMap)
+    .sort((a, b) => a[0].localeCompare(b[0]));
+
+  const districtRows = ordered.map(([district, data]) => [
+    district,
+    data.allotted,
+    data.camps,
+    data.branches.size,
+    data.bc,
+    data.camps
+  ]);
+
+  const totalAllotted = Object.values(allotted)
+    .reduce((sum, value) => sum + value, 0);
+
+  const totalBranches = new Set(
+    reports.map(row => val(row, "Sol ID")).filter(Boolean)
+  ).size;
+
+  const totalBC = reports.reduce(
+    (sum, row) => sum + (Number(row["No OF BC Participated"]) || 0),
+    0
+  );
+
+  districtRows.push([
+    "GRAND TOTAL",
+    totalAllotted,
+    reports.length,
+    totalBranches,
+    totalBC,
+    reports.length
+  ]);
+
+  document.getElementById("districtAnalytics").innerHTML =
+    miniTable([
+      "District",
+      "Camps Allotted",
+      "Camps Conducted",
+      "Branches Participated",
+      "BCs Participated",
+      "GPs Covered"
+    ], districtRows);
+
+  /* District performance */
+  const performanceRows = ordered.map(([district, data]) => [
+    district,
+    data.allotted,
+    data.camps,
+    data.branches.size,
+    data.bc,
+    data.camps,
+    data.pmjdy.toLocaleString(),
+    data.pmjjby.toLocaleString(),
+    data.pmsby.toLocaleString(),
+    data.apy.toLocaleString()
+  ]);
+
+  performanceRows.push([
+    "GRAND TOTAL",
+    totalAllotted,
+    reports.length,
+    totalBranches,
+    totalBC,
+    reports.length,
+    reports.reduce((sum, row) =>
+      sum + (Number(row["PMJDY Accounts Opened"]) || 0), 0).toLocaleString(),
+    reports.reduce((sum, row) =>
+      sum + (Number(row["PMJJBY En enrolments"]) ||
+             Number(row["PMJJBY En enrolments"]) ||
+             Number(row["PMJJBY Enrolments"]) || 0), 0).toLocaleString(),
+    reports.reduce((sum, row) =>
+      sum + (Number(row["PMSBY Enrolments"]) || 0), 0).toLocaleString(),
+    reports.reduce((sum, row) =>
+      sum + (Number(row["APY Subscriptions"]) || 0), 0).toLocaleString()
+  ]);
+
+  document.getElementById("districtPerformance").innerHTML =
+    miniTable([
+      "District",
+      "Camps Allotted",
+      "Camps Conducted",
+      "Branches Participated",
+      "BCs Participated",
+      "GPs Covered",
+      "PMJDY Accounts",
+      "PMJJBY Enrolments",
+      "PMSBY Enrolments",
+      "APY Subscriptions"
+    ], performanceRows);
 }
-function exportCSV(){if(!filtered.length&&!reports.length){alert('No reports to export');return}let rows=(document.getElementById('reportsSection').classList.contains('hidden')?reports:filtered);let keys=HEADERS.filter(h=>rows.some(r=>r[h]!==undefined));let csv=[keys,...rows.map(r=>keys.map(k=>r[k]??''))].map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');let blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='DFS_Saturation_Camp_Reports_'+new Date().toISOString().slice(0,10)+'.csv';a.click();URL.revokeObjectURL(a.href)}
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-</script></body></html>
+
+/* ANALYTICS TABLE */
+function miniTable(headers, rows) {
+  return "<table><thead><tr>" +
+    headers.map(header => "<th>" + esc(header) + "</th>").join("") +
+    "</tr></thead><tbody>" +
+    rows.map(row => {
+      const isGrandTotal =
+        String(row[0] || "").toUpperCase().indexOf("GRAND TOTAL") === 0;
+
+      return "<tr" + (isGrandTotal ? ' class="grand-total"' : "") + ">" +
+        row.map((value, index) =>
+          '<td data-label="' + esc(headers[index] || "") + '">' +
+          esc(String(value)) + "</td>"
+        ).join("") +
+        "</tr>";
+    }).join("") +
+    "</tbody></table>";
+}
+
+/* NAVIGATION */
+function showDashboard() {
+  document.getElementById("dashboard").classList.remove("hidden");
+  document.getElementById("reportsSection").classList.add("hidden");
+}
+
+function showReports() {
+  document.getElementById("dashboard").classList.add("hidden");
+  document.getElementById("reportsSection").classList.remove("hidden");
+  renderTable();
+}
+
+function setActive(element) {}
+
+/* REPORT FILTER AND TABLE */
+function renderTable() {
+  const searchInput = document.getElementById("search");
+  const districtFilter = document.getElementById("districtFilter");
+  const branchFilter = document.getElementById("branchFilter");
+  const dateFilter = document.getElementById("dateFilter");
+
+  const query = searchInput.value.toLowerCase();
+  const district = districtFilter.value;
+  const branch = branchFilter.value;
+  const date = dateFilter.value;
+
+  filtered = reports.filter(row =>
+    (!query || [
+      "Branch Name",
+      "Sol ID",
+      "Gram Panchayat (GP) Name",
+      "Gram Panchayat (GP) Code",
+      "Block Name"
+    ].some(key => val(row, key).toLowerCase().includes(query))) &&
+    (!district || val(row, "District") === district) &&
+    (!branch || (val(row, "Branch Name") + "|" + val(row, "Sol ID")) === branch) &&
+    (!date || val(row, "Camp Date").slice(0, 10) === date)
+  );
+
+  document.getElementById("resultCount").textContent =
+    filtered.length + " camps";
+
+  const visibleColumns = [
+    "Camp Date",
+    "Sol ID",
+    "Branch Name",
+    "District",
+    "Block Name",
+    "Gram Panchayat (GP) Name",
+    "PMJDY Accounts Opened",
+    "PMJJBY Enrolments",
+    "PMSBY Enrolments",
+    "APY Subscriptions"
+  ];
+
+  document.getElementById("tableHead").innerHTML =
+    "<tr>" +
+    visibleColumns.map(key => "<th>" + esc(key) + "</th>").join("") +
+    "<th>Actions</th></tr>";
+
+  document.getElementById("tableBody").innerHTML =
+    filtered.map((row, index) =>
+      "<tr>" +
+      visibleColumns.map(key =>
+        '<td data-label="' + esc(key) + '">' +
+        esc(val(row, key)) + "</td>"
+      ).join("") +
+      '<td data-label="Actions"><div class="actions">' +
+      '<button class="small" onclick="editReport(' + index + ')">Edit</button>' +
+      '<button class="small danger" onclick="deleteReport(' + index + ')">Delete</button>' +
+      "</div></td></tr>"
+    ).join("");
+}
+
+/* EDIT REPORT */
+function editReport(index) {
+  editing = filtered[index];
+
+  const fields = document.getElementById("editFields");
+  fields.innerHTML = "";
+
+  HEADERS.forEach(header => {
+    if (["Update date", "photo_link"].includes(header)) return;
+
+    const div = document.createElement("div");
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+
+    label.textContent = header;
+    input.dataset.header = header;
+    input.value = val(editing, header);
+
+    if (header === "Camp Date") input.type = "date";
+
+    div.appendChild(label);
+    div.appendChild(input);
+    fields.appendChild(div);
+  });
+
+  document.getElementById("editMsg").textContent = "";
+  document.getElementById("editModal").classList.remove("hidden");
+}
+
+function closeModal() {
+  document.getElementById("editModal").classList.add("hidden");
+  editing = null;
+}
+
+/* SAVE EDIT */
+async function saveEdit() {
+  if (!editing) return;
+
+  const payload = {};
+
+  document.querySelectorAll("#editFields input").forEach(input => {
+    payload[input.dataset.header] = input.value;
+  });
+
+  payload["Gram Panchayat (GP) Code"] =
+    editing["Gram Panchayat (GP) Code"];
+
+  payload.gpCode = payload["Gram Panchayat (GP) Code"];
+
+  const button = document.getElementById("saveBtn");
+  const message = document.getElementById("editMsg");
+
+  button.disabled = true;
+  message.textContent = "Saving...";
+
+  try {
+    const result = await api({
+      action: "adminUpdateReport",
+      token: token,
+      payload: payload,
+      originalGpCode: val(editing, "Gram Panchayat (GP) Code")
+    });
+
+    if (!result || !result.success) {
+      throw new Error(result && result.message ? result.message : "Update failed.");
+    }
+
+    closeModal();
+    await loadReports();
+    alert("Report updated successfully.");
+
+  } catch (error) {
+    message.textContent = error.message;
+
+  } finally {
+    button.disabled = false;
+  }
+}
+
+/* DELETE REPORT */
+async function deleteReport(index) {
+  const row = filtered[index];
+  const gpCode = val(row, "Gram Panchayat (GP) Code");
+
+  if (!confirm("Delete report for GP " + gpCode + "? This action cannot be undone.")) {
+    return;
+  }
+
+  try {
+    const result = await api({
+      action: "adminDeleteReport",
+      token: token,
+      gpCode: gpCode
+    });
+
+    if (!result || !result.success) {
+      throw new Error(result && result.message ? result.message : "Delete failed.");
+    }
+
+    await loadReports();
+    alert("Report deleted.");
+
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+/* EXPORT DISTRICT SUMMARY */
+function exportDistrictCSV() {
+  const grouped = {};
+
+  reports.forEach(row => {
+    const district = val(row, "District") || "Not specified";
+
+    if (!grouped[district]) {
+      grouped[district] = {
+        district,
+        branches: new Set(),
+        reports: 0,
+        pmjdy: 0,
+        pmjjby: 0,
+        pmsby: 0,
+        apy: 0
+      };
+    }
+
+    const data = grouped[district];
+    data.reports++;
+
+    const sol = val(row, "Sol ID");
+    if (sol) data.branches.add(sol);
+
+    data.pmjdy += Number(row["PMJDY Accounts Opened"]) || 0;
+    data.pmjjby += Number(row["PMJJBY En enrolments"]) ||
+                   Number(row["PMJJBY Enrolments"]) || 0;
+    data.pmsby += Number(row["PMSBY Enrolments"]) || 0;
+    data.apy += Number(row["APY Subscriptions"]) || 0;
+  });
+
+  const rows = Object.values(grouped)
+    .sort((a, b) => a.district.localeCompare(b.district))
+    .map(data => [
+      data.district,
+      data.branches.size,
+      data.reports,
+      data.pmjdy,
+      data.pmjjby,
+      data.pmsby,
+      data.apy
+    ]);
+
+  const headers = [
+    "District",
+    "Reporting Branches",
+    "Camp Reports",
+    "PMJDY Accounts Opened",
+    "PMJJBY Enrolments",
+    "PMSBY Enrolments",
+    "APY Subscriptions"
+  ];
+
+  const csv = [headers, ...rows]
+    .map(row => row.map(value =>
+      '"' + String(value).replace(/"/g, '""') + '"'
+    ).join(","))
+    .join("\r\n");
+
+  downloadCSV(csv, "DFS_District_Wise_Summary");
+}
+
+/* EXPORT ALL REPORTS */
+function exportCSV() {
+  if (!filtered.length && !reports.length) {
+    alert("No reports to export.");
+    return;
+  }
+
+  const isReportsHidden =
+    document.getElementById("reportsSection").classList.contains("hidden");
+
+  const rows = isReportsHidden ? reports : filtered;
+
+  const keys = HEADERS.filter(header =>
+    rows.some(row => row[header] !== undefined)
+  );
+
+  const csv = [keys, ...rows.map(row => keys.map(key => row[key] ?? ""))]
+    .map(row => row.map(value =>
+      '"' + String(value).replace(/"/g, '""') + '"'
+    ).join(","))
+    .join("\r\n");
+
+  downloadCSV(csv, "DFS_Saturation_Camp_Reports");
+}
+
+/* COMMON CSV DOWNLOAD */
+function downloadCSV(csv, filename) {
+  const blob = new Blob(["﻿" + csv], {
+    type: "text/csv;charset=utf-8;"
+  });
+
+  const link = document.createElement("a");
+  const url = URL.createObjectURL(blob);
+
+  link.href = url;
+  link.download = filename + "_" + new Date().toISOString().slice(0, 10) + ".csv";
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+/* HTML ESCAPE */
+function esc(value) {
+  return String(value).replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[character]));
+}
+</script>
+
+</body>
+</html>
