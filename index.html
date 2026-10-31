@@ -14,7 +14,9 @@ header h1{font-size:clamp(20px,3vw,30px);margin:0 0 7px}
 header p{margin:0;opacity:.92;font-size:14px}
 .container{max-width:1200px;margin:20px auto;padding:0 14px 36px}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-button{border:0;border-radius:8px;padding:11px 15px;font-weight:700;cursor:pointer;font-size:14px}\n.toolbar-link{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:8px;padding:11px 15px;font-weight:700;cursor:pointer;font-size:14px;text-decoration:none;min-height:40px}\n.toolbar-link:hover{filter:brightness(.95)}
+button{border:0;border-radius:8px;padding:11px 15px;font-weight:700;cursor:pointer;font-size:14px}
+.toolbar-link{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:8px;padding:11px 15px;font-weight:700;cursor:pointer;font-size:14px;text-decoration:none;min-height:40px}
+.toolbar-link:hover{filter:brightness(.95)}
 button:disabled{opacity:.55;cursor:not-allowed}
 .primary{background:var(--green);color:white}.secondary{background:#e4eee7;color:var(--green)}.blue{background:var(--blue);color:#fff}.danger{background:#fde9e7;color:var(--danger)}
 .card{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:16px;box-shadow:0 3px 12px #183b2410;overflow:hidden}
@@ -78,7 +80,7 @@ footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
   </div>
 
    <div class="toolbar">
-    <a class="blue toolbar-link" href="admin.html" target="_blank" rel="noopener noreferrer">🔐 Admin Panel</a>
+    <a class="secondary toolbar-link" href="./admin.html" target="_blank" rel="noopener noreferrer">🔐 Admin Panel</a>
     <button class="primary" id="newBtn" type="button">＋ New Report</button>
     <button class="secondary" id="viewBtn" type="button">⌕ View Existing Report</button>
     <button class="secondary" id="reloadBtn" type="button">↻ Reload Master Data</button>
