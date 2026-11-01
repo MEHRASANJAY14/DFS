@@ -4,33 +4,42 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DFS Saturation Camp | Admin Dashboard</title>
+<title>DFS Saturation Camp Admin | RO Jabalpur</title>
 
 <style>
 :root {
-  --green: #006633;
-  --dark: #004d26;
-  --light: #e8f5ec;
-  --border: #d9e5dc;
-  --text: #24352b;
-  --bg: #f4f7f5;
-  --red: #c62828;
+  --primary: #006633;
+  --primary-dark: #004d26;
+  --primary-light: #e8f5ec;
+  --accent: #00994d;
   --blue: #1c4fa3;
+  --red: #c62828;
+  --orange: #ef8c00;
+  --background: #f3f7f4;
+  --white: #ffffff;
+  --text: #26352b;
+  --muted: #718077;
+  --border: #dce6df;
+  --shadow: 0 3px 12px rgba(0,0,0,.05);
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
+  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
-  background: var(--bg);
   color: var(--text);
   min-width: 320px;
 }
 
-button, input, select {
+input, select, textarea, button {
   font: inherit;
 }
 
@@ -44,226 +53,265 @@ button {
 
 /* LOGIN */
 
-.loginView {
+.login-screen {
   min-height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 18px;
+  justify-content: center;
+  padding: 20px;
   background: linear-gradient(135deg, #004d26, #00994d);
 }
 
-.loginBox {
-  background: #fff;
+.login-card {
   width: 100%;
-  max-width: 400px;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 10px 35px #0002;
+  max-width: 420px;
+  background: white;
+  padding: 32px;
+  border-radius: 18px;
+  box-shadow: 0 15px 45px rgba(0,0,0,.18);
 }
 
-.loginBox h2 {
+.login-logo {
   text-align: center;
-  color: var(--green);
-  margin: 0 0 8px;
+  font-size: 42px;
+  margin-bottom: 10px;
 }
 
-.loginBox p {
+.login-card h2 {
   text-align: center;
-  color: #66756b;
+  color: var(--primary);
+  margin: 0;
+  font-size: 23px;
+}
+
+.login-card .subtitle {
+  text-align: center;
+  color: var(--muted);
   font-size: 13px;
-  margin-bottom: 25px;
+  margin: 8px 0 25px;
 }
 
-.loginBox label {
+.login-card label {
   display: block;
-  margin: 14px 0 6px;
   font-size: 13px;
   font-weight: bold;
+  margin: 14px 0 7px;
 }
 
-.loginBox input {
+.login-card input {
   width: 100%;
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-}
-
-.loginBtn {
-  width: 100%;
-  margin-top: 20px;
   padding: 13px;
-  border: 0;
-  border-radius: 8px;
-  background: var(--green);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  outline: none;
+}
+
+.login-card input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px #00994d15;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary);
   color: white;
+  border: none;
+  border-radius: 9px;
+  margin-top: 22px;
   font-weight: bold;
 }
 
-.loginBtn:hover {
-  background: var(--dark);
+.login-btn:hover {
+  background: var(--primary-dark);
 }
 
-.message {
+.login-error {
   color: var(--red);
-  text-align: center;
   font-size: 13px;
   margin-top: 12px;
+  text-align: center;
   overflow-wrap: anywhere;
 }
 
-/* MAIN */
+/* MAIN LAYOUT */
+
+.app {
+  width: 100%;
+  min-height: 100vh;
+}
 
 .main {
   width: 100%;
-  max-width: 1600px;
+  max-width: 1700px;
   margin: auto;
-  padding: 20px;
+  padding: 24px;
 }
 
-.top {
+/* HEADER */
+
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 15px;
   flex-wrap: wrap;
-  margin-bottom: 22px;
+  gap: 18px;
+  margin-bottom: 25px;
 }
 
-.heading h1 {
-  color: var(--green);
-  font-size: 25px;
-  margin: 0 0 5px;
+.header-title h1 {
+  color: var(--primary);
+  font-size: 27px;
+  margin: 0 0 8px;
 }
 
-.heading p {
-  margin: 0;
+.header-title p {
+  color: var(--muted);
   font-size: 13px;
-  color: #6b786f;
+  margin: 0;
 }
 
-.actions {
+.header-actions {
   display: flex;
-  gap: 8px;
   flex-wrap: wrap;
+  gap: 9px;
 }
+
+/* BUTTONS */
 
 .btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
   border: none;
-  border-radius: 7px;
-  padding: 10px 15px;
+  border-radius: 8px;
+  padding: 11px 16px;
+  background: var(--primary);
   color: white;
   font-size: 13px;
   font-weight: bold;
-  background: var(--green);
+  white-space: nowrap;
 }
 
 .btn:hover {
   opacity: .9;
 }
 
-.btn.blue {
+.btn-blue {
   background: var(--blue);
 }
 
-.btn.red {
+.btn-red {
   background: var(--red);
 }
 
-.btn.gray {
+.btn-gray {
   background: #68756c;
 }
 
-/* DASHBOARD CARDS */
+.btn-orange {
+  background: var(--orange);
+}
 
-.cards {
+/* SUMMARY CARDS */
+
+.dashboard-cards {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 15px;
+  gap: 16px;
   margin-bottom: 25px;
 }
 
-.card {
-  background: white;
+.dashboard-card {
+  background: var(--white);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 18px;
-  box-shadow: 0 2px 5px #00000005;
+  border-radius: 13px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  min-width: 0;
 }
 
-.card .label {
-  color: #718077;
+.card-label {
+  color: var(--muted);
   font-size: 12px;
   font-weight: bold;
+  line-height: 1.5;
   margin-bottom: 12px;
 }
 
-.card .num {
-  color: var(--green);
-  font-size: 27px;
+.card-value {
+  color: var(--primary);
+  font-size: 29px;
   font-weight: bold;
   overflow-wrap: anywhere;
 }
 
-.card .sub {
+.card-note {
+  color: #8a968e;
   font-size: 11px;
-  color: #89938c;
   margin-top: 8px;
 }
 
-/* SECTIONS */
+/* SECTION */
 
 .section {
   background: white;
   border: 1px solid var(--border);
   border-radius: 12px;
-  margin-bottom: 22px;
+  margin-bottom: 24px;
   overflow: hidden;
+  box-shadow: var(--shadow);
 }
 
-.sectionHead {
-  background: #edf5ef;
-  padding: 15px 18px;
+.section-header {
+  padding: 16px 20px;
+  background: var(--primary-light);
   border-bottom: 1px solid var(--border);
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
-.sectionHead h3 {
+.section-header h3 {
   margin: 0;
+  color: var(--primary);
   font-size: 16px;
-  color: var(--green);
 }
 
-.sectionBody {
-  padding: 18px;
+.section-content {
+  padding: 20px;
 }
 
 /* FILTERS */
 
 .filters {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 12px;
   margin-bottom: 15px;
 }
 
 .filters input,
-.filters select,
-.formgrid input,
-.formgrid select {
+.filters select {
   width: 100%;
   min-width: 0;
-  border: 1px solid #d5dfd8;
-  border-radius: 7px;
-  padding: 11px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
   background: white;
+  color: var(--text);
+  outline: none;
 }
 
-.filterButtons {
+.filters input:focus,
+.filters select:focus {
+  border-color: var(--accent);
+}
+
+.filter-actions {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
@@ -272,250 +320,285 @@ button {
 
 /* TABLES */
 
-.tableWrap {
+.table-wrapper {
   width: 100%;
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow-y: hidden;
   border: 1px solid var(--border);
   border-radius: 8px;
+  -webkit-overflow-scrolling: touch;
 }
 
 table {
-  border-collapse: collapse;
   width: 100%;
+  border-collapse: collapse;
   font-size: 12px;
   white-space: nowrap;
 }
 
-table thead th {
-  background: var(--green);
+thead th {
+  background: var(--primary);
   color: white;
-  padding: 12px 10px;
+  padding: 13px 12px;
   text-align: left;
   font-weight: bold;
 }
 
-table tbody td {
-  padding: 10px;
-  border-bottom: 1px solid #e7ece8;
+tbody td {
+  padding: 11px 12px;
+  border-bottom: 1px solid #e8eee9;
 }
 
-table tbody tr:nth-child(even) {
+tbody tr:nth-child(even) {
   background: #f8faf8;
 }
 
-table tbody tr:hover {
-  background: #edf7ef;
+tbody tr:hover {
+  background: #edf6ef;
 }
 
-table tfoot td,
-.grandTotal td {
-  background: #004d26 !important;
+.grand-total td {
+  background: var(--primary-dark) !important;
   color: white !important;
   font-weight: bold;
-  padding: 12px;
+  padding: 13px;
 }
 
-.actionCell {
+.action-cell {
   display: flex;
-  gap: 5px;
+  gap: 6px;
 }
 
-.smallBtn {
-  border: 0;
-  padding: 6px 9px;
+.small-btn {
+  border: none;
+  border-radius: 5px;
+  padding: 7px 10px;
+  font-size: 11px;
+  font-weight: bold;
   color: white;
   background: var(--blue);
-  border-radius: 5px;
-  font-size: 11px;
 }
 
-.smallBtn.delete {
+.small-btn.delete {
   background: var(--red);
 }
 
-/* MODAL */
+.loading-cell {
+  text-align: center;
+  color: var(--muted);
+  padding: 25px;
+}
+
+/* EDIT MODAL */
 
 .modal {
   position: fixed;
   inset: 0;
-  background: #0008;
-  z-index: 1000;
+  z-index: 9999;
+  background: rgba(0,0,0,.55);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   padding: 15px;
 }
 
-.modalbox {
-  background: white;
+.modal-box {
   width: 100%;
-  max-width: 850px;
-  max-height: 92vh;
+  max-width: 900px;
+  max-height: 94vh;
   overflow-y: auto;
+  background: white;
   border-radius: 12px;
-  box-shadow: 0 10px 40px #0003;
 }
 
-.modalHead {
-  background: var(--green);
-  color: white;
+.modal-header {
   padding: 16px 20px;
+  background: var(--primary);
+  color: white;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
-.modalHead h3 {
+.modal-header h3 {
   margin: 0;
   font-size: 17px;
 }
 
-.closeBtn {
+.modal-close {
   background: transparent;
+  border: none;
   color: white;
-  border: 0;
-  font-size: 25px;
+  font-size: 26px;
 }
 
-.modalBody {
+.modal-content {
   padding: 20px;
 }
 
-.formgrid {
+.form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: 15px;
 }
 
-.formfield label {
+.form-field {
+  min-width: 0;
+}
+
+.form-field label {
   display: block;
   font-size: 12px;
   font-weight: bold;
-  margin-bottom: 6px;
+  margin-bottom: 7px;
 }
 
-.formfield input,
-.formfield select {
+.form-field input,
+.form-field select,
+.form-field textarea {
   width: 100%;
-  padding: 10px;
+  padding: 11px;
   border: 1px solid var(--border);
   border-radius: 7px;
 }
 
-.modalFoot {
-  padding: 15px 20px;
-  border-top: 1px solid var(--border);
+.modal-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
   flex-wrap: wrap;
+  gap: 10px;
+  padding: 15px 20px;
+  border-top: 1px solid var(--border);
 }
 
-.loading {
-  text-align: center;
-  color: #69776d;
-  padding: 25px;
-}
+/* FOOTER */
 
 .footer {
   text-align: center;
+  color: #8b978f;
   font-size: 12px;
-  color: #849087;
-  padding: 15px;
+  padding: 20px 10px;
 }
 
-/* RESPONSIVE */
+/* TABLET */
 
-@media (max-width: 1000px) {
-  .cards {
+@media (max-width: 1100px) {
+
+  .dashboard-cards {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .filters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
 }
 
-@media (max-width: 650px) {
+/* MOBILE */
+
+@media (max-width: 700px) {
+
   .main {
     padding: 12px;
   }
 
-  .top {
+  .header {
     flex-direction: column;
     align-items: stretch;
+    gap: 14px;
   }
 
-  .heading h1 {
+  .header-title h1 {
     font-size: 21px;
     line-height: 1.4;
   }
 
-  .actions {
+  .header-actions {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
   }
 
-  .actions .btn {
+  .header-actions .btn {
     width: 100%;
-    padding: 11px 8px;
+    padding: 12px 8px;
   }
 
-  .cards {
+  .dashboard-cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }
 
-  .card {
-    padding: 13px;
+  .dashboard-card {
+    padding: 14px;
+    border-radius: 10px;
   }
 
-  .card .label {
+  .card-label {
     font-size: 11px;
-    line-height: 1.4;
+    margin-bottom: 8px;
   }
 
-  .card .num {
-    font-size: 23px;
+  .card-value {
+    font-size: 24px;
+  }
+
+  .card-note {
+    font-size: 10px;
+  }
+
+  .section {
+    margin-bottom: 16px;
+  }
+
+  .section-header {
+    padding: 13px 14px;
+  }
+
+  .section-header h3 {
+    font-size: 14px;
+  }
+
+  .section-content {
+    padding: 12px;
   }
 
   .filters {
     grid-template-columns: 1fr;
+    gap: 10px;
   }
 
-  .sectionHead {
-    padding: 13px;
-  }
-
-  .sectionBody {
-    padding: 12px;
-  }
-
-  .formgrid {
-    grid-template-columns: 1fr;
+  .filter-actions .btn {
+    width: 100%;
   }
 
   .modal {
-    padding: 8px;
-    align-items: center;
+    padding: 7px;
   }
 
-  .modalbox {
-    max-height: 95vh;
+  .modal-box {
+    max-height: 96vh;
     border-radius: 9px;
   }
 
-  .modalBody {
+  .modal-header {
     padding: 14px;
   }
 
-  .modalFoot {
+  .modal-content {
+    padding: 14px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+
+  .modal-footer {
     padding: 12px;
   }
 
-  .modalFoot .btn {
+  .modal-footer .btn {
     flex: 1;
   }
 
@@ -523,100 +606,141 @@ table tfoot td,
     font-size: 11px;
   }
 
-  table thead th,
-  table tbody td {
-    padding: 9px 8px;
+  thead th,
+  tbody td {
+    padding: 9px 10px;
   }
+
 }
 
-@media (max-width: 360px) {
-  .cards {
+/* SMALL MOBILE */
+
+@media (max-width: 380px) {
+
+  .dashboard-cards {
     grid-template-columns: 1fr;
   }
 
-  .actions {
+  .header-actions {
     grid-template-columns: 1fr;
   }
+
+  .login-card {
+    padding: 22px;
+  }
+
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN VIEW -->
+<!-- LOGIN -->
 
-<div id="loginView" class="loginView">
-  <div class="loginBox">
+<div id="loginView" class="login-screen">
+
+  <div class="login-card">
+
+    <div class="login-logo">🏦</div>
+
     <h2>DFS Saturation Camp</h2>
-    <p>Regional Office Jabalpur | Admin Login</p>
 
-    <label for="username">Username</label>
-    <input id="username" type="text" value="admin"
-           autocomplete="username">
-
-    <label for="password">Password</label>
-    <input id="password" type="password"
-           placeholder="Enter admin password"
-           autocomplete="current-password">
-
-    <button id="loginBtn" class="loginBtn" onclick="login()">
-      Sign in
-    </button>
-
-    <div id="loginMsg" class="message"></div>
-  </div>
-</div>
-
-<!-- MAIN DASHBOARD -->
-
-<div id="app" class="hidden">
-  <div class="main">
-
-    <div class="top">
-      <div class="heading">
-        <h1>DFS Saturation Camp Admin</h1>
-        <p>Regional Office Jabalpur | Monitoring Dashboard</p>
-      </div>
-
-      <div class="actions">
-        <button class="btn" onclick="loadReports()">↻ Refresh</button>
-        <button class="btn blue" onclick="exportCSV()">⬇ Export CSV</button>
-        <button class="btn gray" onclick="logout()">Logout</button>
-      </div>
+    <div class="subtitle">
+      Regional Office Jabalpur<br>
+      Administrator Login
     </div>
 
-    <!-- DASHBOARD CARDS -->
+    <label for="username">Username</label>
+    <input
+      type="text"
+      id="username"
+      value="admin"
+      autocomplete="username"
+    >
 
-    <div class="cards">
+    <label for="password">Password</label>
+    <input
+      type="password"
+      id="password"
+      placeholder="Enter admin password"
+      autocomplete="current-password"
+    >
 
-      <div class="card">
-        <div class="label">Total Camps Allotted</div>
-        <div class="num" id="totalAllotted">0</div>
-        <div class="sub">As per GP Master</div>
+    <button class="login-btn" id="loginBtn" onclick="login()">
+      Sign In
+    </button>
+
+    <div id="loginMsg" class="login-error"></div>
+
+  </div>
+
+</div>
+
+<!-- ADMIN DASHBOARD -->
+
+<div id="app" class="app hidden">
+
+  <div class="main">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+      <div class="header-title">
+        <h1>DFS Saturation Camp Admin</h1>
+        <p>IT & FI Department | Regional Office Jabalpur</p>
       </div>
 
-      <div class="card">
-        <div class="label">Total Camps Submitted</div>
-        <div class="num" id="totalSubmitted">0</div>
-        <div class="sub">Reports received</div>
+      <div class="header-actions">
+
+        <button class="btn" onclick="loadReports()">
+          ↻ Refresh
+        </button>
+
+        <button class="btn btn-blue" onclick="exportCSV()">
+          ⬇ Export CSV
+        </button>
+
+        <button class="btn btn-gray" onclick="logout()">
+          Logout
+        </button>
+
       </div>
 
-      <div class="card">
-        <div class="label">Branches Reporting</div>
-        <div class="num" id="branchesReporting">0</div>
-        <div class="sub">Unique branches</div>
+    </div>
+
+    <!-- DASHBOARD -->
+
+    <div class="dashboard-cards">
+
+      <div class="dashboard-card">
+        <div class="card-label">Total Camps Allotted</div>
+        <div class="card-value" id="totalAllotted">0</div>
+        <div class="card-note">As per GP Master</div>
       </div>
 
-      <div class="card">
-        <div class="label">GPs Covered</div>
-        <div class="num" id="gpsCovered">0</div>
-        <div class="sub">Camps conducted</div>
+      <div class="dashboard-card">
+        <div class="card-label">Total Camps Submitted</div>
+        <div class="card-value" id="totalSubmitted">0</div>
+        <div class="card-note">Reports received</div>
       </div>
 
-      <div class="card">
-        <div class="label">PMJDY Accounts</div>
-        <div class="num" id="pmjdyTotal">0</div>
-        <div class="sub">Total reported</div>
+      <div class="dashboard-card">
+        <div class="card-label">Branches Reporting</div>
+        <div class="card-value" id="branchesReporting">0</div>
+        <div class="card-note">Unique SOL IDs</div>
+      </div>
+
+      <div class="dashboard-card">
+        <div class="card-label">GPs Covered</div>
+        <div class="card-value" id="gpsCovered">0</div>
+        <div class="card-note">Camps conducted</div>
+      </div>
+
+      <div class="dashboard-card">
+        <div class="card-label">PMJDY Accounts</div>
+        <div class="card-value" id="pmjdyTotal">0</div>
+        <div class="card-note">Total reported</div>
       </div>
 
     </div>
@@ -624,37 +748,47 @@ table tfoot td,
     <!-- BRANCH SUMMARY -->
 
     <div class="section">
-      <div class="sectionHead">
-        <h3>Branch-wise Summary</h3>
+
+      <div class="section-header">
+        <h3>📊 Branch-wise Summary</h3>
       </div>
 
-      <div class="sectionBody">
-        <div class="tableWrap">
-          <table id="branchTable">
+      <div class="section-content">
+
+        <div class="table-wrapper">
+          <table>
             <thead>
               <tr>
                 <th>Branch Name</th>
                 <th>SOL ID</th>
-                <th>Camps</th>
+                <th>Camps Conducted</th>
               </tr>
             </thead>
+
             <tbody id="branchBody">
-              <tr><td colspan="3" class="loading">Loading...</td></tr>
+              <tr>
+                <td colspan="3" class="loading-cell">Loading...</td>
+              </tr>
             </tbody>
+
           </table>
         </div>
+
       </div>
+
     </div>
 
     <!-- DISTRICT SUMMARY -->
 
     <div class="section">
-      <div class="sectionHead">
-        <h3>District-wise Summary</h3>
+
+      <div class="section-header">
+        <h3>📍 District-wise Summary</h3>
       </div>
 
-      <div class="sectionBody">
-        <div class="tableWrap">
+      <div class="section-content">
+
+        <div class="table-wrapper">
           <table>
             <thead>
               <tr>
@@ -666,23 +800,31 @@ table tfoot td,
                 <th>GPs Covered</th>
               </tr>
             </thead>
+
             <tbody id="districtBody">
-              <tr><td colspan="6" class="loading">Loading...</td></tr>
+              <tr>
+                <td colspan="6" class="loading-cell">Loading...</td>
+              </tr>
             </tbody>
+
           </table>
         </div>
+
       </div>
+
     </div>
 
-    <!-- DISTRICT PERFORMANCE -->
+    <!-- SCHEME PERFORMANCE -->
 
     <div class="section">
-      <div class="sectionHead">
-        <h3>District-wise Scheme Performance</h3>
+
+      <div class="section-header">
+        <h3>📈 District-wise Scheme Performance</h3>
       </div>
 
-      <div class="sectionBody">
-        <div class="tableWrap">
+      <div class="section-content">
+
+        <div class="table-wrapper">
           <table>
             <thead>
               <tr>
@@ -694,90 +836,142 @@ table tfoot td,
                 <th>Camp Reports</th>
               </tr>
             </thead>
+
             <tbody id="performanceBody">
-              <tr><td colspan="6" class="loading">Loading...</td></tr>
+              <tr>
+                <td colspan="6" class="loading-cell">Loading...</td>
+              </tr>
             </tbody>
+
           </table>
         </div>
+
       </div>
+
     </div>
 
-    <!-- REPORT LIST -->
+    <!-- REPORTS -->
 
     <div class="section">
-      <div class="sectionHead">
-        <h3>Camp Reporting Details</h3>
+
+      <div class="section-header">
+
+        <h3>📋 Camp Reporting Details</h3>
+
         <span id="reportCount">0 Records</span>
+
       </div>
 
-      <div class="sectionBody">
+      <div class="section-content">
+
+        <!-- FILTERS -->
 
         <div class="filters">
-          <input type="text" id="searchInput"
-                 placeholder="Search branch / SOL / GP..."
-                 oninput="applyFilters()">
+
+          <input
+            type="search"
+            id="searchInput"
+            placeholder="Search Branch / SOL / GP / BC"
+            oninput="applyFilters()"
+          >
 
           <select id="districtFilter" onchange="applyFilters()">
             <option value="">All Districts</option>
           </select>
 
-          <input type="date" id="dateFrom"
-                 onchange="applyFilters()">
+          <input
+            type="date"
+            id="dateFrom"
+            title="From Date"
+            onchange="applyFilters()"
+          >
 
-          <input type="date" id="dateTo"
-                 onchange="applyFilters()">
+          <input
+            type="date"
+            id="dateTo"
+            title="To Date"
+            onchange="applyFilters()"
+          >
+
         </div>
 
-        <div class="filterButtons">
-          <button class="btn gray" onclick="clearFilters()">Clear Filters</button>
+        <div class="filter-actions">
+          <button class="btn btn-gray" onclick="clearFilters()">
+            Clear Filters
+          </button>
         </div>
 
-        <div class="tableWrap">
+        <!-- REPORT TABLE -->
+
+        <div class="table-wrapper">
+
           <table>
+
             <thead id="reportHead"></thead>
+
             <tbody id="reportBody">
-              <tr><td class="loading">Please login to load reports</td></tr>
+              <tr>
+                <td class="loading-cell">Please login to load reports</td>
+              </tr>
             </tbody>
+
           </table>
+
         </div>
 
       </div>
+
     </div>
 
     <div class="footer">
-      DFS Saturation Camp | IT & FI Department | RO Jabalpur
+      DFS Saturation Camp Admin Portal | Developed & Maintained by IT Department
     </div>
 
   </div>
+
 </div>
 
 <!-- EDIT MODAL -->
 
 <div id="editModal" class="modal hidden">
-  <div class="modalbox">
 
-    <div class="modalHead">
+  <div class="modal-box">
+
+    <div class="modal-header">
+
       <h3>Edit Camp Report</h3>
-      <button class="closeBtn" onclick="closeModal()">×</button>
+
+      <button class="modal-close" onclick="closeModal()">×</button>
+
     </div>
 
-    <div class="modalBody">
-      <div id="editFields" class="formgrid"></div>
+    <div class="modal-content">
+
+      <div id="editFields" class="form-grid"></div>
+
     </div>
 
-    <div class="modalFoot">
-      <button class="btn gray" onclick="closeModal()">Cancel</button>
-      <button class="btn" id="saveBtn" onclick="saveReport()">Save Changes</button>
+    <div class="modal-footer">
+
+      <button class="btn btn-gray" onclick="closeModal()">
+        Cancel
+      </button>
+
+      <button class="btn" id="saveBtn" onclick="saveReport()">
+        Save Changes
+      </button>
+
     </div>
 
   </div>
+
 </div>
 
 <script>
 
-/* =====================================================
+/* ======================================================
    CONFIGURATION
-===================================================== */
+====================================================== */
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbwHkmc9qul-GOuWTTTCKD3QKUdRLLcn9Xv7xKP-0kC46DHfJ6fO5rYnDWOEPoq09uz-/exec";
@@ -803,9 +997,9 @@ const HEADERS = [
   "Remarks"
 ];
 
-/* =====================================================
+/* ======================================================
    STATE
-===================================================== */
+====================================================== */
 
 let token = "";
 let allReports = [];
@@ -813,25 +1007,31 @@ let filteredReports = [];
 let masterData = [];
 let currentEditRow = null;
 
-/* =====================================================
-   API
-===================================================== */
+/* ======================================================
+   API FUNCTION
+====================================================== */
 
 async function api(body) {
+
   const response = await fetch(API_URL, {
+
     method: "POST",
+
     headers: {
       "Content-Type": "text/plain;charset=utf-8"
     },
+
     body: JSON.stringify(body)
+
   });
 
   return await response.json();
+
 }
 
-/* =====================================================
+/* ======================================================
    LOGIN
-===================================================== */
+====================================================== */
 
 async function login() {
 
@@ -847,9 +1047,13 @@ async function login() {
   message.textContent = "";
 
   if (!password.trim()) {
+
     message.textContent = "Please enter your password.";
+
     document.getElementById("password").focus();
+
     return;
+
   }
 
   button.disabled = true;
@@ -858,29 +1062,35 @@ async function login() {
   try {
 
     const result = await api({
+
       action: "adminLogin",
+
       username: username,
+
       password: password
+
     });
 
     if (!result || result.success !== true) {
+
       throw new Error(
         result && result.message
           ? result.message
           : "Invalid username or password."
       );
+
     }
 
     /*
-      IMPORTANT:
-      Keep the existing Code.gs response contract.
-    Do not change this token path unless backend is changed.
-    */
+      Existing backend token response structure.
+      */
 
     if (!result.data || !result.data.token) {
+
       throw new Error(
         "Login response did not contain a valid session token."
       );
+
     }
 
     token = result.data.token;
@@ -895,20 +1105,21 @@ async function login() {
 
   } catch (error) {
 
-    console.error("Sign-in error:", error);
+    console.error("Login error:", error);
 
     message.textContent =
-      error.message || "Sign in failed. Please try again.";
+      error.message || "Login failed. Please try again.";
 
   } finally {
 
     button.disabled = false;
-    button.textContent = "Sign in";
+    button.textContent = "Sign In";
 
   }
+
 }
 
-/* ENTER KEY LOGIN */
+/* ENTER KEY */
 
 document.getElementById("password")
   .addEventListener("keydown", function(event) {
@@ -919,9 +1130,9 @@ document.getElementById("password")
 
   });
 
-/* =====================================================
+/* ======================================================
    LOGOUT
-===================================================== */
+====================================================== */
 
 function logout() {
 
@@ -936,30 +1147,38 @@ function logout() {
     .classList.remove("hidden");
 
   document.getElementById("password").value = "";
+
   document.getElementById("loginMsg").textContent = "";
 
 }
 
-/* =====================================================
+/* ======================================================
    LOAD REPORTS
-===================================================== */
+====================================================== */
 
 async function loadReports() {
 
   if (!token) {
+
     alert("Session expired. Please login again.");
+
     logout();
+
     return;
+
   }
 
   document.getElementById("reportBody").innerHTML =
-    '<tr><td colspan="20" class="loading">Loading reports...</td></tr>';
+    '<tr><td colspan="20" class="loading-cell">Loading reports...</td></tr>';
 
   try {
 
     const result = await api({
+
       action: "adminGetReports",
+
       token: token
+
     });
 
     if (!result || result.success !== true) {
@@ -972,10 +1191,6 @@ async function loadReports() {
 
     }
 
-    /*
-      Accept common report response containers.
-      */
-
     allReports =
       result.data && Array.isArray(result.data.reports)
         ? result.data.reports
@@ -985,15 +1200,16 @@ async function loadReports() {
             ? result.reports
             : [];
 
-    /*
-      Master data is loaded separately.
-      */
+    /* LOAD MASTER DATA */
 
     try {
 
       const masterResult = await api({
+
         action: "getMasterData",
+
         token: token
+
       });
 
       if (masterResult && masterResult.success === true) {
@@ -1011,12 +1227,14 @@ async function loadReports() {
 
     } catch (masterError) {
 
-      console.warn("Master data loading:", masterError);
+      console.warn("Master data error:", masterError);
 
     }
 
     populateDistrictFilter();
+
     applyFilters();
+
     updateDashboard();
 
   } catch (error) {
@@ -1024,7 +1242,7 @@ async function loadReports() {
     console.error(error);
 
     document.getElementById("reportBody").innerHTML =
-      '<tr><td colspan="20" class="loading">' +
+      '<tr><td colspan="20" class="loading-cell">' +
       escapeHtml(error.message) +
       '</td></tr>';
 
@@ -1032,22 +1250,27 @@ async function loadReports() {
       String(error.message).toLowerCase().includes("token") ||
       String(error.message).toLowerCase().includes("session")
     ) {
-      alert("Your session may have expired. Please login again.");
+
+      alert("Session expired. Please login again.");
+
       logout();
+
     }
 
   }
 
 }
 
-/* =====================================================
-   NORMALIZE DATA
-===================================================== */
+/* ======================================================
+   NORMALIZE REPORT
+====================================================== */
 
 function getValue(row, index, key) {
 
   if (Array.isArray(row)) {
+
     return row[index] == null ? "" : row[index];
+
   }
 
   if (row && typeof row === "object") {
@@ -1069,7 +1292,9 @@ function normalizeReport(row) {
   if (Array.isArray(row)) {
 
     return {
+
       raw: row,
+
       district: row[1] || "",
       block: row[2] || "",
       branch: row[3] || "",
@@ -1079,21 +1304,30 @@ function normalizeReport(row) {
       gp: row[7] || "",
       gpCode: row[8] || "",
       campDate: row[9] || "",
+
       bcParticipated: Number(row[10]) || 0,
       pmjdy: Number(row[11]) || 0,
       pmjjby: Number(row[12]) || 0,
       pmsby: Number(row[13]) || 0,
       apy: Number(row[14]) || 0,
       nps: Number(row[15]) || 0,
+
       other: row[16] || "",
       remarks: row[17] || "",
-      rowNumber: row.rowNumber || row._rowNumber || ""
+
+      rowNumber:
+        row.rowNumber ||
+        row._rowNumber ||
+        ""
+
     };
 
   }
 
   return {
+
     raw: row,
+
     district: getValue(row, 1, "district"),
     block: getValue(row, 2, "block"),
     branch: getValue(row, 3, "branch"),
@@ -1103,22 +1337,32 @@ function normalizeReport(row) {
     gp: getValue(row, 7, "gp"),
     gpCode: getValue(row, 8, "gpCode"),
     campDate: getValue(row, 9, "campDate"),
-    bcParticipated: Number(getValue(row, 10, "bcParticipated")) || 0,
+
+    bcParticipated:
+      Number(getValue(row, 10, "bcParticipated")) || 0,
+
     pmjdy: Number(getValue(row, 11, "pmjdy")) || 0,
     pmjjby: Number(getValue(row, 12, "pmjjby")) || 0,
     pmsby: Number(getValue(row, 13, "pmsby")) || 0,
     apy: Number(getValue(row, 14, "apy")) || 0,
     nps: Number(getValue(row, 15, "nps")) || 0,
+
     other: getValue(row, 16, "other"),
     remarks: getValue(row, 17, "remarks"),
-    rowNumber: row.rowNumber || row._rowNumber || row.id || ""
+
+    rowNumber:
+      row.rowNumber ||
+      row._rowNumber ||
+      row.id ||
+      ""
+
   };
 
 }
 
-/* =====================================================
-   FILTERS
-===================================================== */
+/* ======================================================
+   DISTRICT FILTER
+====================================================== */
 
 function populateDistrictFilter() {
 
@@ -1127,21 +1371,29 @@ function populateDistrictFilter() {
   const districts = new Set();
 
   allReports.forEach(function(row) {
+
     const r = normalizeReport(row);
-    if (r.district) districts.add(r.district);
+
+    if (r.district) {
+      districts.add(r.district);
+    }
+
   });
 
   const previous = select.value;
 
-  select.innerHTML = '<option value="">All Districts</option>';
+  select.innerHTML =
+    '<option value="">All Districts</option>';
 
   Array.from(districts)
     .sort()
     .forEach(function(district) {
 
       const option = document.createElement("option");
+
       option.value = district;
       option.textContent = district;
+
       select.appendChild(option);
 
     });
@@ -1149,6 +1401,10 @@ function populateDistrictFilter() {
   select.value = previous;
 
 }
+
+/* ======================================================
+   APPLY FILTERS
+====================================================== */
 
 function applyFilters() {
 
@@ -1170,6 +1426,7 @@ function applyFilters() {
     const r = normalizeReport(row);
 
     const searchable = [
+
       r.branch,
       r.sol,
       r.district,
@@ -1178,6 +1435,7 @@ function applyFilters() {
       r.gpCode,
       r.bcName,
       r.bcCode
+
     ].join(" ").toLowerCase();
 
     if (search && searchable.indexOf(search) === -1) {
@@ -1217,9 +1475,9 @@ function clearFilters() {
 
 }
 
-/* =====================================================
-   REPORT TABLE
-===================================================== */
+/* ======================================================
+   RENDER REPORTS
+====================================================== */
 
 function renderReports() {
 
@@ -1228,9 +1486,8 @@ function renderReports() {
 
   head.innerHTML = "";
 
-  const headerRow = document.createElement("tr");
+  const headers = [
 
-  const visibleHeaders = [
     "District",
     "Block",
     "Branch Name",
@@ -1247,17 +1504,22 @@ function renderReports() {
     "Other Activities",
     "Remarks",
     "Actions"
+
   ];
 
-  visibleHeaders.forEach(function(header) {
+  const trHead = document.createElement("tr");
+
+  headers.forEach(function(header) {
 
     const th = document.createElement("th");
+
     th.textContent = header;
-    headerRow.appendChild(th);
+
+    trHead.appendChild(th);
 
   });
 
-  head.appendChild(headerRow);
+  head.appendChild(trHead);
 
   body.innerHTML = "";
 
@@ -1267,7 +1529,7 @@ function renderReports() {
   if (!filteredReports.length) {
 
     body.innerHTML =
-      '<tr><td colspan="16" class="loading">No records found</td></tr>';
+      '<tr><td colspan="16" class="loading-cell">No records found</td></tr>';
 
     return;
 
@@ -1276,9 +1538,11 @@ function renderReports() {
   filteredReports.forEach(function(row, index) {
 
     const r = normalizeReport(row);
+
     const tr = document.createElement("tr");
 
     const values = [
+
       r.district,
       r.block,
       r.branch,
@@ -1294,29 +1558,37 @@ function renderReports() {
       r.nps,
       r.other,
       r.remarks
+
     ];
 
     values.forEach(function(value) {
 
       const td = document.createElement("td");
+
       td.textContent = value == null ? "" : value;
+
       tr.appendChild(td);
 
     });
 
     const actionTd = document.createElement("td");
-    actionTd.className = "actionCell";
+
+    actionTd.className = "action-cell";
 
     const editButton = document.createElement("button");
-    editButton.className = "smallBtn";
+
+    editButton.className = "small-btn";
     editButton.textContent = "Edit";
+
     editButton.onclick = function() {
       openEdit(row, index);
     };
 
     const deleteButton = document.createElement("button");
-    deleteButton.className = "smallBtn delete";
+
+    deleteButton.className = "small-btn delete";
     deleteButton.textContent = "Delete";
+
     deleteButton.onclick = function() {
       deleteReport(row);
     };
@@ -1325,15 +1597,16 @@ function renderReports() {
     actionTd.appendChild(deleteButton);
 
     tr.appendChild(actionTd);
+
     body.appendChild(tr);
 
   });
 
 }
 
-/* =====================================================
-   DASHBOARD
-===================================================== */
+/* ======================================================
+   UPDATE DASHBOARD
+====================================================== */
 
 function updateDashboard() {
 
@@ -1347,13 +1620,15 @@ function updateDashboard() {
 
   const branches = new Set();
 
-  let pmjdy = 0;
+  let totalPMJDY = 0;
 
   reports.forEach(function(r) {
 
-    if (r.sol) branches.add(String(r.sol));
+    if (r.sol) {
+      branches.add(String(r.sol));
+    }
 
-    pmjdy += Number(r.pmjdy) || 0;
+    totalPMJDY += Number(r.pmjdy) || 0;
 
   });
 
@@ -1361,25 +1636,22 @@ function updateDashboard() {
     branches.size;
 
   document.getElementById("pmjdyTotal").textContent =
-    pmjdy.toLocaleString("en-IN");
+    totalPMJDY.toLocaleString("en-IN");
 
   renderBranchSummary(reports);
-  renderDistrictSummary(reports);
-  renderDistrictPerformance(reports);
 
-  /*
-    Total allotted is derived from loaded master data.
-    The exact GP master schema can differ; see below.
-  */
+  renderDistrictSummary(reports);
+
+  renderDistrictPerformance(reports);
 
   document.getElementById("totalAllotted").textContent =
     getMasterCount().toLocaleString("en-IN");
 
 }
 
-/* =====================================================
+/* ======================================================
    BRANCH SUMMARY
-===================================================== */
+====================================================== */
 
 function renderBranchSummary(reports) {
 
@@ -1392,9 +1664,11 @@ function renderBranchSummary(reports) {
     if (!summary[key]) {
 
       summary[key] = {
+
         branch: r.branch || "",
         sol: r.sol || "",
         camps: 0
+
       };
 
     }
@@ -1404,13 +1678,16 @@ function renderBranchSummary(reports) {
   });
 
   const body = document.getElementById("branchBody");
+
   body.innerHTML = "";
 
   let total = 0;
 
   Object.values(summary)
     .sort(function(a, b) {
+
       return a.branch.localeCompare(b.branch);
+
     })
     .forEach(function(item) {
 
@@ -1428,7 +1705,8 @@ function renderBranchSummary(reports) {
     });
 
   const totalRow = document.createElement("tr");
-  totalRow.className = "grandTotal";
+
+  totalRow.className = "grand-total";
 
   totalRow.innerHTML =
     "<td>Grand Total</td><td></td><td>" + total + "</td>";
@@ -1437,9 +1715,9 @@ function renderBranchSummary(reports) {
 
 }
 
-/* =====================================================
+/* ======================================================
    DISTRICT SUMMARY
-===================================================== */
+====================================================== */
 
 function renderDistrictSummary(reports) {
 
@@ -1452,10 +1730,12 @@ function renderDistrictSummary(reports) {
     if (!summary[district]) {
 
       summary[district] = {
+
         camps: 0,
         branches: new Set(),
         bc: 0,
         gps: 0
+
       };
 
     }
@@ -1463,13 +1743,17 @@ function renderDistrictSummary(reports) {
     summary[district].camps++;
     summary[district].gps++;
 
-    if (r.sol) summary[district].branches.add(String(r.sol));
+    if (r.sol) {
+      summary[district].branches.add(String(r.sol));
+    }
 
-    summary[district].bc += Number(r.bcParticipated) || 0;
+    summary[district].bc +=
+      Number(r.bcParticipated) || 0;
 
   });
 
   const body = document.getElementById("districtBody");
+
   body.innerHTML = "";
 
   let totalCamps = 0;
@@ -1477,35 +1761,39 @@ function renderDistrictSummary(reports) {
   let totalBC = 0;
   let totalGP = 0;
 
-  Object.keys(summary).sort().forEach(function(district) {
+  Object.keys(summary)
+    .sort()
+    .forEach(function(district) {
 
-    const s = summary[district];
-    const allotted = getDistrictAllotted(district);
+      const s = summary[district];
 
-    totalCamps += s.camps;
-    totalBC += s.bc;
-    totalGP += s.gps;
+      const allotted = getDistrictAllotted(district);
 
-    s.branches.forEach(function(sol) {
-      totalBranches.add(sol);
+      totalCamps += s.camps;
+      totalBC += s.bc;
+      totalGP += s.gps;
+
+      s.branches.forEach(function(sol) {
+        totalBranches.add(sol);
+      });
+
+      const tr = document.createElement("tr");
+
+      tr.innerHTML =
+        "<td>" + escapeHtml(district) + "</td>" +
+        "<td>" + allotted + "</td>" +
+        "<td>" + s.camps + "</td>" +
+        "<td>" + s.branches.size + "</td>" +
+        "<td>" + s.bc + "</td>" +
+        "<td>" + s.gps + "</td>";
+
+      body.appendChild(tr);
+
     });
 
-    const tr = document.createElement("tr");
-
-    tr.innerHTML =
-      "<td>" + escapeHtml(district) + "</td>" +
-      "<td>" + allotted + "</td>" +
-      "<td>" + s.camps + "</td>" +
-      "<td>" + s.branches.size + "</td>" +
-      "<td>" + s.bc + "</td>" +
-      "<td>" + s.gps + "</td>";
-
-    body.appendChild(tr);
-
-  });
-
   const grand = document.createElement("tr");
-  grand.className = "grandTotal";
+
+  grand.className = "grand-total";
 
   grand.innerHTML =
     "<td>Grand Total</td>" +
@@ -1519,9 +1807,9 @@ function renderDistrictSummary(reports) {
 
 }
 
-/* =====================================================
-   DISTRICT SCHEME PERFORMANCE
-===================================================== */
+/* ======================================================
+   DISTRICT PERFORMANCE
+====================================================== */
 
 function renderDistrictPerformance(reports) {
 
@@ -1534,11 +1822,13 @@ function renderDistrictPerformance(reports) {
     if (!summary[district]) {
 
       summary[district] = {
+
         pmjdy: 0,
         pmjjby: 0,
         pmsby: 0,
         apy: 0,
         camps: 0
+
       };
 
     }
@@ -1552,36 +1842,44 @@ function renderDistrictPerformance(reports) {
   });
 
   const body = document.getElementById("performanceBody");
+
   body.innerHTML = "";
 
-  let t1 = 0, t2 = 0, t3 = 0, t4 = 0, t5 = 0;
+  let t1 = 0;
+  let t2 = 0;
+  let t3 = 0;
+  let t4 = 0;
+  let t5 = 0;
 
-  Object.keys(summary).sort().forEach(function(district) {
+  Object.keys(summary)
+    .sort()
+    .forEach(function(district) {
 
-    const s = summary[district];
+      const s = summary[district];
 
-    t1 += s.pmjdy;
-    t2 += s.pmjjby;
-    t3 += s.pmsby;
-    t4 += s.apy;
-    t5 += s.camps;
+      t1 += s.pmjdy;
+      t2 += s.pmjjby;
+      t3 += s.pmsby;
+      t4 += s.apy;
+      t5 += s.camps;
 
-    const tr = document.createElement("tr");
+      const tr = document.createElement("tr");
 
-    tr.innerHTML =
-      "<td>" + escapeHtml(district) + "</td>" +
-      "<td>" + s.pmjdy + "</td>" +
-      "<td>" + s.pmjjby + "</td>" +
-      "<td>" + s.pmsby + "</td>" +
-      "<td>" + s.apy + "</td>" +
-      "<td>" + s.camps + "</td>";
+      tr.innerHTML =
+        "<td>" + escapeHtml(district) + "</td>" +
+        "<td>" + s.pmjdy + "</td>" +
+        "<td>" + s.pmjjby + "</td>" +
+        "<td>" + s.pmsby + "</td>" +
+        "<td>" + s.apy + "</td>" +
+        "<td>" + s.camps + "</td>";
 
-    body.appendChild(tr);
+      body.appendChild(tr);
 
-  });
+    });
 
   const grand = document.createElement("tr");
-  grand.className = "grandTotal";
+
+  grand.className = "grand-total";
 
   grand.innerHTML =
     "<td>Grand Total</td>" +
@@ -1595,20 +1893,21 @@ function renderDistrictPerformance(reports) {
 
 }
 
-/* =====================================================
+/* ======================================================
    MASTER DATA HELPERS
-===================================================== */
+====================================================== */
 
 function getMasterCount() {
 
-  if (!Array.isArray(masterData)) return 0;
+  if (!Array.isArray(masterData)) {
+    return 0;
+  }
 
   return masterData.filter(function(row) {
 
-    const district =
-      Array.isArray(row)
-        ? row[0]
-        : row.district || row.District || "";
+    const district = Array.isArray(row)
+      ? row[0]
+      : row.district || row.District || "";
 
     return String(district || "").trim() !== "";
 
@@ -1618,36 +1917,43 @@ function getMasterCount() {
 
 function getDistrictAllotted(district) {
 
-  if (!Array.isArray(masterData)) return 0;
+  if (!Array.isArray(masterData)) {
+    return 0;
+  }
 
   return masterData.filter(function(row) {
 
-    const rowDistrict =
-      Array.isArray(row)
-        ? row[0]
-        : row.district || row.District || "";
+    const rowDistrict = Array.isArray(row)
+      ? row[0]
+      : row.district || row.District || "";
 
-    return String(rowDistrict || "").trim().toLowerCase() ===
-      String(district || "").trim().toLowerCase();
+    return String(rowDistrict || "")
+      .trim()
+      .toLowerCase() ===
+      String(district || "")
+        .trim()
+        .toLowerCase();
 
   }).length;
 
 }
 
-/* =====================================================
+/* ======================================================
    EDIT REPORT
-===================================================== */
+====================================================== */
 
 function openEdit(row, index) {
 
   currentEditRow = row;
 
   const r = normalizeReport(row);
+
   const fields = document.getElementById("editFields");
 
   fields.innerHTML = "";
 
   const editItems = [
+
     ["District", r.district],
     ["Block", r.block],
     ["Branch Name", r.branch],
@@ -1665,31 +1971,42 @@ function openEdit(row, index) {
     ["NPS Sanchay", r.nps],
     ["Other Activities", r.other],
     ["Remarks", r.remarks]
+
   ];
 
   editItems.forEach(function(item, i) {
 
     const div = document.createElement("div");
-    div.className = "formfield";
+
+    div.className = "form-field";
 
     const label = document.createElement("label");
+
     label.textContent = item[0];
 
     const input = document.createElement("input");
+
     input.id = "editField_" + i;
     input.value = item[1] == null ? "" : item[1];
 
     if (i === 8) {
+
       input.type = "date";
+
     } else if (i >= 9 && i <= 14) {
+
       input.type = "number";
       input.min = "0";
+
     } else {
+
       input.type = "text";
+
     }
 
     div.appendChild(label);
     div.appendChild(input);
+
     fields.appendChild(div);
 
   });
@@ -1708,11 +2025,18 @@ function closeModal() {
 
 }
 
+/* ======================================================
+   SAVE REPORT
+====================================================== */
+
 async function saveReport() {
 
   if (!currentEditRow) {
+
     alert("No report selected.");
+
     return;
+
   }
 
   const button = document.getElementById("saveBtn");
@@ -1726,7 +2050,8 @@ async function saveReport() {
 
     for (let i = 0; i < 17; i++) {
 
-      const input = document.getElementById("editField_" + i);
+      const input =
+        document.getElementById("editField_" + i);
 
       values.push(input ? input.value : "");
 
@@ -1735,6 +2060,7 @@ async function saveReport() {
     const result = await api({
 
       action: "adminUpdateReport",
+
       token: token,
 
       rowNumber:
@@ -1757,12 +2083,15 @@ async function saveReport() {
     }
 
     alert("Report updated successfully.");
+
     closeModal();
+
     await loadReports();
 
   } catch (error) {
 
     console.error(error);
+
     alert(error.message || "Update failed.");
 
   } finally {
@@ -1774,19 +2103,23 @@ async function saveReport() {
 
 }
 
-/* =====================================================
+/* ======================================================
    DELETE REPORT
-===================================================== */
+====================================================== */
 
 async function deleteReport(row) {
 
   const r = normalizeReport(row);
 
-  if (!confirm(
+  const confirmed = confirm(
+
     "Are you sure you want to delete this camp report?\n\n" +
     "Branch: " + r.branch + "\n" +
     "GP: " + r.gp
-  )) {
+
+  );
+
+  if (!confirmed) {
     return;
   }
 
@@ -1795,6 +2128,7 @@ async function deleteReport(row) {
     const result = await api({
 
       action: "adminDeleteReport",
+
       token: token,
 
       rowNumber:
@@ -1815,29 +2149,35 @@ async function deleteReport(row) {
     }
 
     alert("Report deleted successfully.");
+
     await loadReports();
 
   } catch (error) {
 
     console.error(error);
+
     alert(error.message || "Delete failed.");
 
   }
 
 }
 
-/* =====================================================
-   CSV EXPORT
-===================================================== */
+/* ======================================================
+   EXPORT CSV
+====================================================== */
 
 function exportCSV() {
 
   if (!filteredReports.length) {
+
     alert("No records available for export.");
+
     return;
+
   }
 
   const headers = [
+
     "District",
     "Block",
     "Branch Name",
@@ -1855,6 +2195,7 @@ function exportCSV() {
     "NPS Sanchay",
     "Other Activities",
     "Remarks"
+
   ];
 
   const rows = filteredReports.map(function(row) {
@@ -1862,6 +2203,7 @@ function exportCSV() {
     const r = normalizeReport(row);
 
     return [
+
       r.district,
       r.block,
       r.branch,
@@ -1879,6 +2221,7 @@ function exportCSV() {
       r.nps,
       r.other,
       r.remarks
+
     ];
 
   });
@@ -1897,27 +2240,33 @@ function exportCSV() {
     }).join("\r\n");
 
   const blob = new Blob(
+
     ["\uFEFF" + csv],
+
     { type: "text/csv;charset=utf-8;" }
+
   );
 
   const url = URL.createObjectURL(blob);
+
   const link = document.createElement("a");
 
   link.href = url;
   link.download = "DFS_Camp_Reports.csv";
 
   document.body.appendChild(link);
+
   link.click();
+
   document.body.removeChild(link);
 
   URL.revokeObjectURL(url);
 
 }
 
-/* =====================================================
+/* ======================================================
    DATE HELPERS
-===================================================== */
+====================================================== */
 
 function parseDate(value) {
 
@@ -1929,15 +2278,23 @@ function parseDate(value) {
     return text;
   }
 
-  const dmy = text.match(/^(\d{2})[-/](\d{2})[-/](\d{4})$/);
+  const dmy = text.match(
+    /^(\d{2})[-/](\d{2})[-/](\d{4})$/
+  );
 
   if (dmy) {
-    return dmy[3] + "-" + dmy[2] + "-" + dmy[1];
+
+    return dmy[3] + "-" +
+      dmy[2] + "-" +
+      dmy[1];
+
   }
 
   const date = new Date(value);
 
-  if (isNaN(date.getTime())) return "";
+  if (isNaN(date.getTime())) {
+    return "";
+  }
 
   return date.getFullYear() + "-" +
     String(date.getMonth() + 1).padStart(2, "0") + "-" +
@@ -1953,17 +2310,20 @@ function formatDate(value) {
 
   const parts = date.split("-");
 
-  return parts[2] + "-" + parts[1] + "-" + parts[0];
+  return parts[2] + "-" +
+    parts[1] + "-" +
+    parts[0];
 
 }
 
-/* =====================================================
-   HTML ESCAPING
-===================================================== */
+/* ======================================================
+   ESCAPE HTML
+====================================================== */
 
 function escapeHtml(value) {
 
   return String(value == null ? "" : value)
+
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -1972,9 +2332,9 @@ function escapeHtml(value) {
 
 }
 
-/* =====================================================
-   INITIALIZATION
-===================================================== */
+/* ======================================================
+   INIT
+====================================================== */
 
 document.addEventListener("DOMContentLoaded", function() {
 
