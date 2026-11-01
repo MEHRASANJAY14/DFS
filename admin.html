@@ -130,7 +130,52 @@ const API_URL='https://script.google.com/macros/s/AKfycbwHkmc9qul-GOuWTTTCKD3QKU
 const HEADERS=['Camp Date','Sol ID','Branch Name','Block Code','Block Name','Gram Panchayat (GP) Code','Gram Panchayat (GP) Name','Bank Name','No OF BC Participated','PMJDY Applications Sourced','PMJDY Accounts Opened','PMJDY Applications Sourced - PVTG','PMJDY Accounts Opened - PVTG','Applications Received for Reactivation of Inoperative PMJDY Accounts','Inoperative PMJDY Accounts Reactivated','PMJJBY Applications Sourced','PMJJBY En enrolments','PMSBY Applications Sourced','PMSBY Enrolments','APY Applications Sourced','APY Subscriptions','Applications Received for Re-KYC of PMJDY Accounts','PMJDY Accounts for which Re-KYC Completed','Applications Received for Re-KYC of Other Savings Accounts','Other Savings Accounts for which Re-KYC Completed','Nomination Applications Received - PMJDY Accounts','Nominations Registered - PMJDY Accounts','Nomination Applications Received - Non-PMJDY Accounts','Nominations Registered - Non-PMJDY Accounts','Nomination Applications Received - Lockers','Locker Nominations Registered','KCC Applications Sourced for PM-Kisan Beneficiaries','KCC Applications Sanctioned for PM-Kisan Beneficiaries','CKYC ID Generation Applications Sourced','CKYC IDs Generated','Number of DEAF Claims Settled for claim amounts less than ₹1,00,000','Amount (in ₹) of DEAF Claims Settled for claim amounts less than ₹1,00,000','Number of DEAF Claims Settled for claim amounts ₹1,00,000 or more','Amount (in ₹) of DEAF Claims Settled for claim amounts ₹1,00,000 or more','Update date','photo_link'];
 let token='',reports=[],filtered=[],editing=null,gpMasterData=[];
 async function api(body){const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});return r.json()}
-async function login(){let b=document.getElementById('loginBtn');b.disabled=true;b.textContent='Signing in...';try{let x=await api({action:'adminLogin',username:document.getElementById('username').value,password:document.getElementById('password').value});if(!x.success)throw Error(x.message||'Login failed');token=x.data.token;document.getElementById('loginView').classList.add('hidden');document.getElementById('app').classList.remove('hidden');await loadReports()}catch(e){document.getElementById('loginMsg').textContent=e.message}finally{b.disabled=false;b.textContent='Sign in'}}
+async function login(){
+  const passwordInput=document.getElementById('password');
+  const message=document.getElementById('loginMsg');
+  const button=document.getElementById('loginBtn');
+  const enteredPassword=passwordInput.value;
+
+  message.textContent='';
+  if(!enteredPassword){
+    message.textContent='Please enter the password.';
+    passwordInput.focus();
+    return;
+  }
+
+  // Frontend password validation
+  if(enteredPassword !== 'Sanjay14@'){
+    message.textContent='Incorrect password. Please try again.';
+    passwordInput.value='';
+    passwordInput.focus();
+    return;
+  }
+
+  button.disabled=true;
+  button.textContent='Signing in...';
+
+  try{
+    const result=await api({
+      action:'adminLogin',
+      password:enteredPassword
+    });
+
+    // Code.gs wraps adminLogin response inside result.data
+    if(!result || !result.success || !result.data || result.data.authenticated !== true){
+      throw Error((result && result.data && result.data.message) || result.message || 'Login failed');
+    }
+
+    token=result.data.token || '';
+    document.getElementById('loginView').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    await loadReports();
+  }catch(error){
+    message.textContent=error.message || 'Login failed';
+  }finally{
+    button.disabled=false;
+    button.textContent='Sign in';
+  }
+}
 function logout(){token='';reports=[];document.getElementById('app').classList.add('hidden');document.getElementById('loginView').classList.remove('hidden');document.getElementById('password').value=''}
 async function loadReports(){try{let x=await api({action:'adminGetReports',token});if(!x.success){if((x.message||'').includes('session'))logout();throw Error(x.message||'Could not load reports')}reports=x.data.reports||[];try{const mx=await api({action:'getMasterData'});if(mx&&mx.success&&mx.data){gpMasterData=mx.data.gpMaster||mx.data.gp||mx.data.GP||mx.data.gpMasterData||[];if(!Array.isArray(gpMasterData))gpMasterData=[];}}catch(_){gpMasterData=[];}fillFilters();updateDashboard();renderTable()}catch(e){alert(e.message)}}
 function val(r,k){return r[k]===undefined||r[k]===null?'':String(r[k])}
