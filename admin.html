@@ -8,637 +8,501 @@
 
 <style>
 :root {
-  --primary: #006633;
-  --primary-dark: #004d26;
-  --primary-light: #e8f5ec;
-  --accent: #00994d;
-  --blue: #1c4fa3;
-  --red: #c62828;
-  --orange: #ef8c00;
-  --background: #f3f7f4;
-  --white: #ffffff;
-  --text: #26352b;
-  --muted: #718077;
-  --border: #dce6df;
-  --shadow: 0 3px 12px rgba(0,0,0,.05);
+  --green:#006633;
+  --dark-green:#004d26;
+  --light-green:#e8f5ec;
+  --blue:#1c4fa3;
+  --red:#c62828;
+  --orange:#ef8c00;
+  --bg:#f3f7f4;
+  --white:#ffffff;
+  --text:#26352b;
+  --muted:#718077;
+  --border:#dce6df;
+  --shadow:0 3px 12px rgba(0,0,0,.05);
 }
 
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-width:320px;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  color: var(--text);
-  min-width: 320px;
-}
-
-input, select, textarea, button {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-.hidden {
-  display: none !important;
-}
+input,select,button{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
 
 /* LOGIN */
 
-.login-screen {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background: linear-gradient(135deg, #004d26, #00994d);
+.login-screen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:linear-gradient(135deg,#004d26,#00994d);
 }
 
-.login-card {
-  width: 100%;
-  max-width: 420px;
-  background: white;
-  padding: 32px;
-  border-radius: 18px;
-  box-shadow: 0 15px 45px rgba(0,0,0,.18);
+.login-card{
+  width:100%;
+  max-width:420px;
+  padding:32px;
+  background:#fff;
+  border-radius:18px;
+  box-shadow:0 15px 45px rgba(0,0,0,.18);
 }
 
-.login-logo {
-  text-align: center;
-  font-size: 42px;
-  margin-bottom: 10px;
+.login-logo{
+  text-align:center;
+  font-size:42px;
+  margin-bottom:10px;
 }
 
-.login-card h2 {
-  text-align: center;
-  color: var(--primary);
-  margin: 0;
-  font-size: 23px;
+.login-card h2{
+  text-align:center;
+  color:var(--green);
+  margin:0;
+  font-size:23px;
 }
 
-.login-card .subtitle {
-  text-align: center;
-  color: var(--muted);
-  font-size: 13px;
-  margin: 8px 0 25px;
+.subtitle{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  margin:8px 0 25px;
+  line-height:1.6;
 }
 
-.login-card label {
-  display: block;
-  font-size: 13px;
-  font-weight: bold;
-  margin: 14px 0 7px;
+.login-card label{
+  display:block;
+  font-size:13px;
+  font-weight:bold;
+  margin:14px 0 7px;
 }
 
-.login-card input {
-  width: 100%;
-  padding: 13px;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  outline: none;
+.login-card input{
+  width:100%;
+  padding:13px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  outline:none;
 }
 
-.login-card input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px #00994d15;
+.login-card input:focus{
+  border-color:#00994d;
 }
 
-.login-btn {
-  width: 100%;
-  padding: 14px;
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 9px;
-  margin-top: 22px;
-  font-weight: bold;
+.login-btn{
+  width:100%;
+  padding:14px;
+  background:var(--green);
+  color:white;
+  border:none;
+  border-radius:9px;
+  margin-top:22px;
+  font-weight:bold;
 }
 
-.login-btn:hover {
-  background: var(--primary-dark);
+.login-error{
+  color:var(--red);
+  font-size:13px;
+  margin-top:12px;
+  text-align:center;
+  overflow-wrap:anywhere;
 }
 
-.login-error {
-  color: var(--red);
-  font-size: 13px;
-  margin-top: 12px;
-  text-align: center;
-  overflow-wrap: anywhere;
+/* MAIN */
+
+.main{
+  width:100%;
+  max-width:1700px;
+  margin:auto;
+  padding:24px;
 }
 
-/* MAIN LAYOUT */
-
-.app {
-  width: 100%;
-  min-height: 100vh;
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:18px;
+  margin-bottom:25px;
 }
 
-.main {
-  width: 100%;
-  max-width: 1700px;
-  margin: auto;
-  padding: 24px;
+.header-title h1{
+  color:var(--green);
+  font-size:27px;
+  margin:0 0 8px;
 }
 
-/* HEADER */
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 18px;
-  margin-bottom: 25px;
+.header-title p{
+  color:var(--muted);
+  font-size:13px;
+  margin:0;
 }
 
-.header-title h1 {
-  color: var(--primary);
-  font-size: 27px;
-  margin: 0 0 8px;
+.header-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
 }
 
-.header-title p {
-  color: var(--muted);
-  font-size: 13px;
-  margin: 0;
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:none;
+  border-radius:8px;
+  padding:11px 16px;
+  background:var(--green);
+  color:white;
+  font-size:13px;
+  font-weight:bold;
 }
 
-.header-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
+.btn-blue{background:var(--blue)}
+.btn-red{background:var(--red)}
+.btn-gray{background:#68756c}
+.btn-orange{background:var(--orange)}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+
+/* DASHBOARD CARDS */
+
+.dashboard-cards{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:16px;
+  margin-bottom:25px;
 }
 
-/* BUTTONS */
-
-.btn {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  border: none;
-  border-radius: 8px;
-  padding: 11px 16px;
-  background: var(--primary);
-  color: white;
-  font-size: 13px;
-  font-weight: bold;
-  white-space: nowrap;
+.dashboard-card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:20px;
+  box-shadow:var(--shadow);
+  min-width:0;
 }
 
-.btn:hover {
-  opacity: .9;
+.card-label{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:bold;
+  line-height:1.5;
+  margin-bottom:12px;
 }
 
-.btn-blue {
-  background: var(--blue);
+.card-value{
+  color:var(--green);
+  font-size:29px;
+  font-weight:bold;
+  overflow-wrap:anywhere;
 }
 
-.btn-red {
-  background: var(--red);
+.card-note{
+  color:#8a968e;
+  font-size:11px;
+  margin-top:8px;
 }
 
-.btn-gray {
-  background: #68756c;
+/* SECTIONS */
+
+.section{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:12px;
+  margin-bottom:24px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
 }
 
-.btn-orange {
-  background: var(--orange);
+.section-header{
+  padding:16px 20px;
+  background:var(--light-green);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
 }
 
-/* SUMMARY CARDS */
-
-.dashboard-cards {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 16px;
-  margin-bottom: 25px;
+.section-header h3{
+  margin:0;
+  color:var(--green);
+  font-size:16px;
 }
 
-.dashboard-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 13px;
-  padding: 20px;
-  box-shadow: var(--shadow);
-  min-width: 0;
-}
-
-.card-label {
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: bold;
-  line-height: 1.5;
-  margin-bottom: 12px;
-}
-
-.card-value {
-  color: var(--primary);
-  font-size: 29px;
-  font-weight: bold;
-  overflow-wrap: anywhere;
-}
-
-.card-note {
-  color: #8a968e;
-  font-size: 11px;
-  margin-top: 8px;
-}
-
-/* SECTION */
-
-.section {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  margin-bottom: 24px;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-}
-
-.section-header {
-  padding: 16px 20px;
-  background: var(--primary-light);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.section-header h3 {
-  margin: 0;
-  color: var(--primary);
-  font-size: 16px;
-}
-
-.section-content {
-  padding: 20px;
-}
+.section-content{padding:20px}
 
 /* FILTERS */
 
-.filters {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 15px;
+.filters{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:12px;
+  margin-bottom:15px;
 }
 
-.filters input,
-.filters select {
-  width: 100%;
-  min-width: 0;
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: white;
-  color: var(--text);
-  outline: none;
+.filters input,.filters select{
+  width:100%;
+  min-width:0;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:white;
+  color:var(--text);
+  outline:none;
 }
 
-.filters input:focus,
-.filters select:focus {
-  border-color: var(--accent);
-}
-
-.filter-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 15px;
+.filter-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:15px;
 }
 
 /* TABLES */
 
-.table-wrapper {
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  -webkit-overflow-scrolling: touch;
+.table-wrapper{
+  width:100%;
+  overflow-x:auto;
+  border:1px solid var(--border);
+  border-radius:8px;
+  -webkit-overflow-scrolling:touch;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 12px;
-  white-space: nowrap;
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:12px;
+  white-space:nowrap;
 }
 
-thead th {
-  background: var(--primary);
-  color: white;
-  padding: 13px 12px;
-  text-align: left;
-  font-weight: bold;
+thead th{
+  background:var(--green);
+  color:white;
+  padding:13px 12px;
+  text-align:left;
+  font-weight:bold;
 }
 
-tbody td {
-  padding: 11px 12px;
-  border-bottom: 1px solid #e8eee9;
+tbody td{
+  padding:11px 12px;
+  border-bottom:1px solid #e8eee9;
 }
 
-tbody tr:nth-child(even) {
-  background: #f8faf8;
+tbody tr:nth-child(even){background:#f8faf8}
+tbody tr:hover{background:#edf6ef}
+
+.grand-total td{
+  background:var(--dark-green)!important;
+  color:white!important;
+  font-weight:bold;
+  padding:13px;
 }
 
-tbody tr:hover {
-  background: #edf6ef;
+.action-cell{
+  display:flex;
+  gap:6px;
 }
 
-.grand-total td {
-  background: var(--primary-dark) !important;
-  color: white !important;
-  font-weight: bold;
-  padding: 13px;
+.small-btn{
+  border:none;
+  border-radius:5px;
+  padding:7px 10px;
+  font-size:11px;
+  font-weight:bold;
+  color:white;
+  background:var(--blue);
 }
 
-.action-cell {
-  display: flex;
-  gap: 6px;
+.small-btn.delete{background:var(--red)}
+
+.loading-cell{
+  text-align:center;
+  color:var(--muted);
+  padding:25px;
 }
 
-.small-btn {
-  border: none;
-  border-radius: 5px;
-  padding: 7px 10px;
-  font-size: 11px;
-  font-weight: bold;
-  color: white;
-  background: var(--blue);
+/* MODAL */
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:rgba(0,0,0,.55);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
 }
 
-.small-btn.delete {
-  background: var(--red);
+.modal-box{
+  width:100%;
+  max-width:900px;
+  max-height:94vh;
+  overflow-y:auto;
+  background:white;
+  border-radius:12px;
 }
 
-.loading-cell {
-  text-align: center;
-  color: var(--muted);
-  padding: 25px;
+.modal-header{
+  padding:16px 20px;
+  background:var(--green);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
 
-/* EDIT MODAL */
+.modal-header h3{margin:0;font-size:17px}
 
-.modal {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: rgba(0,0,0,.55);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 15px;
+.modal-close{
+  background:transparent;
+  border:none;
+  color:white;
+  font-size:26px;
 }
 
-.modal-box {
-  width: 100%;
-  max-width: 900px;
-  max-height: 94vh;
-  overflow-y: auto;
-  background: white;
-  border-radius: 12px;
+.modal-content{padding:20px}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px;
 }
 
-.modal-header {
-  padding: 16px 20px;
-  background: var(--primary);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.form-field{min-width:0}
+
+.form-field label{
+  display:block;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:7px;
 }
 
-.modal-header h3 {
-  margin: 0;
-  font-size: 17px;
+.form-field input,.form-field select,.form-field textarea{
+  width:100%;
+  padding:11px;
+  border:1px solid var(--border);
+  border-radius:7px;
 }
 
-.modal-close {
-  background: transparent;
-  border: none;
-  color: white;
-  font-size: 26px;
+.modal-footer{
+  display:flex;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  gap:10px;
+  padding:15px 20px;
+  border-top:1px solid var(--border);
 }
 
-.modal-content {
-  padding: 20px;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 15px;
-}
-
-.form-field {
-  min-width: 0;
-}
-
-.form-field label {
-  display: block;
-  font-size: 12px;
-  font-weight: bold;
-  margin-bottom: 7px;
-}
-
-.form-field input,
-.form-field select,
-.form-field textarea {
-  width: 100%;
-  padding: 11px;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-}
-
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 15px 20px;
-  border-top: 1px solid var(--border);
-}
-
-/* FOOTER */
-
-.footer {
-  text-align: center;
-  color: #8b978f;
-  font-size: 12px;
-  padding: 20px 10px;
+.footer{
+  text-align:center;
+  color:#8b978f;
+  font-size:12px;
+  padding:20px 10px;
 }
 
 /* TABLET */
 
-@media (max-width: 1100px) {
-
-  .dashboard-cards {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+@media(max-width:1100px){
+  .dashboard-cards{
+    grid-template-columns:repeat(3,minmax(0,1fr));
   }
-
-  .filters {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .filters{
+    grid-template-columns:repeat(2,minmax(0,1fr));
   }
-
 }
 
 /* MOBILE */
 
-@media (max-width: 700px) {
+@media(max-width:700px){
+  .main{padding:12px}
 
-  .main {
-    padding: 12px;
+  .header{
+    flex-direction:column;
+    align-items:stretch;
+    gap:14px;
   }
 
-  .header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 14px;
+  .header-title h1{
+    font-size:21px;
+    line-height:1.4;
   }
 
-  .header-title h1 {
-    font-size: 21px;
-    line-height: 1.4;
+  .header-actions{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    width:100%;
   }
 
-  .header-actions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    width: 100%;
+  .header-actions .btn{
+    width:100%;
+    padding:12px 8px;
   }
 
-  .header-actions .btn {
-    width: 100%;
-    padding: 12px 8px;
+  .dashboard-cards{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
   }
 
-  .dashboard-cards {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+  .dashboard-card{
+    padding:14px;
+    border-radius:10px;
   }
 
-  .dashboard-card {
-    padding: 14px;
-    border-radius: 10px;
+  .card-label{font-size:11px;margin-bottom:8px}
+  .card-value{font-size:24px}
+  .card-note{font-size:10px}
+
+  .section{margin-bottom:16px}
+  .section-header{padding:13px 14px}
+  .section-header h3{font-size:14px}
+  .section-content{padding:12px}
+
+  .filters{
+    grid-template-columns:1fr;
+    gap:10px;
   }
 
-  .card-label {
-    font-size: 11px;
-    margin-bottom: 8px;
+  .filter-actions .btn{width:100%}
+
+  .modal{padding:7px}
+  .modal-box{max-height:96vh;border-radius:9px}
+  .modal-header{padding:14px}
+  .modal-content{padding:14px}
+
+  .form-grid{
+    grid-template-columns:1fr;
+    gap:13px;
   }
 
-  .card-value {
-    font-size: 24px;
-  }
+  .modal-footer{padding:12px}
+  .modal-footer .btn{flex:1}
 
-  .card-note {
-    font-size: 10px;
-  }
-
-  .section {
-    margin-bottom: 16px;
-  }
-
-  .section-header {
-    padding: 13px 14px;
-  }
-
-  .section-header h3 {
-    font-size: 14px;
-  }
-
-  .section-content {
-    padding: 12px;
-  }
-
-  .filters {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .filter-actions .btn {
-    width: 100%;
-  }
-
-  .modal {
-    padding: 7px;
-  }
-
-  .modal-box {
-    max-height: 96vh;
-    border-radius: 9px;
-  }
-
-  .modal-header {
-    padding: 14px;
-  }
-
-  .modal-content {
-    padding: 14px;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-    gap: 13px;
-  }
-
-  .modal-footer {
-    padding: 12px;
-  }
-
-  .modal-footer .btn {
-    flex: 1;
-  }
-
-  table {
-    font-size: 11px;
-  }
-
-  thead th,
-  tbody td {
-    padding: 9px 10px;
-  }
-
+  table{font-size:11px}
+  thead th,tbody td{padding:9px 10px}
 }
 
-/* SMALL MOBILE */
-
-@media (max-width: 380px) {
-
-  .dashboard-cards {
-    grid-template-columns: 1fr;
-  }
-
-  .header-actions {
-    grid-template-columns: 1fr;
-  }
-
-  .login-card {
-    padding: 22px;
-  }
-
+@media(max-width:380px){
+  .dashboard-cards{grid-template-columns:1fr}
+  .header-actions{grid-template-columns:1fr}
+  .login-card{padding:22px}
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
+<!-- LOGIN SCREEN -->
 
 <div id="loginView" class="login-screen">
-
   <div class="login-card">
 
     <div class="login-logo">🏦</div>
@@ -650,15 +514,8 @@ tbody tr:hover {
       Administrator Login
     </div>
 
-    <label for="username">Username</label>
-    <input
-      type="text"
-      id="username"
-      value="admin"
-      autocomplete="username"
-    >
-
     <label for="password">Password</label>
+
     <input
       type="password"
       id="password"
@@ -673,262 +530,196 @@ tbody tr:hover {
     <div id="loginMsg" class="login-error"></div>
 
   </div>
-
 </div>
 
-<!-- ADMIN DASHBOARD -->
+<!-- ADMIN APP -->
 
-<div id="app" class="app hidden">
+<div id="app" class="hidden">
 
-  <div class="main">
+<div class="main">
 
-    <!-- HEADER -->
+  <div class="header">
 
-    <div class="header">
-
-      <div class="header-title">
-        <h1>DFS Saturation Camp Admin</h1>
-        <p>IT & FI Department | Regional Office Jabalpur</p>
-      </div>
-
-      <div class="header-actions">
-
-        <button class="btn" onclick="loadReports()">
-          ↻ Refresh
-        </button>
-
-        <button class="btn btn-blue" onclick="exportCSV()">
-          ⬇ Export CSV
-        </button>
-
-        <button class="btn btn-gray" onclick="logout()">
-          Logout
-        </button>
-
-      </div>
-
+    <div class="header-title">
+      <h1>DFS Saturation Camp Admin</h1>
+      <p>IT & FI Department | Regional Office Jabalpur</p>
     </div>
 
-    <!-- DASHBOARD -->
-
-    <div class="dashboard-cards">
-
-      <div class="dashboard-card">
-        <div class="card-label">Total Camps Allotted</div>
-        <div class="card-value" id="totalAllotted">0</div>
-        <div class="card-note">As per GP Master</div>
-      </div>
-
-      <div class="dashboard-card">
-        <div class="card-label">Total Camps Submitted</div>
-        <div class="card-value" id="totalSubmitted">0</div>
-        <div class="card-note">Reports received</div>
-      </div>
-
-      <div class="dashboard-card">
-        <div class="card-label">Branches Reporting</div>
-        <div class="card-value" id="branchesReporting">0</div>
-        <div class="card-note">Unique SOL IDs</div>
-      </div>
-
-      <div class="dashboard-card">
-        <div class="card-label">GPs Covered</div>
-        <div class="card-value" id="gpsCovered">0</div>
-        <div class="card-note">Camps conducted</div>
-      </div>
-
-      <div class="dashboard-card">
-        <div class="card-label">PMJDY Accounts</div>
-        <div class="card-value" id="pmjdyTotal">0</div>
-        <div class="card-note">Total reported</div>
-      </div>
-
-    </div>
-
-    <!-- BRANCH SUMMARY -->
-
-    <div class="section">
-
-      <div class="section-header">
-        <h3>📊 Branch-wise Summary</h3>
-      </div>
-
-      <div class="section-content">
-
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>Branch Name</th>
-                <th>SOL ID</th>
-                <th>Camps Conducted</th>
-              </tr>
-            </thead>
-
-            <tbody id="branchBody">
-              <tr>
-                <td colspan="3" class="loading-cell">Loading...</td>
-              </tr>
-            </tbody>
-
-          </table>
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- DISTRICT SUMMARY -->
-
-    <div class="section">
-
-      <div class="section-header">
-        <h3>📍 District-wise Summary</h3>
-      </div>
-
-      <div class="section-content">
-
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>District</th>
-                <th>Camps Allotted</th>
-                <th>Camps Conducted</th>
-                <th>Branches</th>
-                <th>BCs Participated</th>
-                <th>GPs Covered</th>
-              </tr>
-            </thead>
-
-            <tbody id="districtBody">
-              <tr>
-                <td colspan="6" class="loading-cell">Loading...</td>
-              </tr>
-            </tbody>
-
-          </table>
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- SCHEME PERFORMANCE -->
-
-    <div class="section">
-
-      <div class="section-header">
-        <h3>📈 District-wise Scheme Performance</h3>
-      </div>
-
-      <div class="section-content">
-
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>District</th>
-                <th>PMJDY</th>
-                <th>PMJJBY</th>
-                <th>PMSBY</th>
-                <th>APY</th>
-                <th>Camp Reports</th>
-              </tr>
-            </thead>
-
-            <tbody id="performanceBody">
-              <tr>
-                <td colspan="6" class="loading-cell">Loading...</td>
-              </tr>
-            </tbody>
-
-          </table>
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- REPORTS -->
-
-    <div class="section">
-
-      <div class="section-header">
-
-        <h3>📋 Camp Reporting Details</h3>
-
-        <span id="reportCount">0 Records</span>
-
-      </div>
-
-      <div class="section-content">
-
-        <!-- FILTERS -->
-
-        <div class="filters">
-
-          <input
-            type="search"
-            id="searchInput"
-            placeholder="Search Branch / SOL / GP / BC"
-            oninput="applyFilters()"
-          >
-
-          <select id="districtFilter" onchange="applyFilters()">
-            <option value="">All Districts</option>
-          </select>
-
-          <input
-            type="date"
-            id="dateFrom"
-            title="From Date"
-            onchange="applyFilters()"
-          >
-
-          <input
-            type="date"
-            id="dateTo"
-            title="To Date"
-            onchange="applyFilters()"
-          >
-
-        </div>
-
-        <div class="filter-actions">
-          <button class="btn btn-gray" onclick="clearFilters()">
-            Clear Filters
-          </button>
-        </div>
-
-        <!-- REPORT TABLE -->
-
-        <div class="table-wrapper">
-
-          <table>
-
-            <thead id="reportHead"></thead>
-
-            <tbody id="reportBody">
-              <tr>
-                <td class="loading-cell">Please login to load reports</td>
-              </tr>
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </div>
-
-    </div>
-
-    <div class="footer">
-      DFS Saturation Camp Admin Portal | Developed & Maintained by IT Department
+    <div class="header-actions">
+      <button class="btn" onclick="loadReports()">↻ Refresh</button>
+      <button class="btn btn-blue" onclick="exportCSV()">⬇ Export CSV</button>
+      <button class="btn btn-gray" onclick="logout()">Logout</button>
     </div>
 
   </div>
 
+  <!-- DASHBOARD CARDS -->
+
+  <div class="dashboard-cards">
+
+    <div class="dashboard-card">
+      <div class="card-label">Total Camps Allotted</div>
+      <div class="card-value" id="totalAllotted">0</div>
+      <div class="card-note">As per GP Master</div>
+    </div>
+
+    <div class="dashboard-card">
+      <div class="card-label">Total Camps Submitted</div>
+      <div class="card-value" id="totalSubmitted">0</div>
+      <div class="card-note">Reports received</div>
+    </div>
+
+    <div class="dashboard-card">
+      <div class="card-label">Branches Reporting</div>
+      <div class="card-value" id="branchesReporting">0</div>
+      <div class="card-note">Unique SOL IDs</div>
+    </div>
+
+    <div class="dashboard-card">
+      <div class="card-label">GPs Covered</div>
+      <div class="card-value" id="gpsCovered">0</div>
+      <div class="card-note">Camps conducted</div>
+    </div>
+
+    <div class="dashboard-card">
+      <div class="card-label">PMJDY Accounts</div>
+      <div class="card-value" id="pmjdyTotal">0</div>
+      <div class="card-note">Total reported</div>
+    </div>
+
+  </div>
+
+  <!-- BRANCH SUMMARY -->
+
+  <div class="section">
+    <div class="section-header">
+      <h3>📊 Branch-wise Summary</h3>
+    </div>
+
+    <div class="section-content">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Branch Name</th>
+              <th>SOL ID</th>
+              <th>Camps Conducted</th>
+            </tr>
+          </thead>
+          <tbody id="branchBody">
+            <tr><td colspan="3" class="loading-cell">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISTRICT SUMMARY -->
+
+  <div class="section">
+    <div class="section-header">
+      <h3>📍 District-wise Summary</h3>
+    </div>
+
+    <div class="section-content">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>District</th>
+              <th>Camps Allotted</th>
+              <th>Camps Conducted</th>
+              <th>Branches</th>
+              <th>BCs Participated</th>
+              <th>GPs Covered</th>
+            </tr>
+          </thead>
+          <tbody id="districtBody">
+            <tr><td colspan="6" class="loading-cell">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISTRICT PERFORMANCE -->
+
+  <div class="section">
+    <div class="section-header">
+      <h3>📈 District-wise Scheme Performance</h3>
+    </div>
+
+    <div class="section-content">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>District</th>
+              <th>PMJDY</th>
+              <th>PMJJBY</th>
+              <th>PMSBY</th>
+              <th>APY</th>
+              <th>Camp Reports</th>
+            </tr>
+          </thead>
+          <tbody id="performanceBody">
+            <tr><td colspan="6" class="loading-cell">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPORT DETAILS -->
+
+  <div class="section">
+
+    <div class="section-header">
+      <h3>📋 Camp Reporting Details</h3>
+      <span id="reportCount">0 Records</span>
+    </div>
+
+    <div class="section-content">
+
+      <div class="filters">
+
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="Search Branch / SOL / GP / BC"
+          oninput="applyFilters()"
+        >
+
+        <select id="districtFilter" onchange="applyFilters()">
+          <option value="">All Districts</option>
+        </select>
+
+        <input type="date" id="dateFrom" onchange="applyFilters()">
+        <input type="date" id="dateTo" onchange="applyFilters()">
+
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn btn-gray" onclick="clearFilters()">Clear Filters</button>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead id="reportHead"></thead>
+          <tbody id="reportBody">
+            <tr><td class="loading-cell">Please login to load reports</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    DFS Saturation Camp Admin Portal | IT & FI Department | RO Jabalpur
+  </div>
+
+</div>
 </div>
 
 <!-- EDIT MODAL -->
@@ -938,1411 +729,947 @@ tbody tr:hover {
   <div class="modal-box">
 
     <div class="modal-header">
-
       <h3>Edit Camp Report</h3>
-
       <button class="modal-close" onclick="closeModal()">×</button>
-
     </div>
 
     <div class="modal-content">
-
       <div id="editFields" class="form-grid"></div>
-
     </div>
 
     <div class="modal-footer">
-
-      <button class="btn btn-gray" onclick="closeModal()">
-        Cancel
-      </button>
-
-      <button class="btn" id="saveBtn" onclick="saveReport()">
-        Save Changes
-      </button>
-
+      <button class="btn btn-gray" onclick="closeModal()">Cancel</button>
+      <button class="btn" id="saveBtn" onclick="saveReport()">Save Changes</button>
     </div>
 
   </div>
-
 </div>
 
 <script>
 
-/* ======================================================
+/* =====================================================
    CONFIGURATION
-====================================================== */
+===================================================== */
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbwHkmc9qul-GOuWTTTCKD3QKUdRLLcn9Xv7xKP-0kC46DHfJ6fO5rYnDWOEPoq09uz-/exec";
 
-const HEADERS = [
-  "Timestamp",
-  "District",
-  "Block",
-  "Branch Name",
-  "SOL ID",
-  "BC Name",
-  "BC Code",
-  "GP Name",
-  "GP Code",
-  "Camp Date",
-  "No OF BC Participated",
-  "PMJDY",
-  "PMJJBY",
-  "PMSBY",
-  "APY",
-  "NPS Sanchay",
-  "Other Activities",
-  "Remarks"
-];
-
-/* ======================================================
+/* =====================================================
    STATE
-====================================================== */
+===================================================== */
 
-let token = "";
 let allReports = [];
 let filteredReports = [];
 let masterData = [];
 let currentEditRow = null;
 
-/* ======================================================
-   API FUNCTION
-====================================================== */
+/* =====================================================
+   API
+===================================================== */
 
-async function api(body) {
+async function api(payload){
 
-  const response = await fetch(API_URL, {
-
-    method: "POST",
-
-    headers: {
-      "Content-Type": "text/plain;charset=utf-8"
+  const response = await fetch(API_URL,{
+    method:"POST",
+    headers:{
+      "Content-Type":"text/plain;charset=utf-8"
     },
-
-    body: JSON.stringify(body)
-
+    body:JSON.stringify(payload)
   });
 
   return await response.json();
-
 }
 
-/* ======================================================
+/* =====================================================
    LOGIN
-====================================================== */
+===================================================== */
 
-async function login() {
+async function login(){
 
   const button = document.getElementById("loginBtn");
   const message = document.getElementById("loginMsg");
+  const password = document.getElementById("password").value;
 
-  const username =
-    document.getElementById("username").value.trim();
+  message.textContent="";
 
-  const password =
-    document.getElementById("password").value;
-
-  message.textContent = "";
-
-  if (!password.trim()) {
-
-    message.textContent = "Please enter your password.";
-
+  if(!password.trim()){
+    message.textContent="Please enter your password.";
     document.getElementById("password").focus();
-
     return;
-
   }
 
-  button.disabled = true;
-  button.textContent = "Signing in...";
+  button.disabled=true;
+  button.textContent="Signing in...";
 
-  try {
+  try{
 
-    const result = await api({
-
-      action: "adminLogin",
-
-      username: username,
-
-      password: password
-
+    const result=await api({
+      action:"adminLogin",
+      password:password
     });
 
-    if (!result || result.success !== true) {
-
+    if(!result || result.success!==true){
       throw new Error(
         result && result.message
           ? result.message
-          : "Invalid username or password."
+          : "Invalid password."
       );
-
     }
 
-    /*
-      Existing backend token response structure.
-      */
-
-    if (!result.data || !result.data.token) {
-
-      throw new Error(
-        "Login response did not contain a valid session token."
-      );
-
-    }
-
-    token = result.data.token;
-
-    document.getElementById("loginView")
-      .classList.add("hidden");
-
-    document.getElementById("app")
-      .classList.remove("hidden");
+    document.getElementById("loginView").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
 
     await loadReports();
 
-  } catch (error) {
+  }catch(error){
 
-    console.error("Login error:", error);
+    console.error("Login error:",error);
+    message.textContent=error.message||"Login failed.";
 
-    message.textContent =
-      error.message || "Login failed. Please try again.";
+  }finally{
 
-  } finally {
-
-    button.disabled = false;
-    button.textContent = "Sign In";
+    button.disabled=false;
+    button.textContent="Sign In";
 
   }
-
 }
 
-/* ENTER KEY */
+document.getElementById("password").addEventListener("keydown",function(event){
+  if(event.key==="Enter") login();
+});
 
-document.getElementById("password")
-  .addEventListener("keydown", function(event) {
-
-    if (event.key === "Enter") {
-      login();
-    }
-
-  });
-
-/* ======================================================
+/* =====================================================
    LOGOUT
-====================================================== */
+===================================================== */
 
-function logout() {
+function logout(){
 
-  token = "";
-  allReports = [];
-  filteredReports = [];
+  allReports=[];
+  filteredReports=[];
+  masterData=[];
 
-  document.getElementById("app")
-    .classList.add("hidden");
-
-  document.getElementById("loginView")
-    .classList.remove("hidden");
-
-  document.getElementById("password").value = "";
-
-  document.getElementById("loginMsg").textContent = "";
+  document.getElementById("app").classList.add("hidden");
+  document.getElementById("loginView").classList.remove("hidden");
+  document.getElementById("password").value="";
+  document.getElementById("loginMsg").textContent="";
 
 }
 
-/* ======================================================
+/* =====================================================
    LOAD REPORTS
-====================================================== */
+===================================================== */
 
-async function loadReports() {
+async function loadReports(){
 
-  if (!token) {
+  document.getElementById("reportBody").innerHTML=
+    '<tr><td colspan="16" class="loading-cell">Loading reports...</td></tr>';
 
-    alert("Session expired. Please login again.");
+  try{
 
-    logout();
-
-    return;
-
-  }
-
-  document.getElementById("reportBody").innerHTML =
-    '<tr><td colspan="20" class="loading-cell">Loading reports...</td></tr>';
-
-  try {
-
-    const result = await api({
-
-      action: "adminGetReports",
-
-      token: token
-
+    const result=await api({
+      action:"adminGetReports"
     });
 
-    if (!result || result.success !== true) {
-
+    if(!result || result.success!==true){
       throw new Error(
         result && result.message
           ? result.message
           : "Unable to load reports."
       );
-
     }
 
-    allReports =
-      result.data && Array.isArray(result.data.reports)
-        ? result.data.reports
-        : Array.isArray(result.data)
-          ? result.data
-          : Array.isArray(result.reports)
-            ? result.reports
-            : [];
+    const data=result.data||{};
 
-    /* LOAD MASTER DATA */
+    allReports=Array.isArray(data.reports)
+      ? data.reports
+      : Array.isArray(result.reports)
+        ? result.reports
+        : [];
 
-    try {
+    // Load GP master if backend supports it
+    try{
 
-      const masterResult = await api({
-
-        action: "getMasterData",
-
-        token: token
-
+      const masterResult=await api({
+        action:"getMasterData"
       });
 
-      if (masterResult && masterResult.success === true) {
+      if(masterResult && masterResult.success===true){
 
-        masterData =
-          masterResult.data &&
-          Array.isArray(masterResult.data.GP)
-            ? masterResult.data.GP
-            : masterResult.data &&
-              Array.isArray(masterResult.data)
-              ? masterResult.data
-              : [];
+        const md=masterResult.data||{};
+
+        masterData=Array.isArray(md.GP)
+          ? md.GP
+          : Array.isArray(md)
+            ? md
+            : [];
 
       }
 
-    } catch (masterError) {
+    }catch(masterError){
 
-      console.warn("Master data error:", masterError);
+      console.warn("Master data unavailable:",masterError);
 
     }
 
     populateDistrictFilter();
-
     applyFilters();
-
     updateDashboard();
 
-  } catch (error) {
+  }catch(error){
 
-    console.error(error);
+    console.error("Reports loading error:",error);
 
-    document.getElementById("reportBody").innerHTML =
-      '<tr><td colspan="20" class="loading-cell">' +
-      escapeHtml(error.message) +
+    document.getElementById("reportBody").innerHTML=
+      '<tr><td colspan="16" class="loading-cell">'+
+      escapeHtml(error.message)+
       '</td></tr>';
 
-    if (
-      String(error.message).toLowerCase().includes("token") ||
-      String(error.message).toLowerCase().includes("session")
-    ) {
-
-      alert("Session expired. Please login again.");
-
-      logout();
-
-    }
-
   }
-
 }
 
-/* ======================================================
-   NORMALIZE REPORT
-====================================================== */
+/* =====================================================
+   NORMALIZE DATA
+===================================================== */
 
-function getValue(row, index, key) {
+function normalizeReport(row){
 
-  if (Array.isArray(row)) {
-
-    return row[index] == null ? "" : row[index];
-
-  }
-
-  if (row && typeof row === "object") {
-
-    if (row[key] != null) return row[key];
-
-    if (row[HEADERS[index]] != null) {
-      return row[HEADERS[index]];
-    }
-
-  }
-
-  return "";
-
-}
-
-function normalizeReport(row) {
-
-  if (Array.isArray(row)) {
+  if(Array.isArray(row)){
 
     return {
-
-      raw: row,
-
-      district: row[1] || "",
-      block: row[2] || "",
-      branch: row[3] || "",
-      sol: row[4] || "",
-      bcName: row[5] || "",
-      bcCode: row[6] || "",
-      gp: row[7] || "",
-      gpCode: row[8] || "",
-      campDate: row[9] || "",
-
-      bcParticipated: Number(row[10]) || 0,
-      pmjdy: Number(row[11]) || 0,
-      pmjjby: Number(row[12]) || 0,
-      pmsby: Number(row[13]) || 0,
-      apy: Number(row[14]) || 0,
-      nps: Number(row[15]) || 0,
-
-      other: row[16] || "",
-      remarks: row[17] || "",
-
-      rowNumber:
-        row.rowNumber ||
-        row._rowNumber ||
-        ""
-
+      raw:row,
+      timestamp:row[0]||"",
+      district:row[1]||"",
+      block:row[2]||"",
+      branch:row[3]||"",
+      sol:row[4]||"",
+      bcName:row[5]||"",
+      bcCode:row[6]||"",
+      gp:row[7]||"",
+      gpCode:row[8]||"",
+      campDate:row[9]||"",
+      bcParticipated:Number(row[10])||0,
+      pmjdy:Number(row[11])||0,
+      pmjjby:Number(row[12])||0,
+      pmsby:Number(row[13])||0,
+      apy:Number(row[14])||0,
+      nps:Number(row[15])||0,
+      other:row[16]||"",
+      remarks:row[17]||"",
+      rowNumber:row.rowNumber||row._rowNumber||row.id||""
     };
 
   }
 
+  row=row||{};
+
   return {
-
-    raw: row,
-
-    district: getValue(row, 1, "district"),
-    block: getValue(row, 2, "block"),
-    branch: getValue(row, 3, "branch"),
-    sol: getValue(row, 4, "sol"),
-    bcName: getValue(row, 5, "bcName"),
-    bcCode: getValue(row, 6, "bcCode"),
-    gp: getValue(row, 7, "gp"),
-    gpCode: getValue(row, 8, "gpCode"),
-    campDate: getValue(row, 9, "campDate"),
-
-    bcParticipated:
-      Number(getValue(row, 10, "bcParticipated")) || 0,
-
-    pmjdy: Number(getValue(row, 11, "pmjdy")) || 0,
-    pmjjby: Number(getValue(row, 12, "pmjjby")) || 0,
-    pmsby: Number(getValue(row, 13, "pmsby")) || 0,
-    apy: Number(getValue(row, 14, "apy")) || 0,
-    nps: Number(getValue(row, 15, "nps")) || 0,
-
-    other: getValue(row, 16, "other"),
-    remarks: getValue(row, 17, "remarks"),
-
-    rowNumber:
-      row.rowNumber ||
-      row._rowNumber ||
-      row.id ||
-      ""
-
+    raw:row,
+    timestamp:row.timestamp||row.Timestamp||"",
+    district:row.district||row.District||"",
+    block:row.block||row.Block||"",
+    branch:row.branch||row["Branch Name"]||row.branchName||"",
+    sol:row.sol||row["SOL ID"]||row.solId||"",
+    bcName:row.bcName||row["BC Name"]||"",
+    bcCode:row.bcCode||row["BC Code"]||"",
+    gp:row.gp||row["GP Name"]||row.gpName||"",
+    gpCode:row.gpCode||row["GP Code"]||"",
+    campDate:row.campDate||row["Camp Date"]||"",
+    bcParticipated:Number(row.bcParticipated||row["No OF BC Participated"])||0,
+    pmjdy:Number(row.pmjdy||row.PMJDY)||0,
+    pmjjby:Number(row.pmjjby||row.PMJJBY)||0,
+    pmsby:Number(row.pmsby||row.PMSBY)||0,
+    apy:Number(row.apy||row.APY)||0,
+    nps:Number(row.nps||row["NPS Sanchay"])||0,
+    other:row.other||row["Other Activities"]||"",
+    remarks:row.remarks||row.Remarks||"",
+    rowNumber:row.rowNumber||row._rowNumber||row.id||""
   };
-
 }
 
-/* ======================================================
-   DISTRICT FILTER
-====================================================== */
+/* =====================================================
+   FILTER
+===================================================== */
 
-function populateDistrictFilter() {
+function populateDistrictFilter(){
 
-  const select = document.getElementById("districtFilter");
+  const select=document.getElementById("districtFilter");
+  const previous=select.value;
+  const districts=new Set();
 
-  const districts = new Set();
+  allReports.forEach(function(row){
+    const r=normalizeReport(row);
+    if(r.district) districts.add(r.district);
+  });
 
-  allReports.forEach(function(row) {
+  select.innerHTML='<option value="">All Districts</option>';
 
-    const r = normalizeReport(row);
+  Array.from(districts).sort().forEach(function(district){
 
-    if (r.district) {
-      districts.add(r.district);
-    }
+    const option=document.createElement("option");
+    option.value=district;
+    option.textContent=district;
+    select.appendChild(option);
 
   });
 
-  const previous = select.value;
-
-  select.innerHTML =
-    '<option value="">All Districts</option>';
-
-  Array.from(districts)
-    .sort()
-    .forEach(function(district) {
-
-      const option = document.createElement("option");
-
-      option.value = district;
-      option.textContent = district;
-
-      select.appendChild(option);
-
-    });
-
-  select.value = previous;
-
+  select.value=previous;
 }
 
-/* ======================================================
-   APPLY FILTERS
-====================================================== */
+function applyFilters(){
 
-function applyFilters() {
+  const search=document.getElementById("searchInput").value.trim().toLowerCase();
+  const district=document.getElementById("districtFilter").value;
+  const from=document.getElementById("dateFrom").value;
+  const to=document.getElementById("dateTo").value;
 
-  const search =
-    document.getElementById("searchInput")
-      .value.trim().toLowerCase();
+  filteredReports=allReports.filter(function(row){
 
-  const district =
-    document.getElementById("districtFilter").value;
+    const r=normalizeReport(row);
 
-  const from =
-    document.getElementById("dateFrom").value;
-
-  const to =
-    document.getElementById("dateTo").value;
-
-  filteredReports = allReports.filter(function(row) {
-
-    const r = normalizeReport(row);
-
-    const searchable = [
-
-      r.branch,
-      r.sol,
-      r.district,
-      r.block,
-      r.gp,
-      r.gpCode,
-      r.bcName,
-      r.bcCode
-
+    const searchable=[
+      r.branch,r.sol,r.district,r.block,r.gp,r.gpCode,r.bcName,r.bcCode
     ].join(" ").toLowerCase();
 
-    if (search && searchable.indexOf(search) === -1) {
-      return false;
-    }
+    if(search && !searchable.includes(search)) return false;
+    if(district && r.district!==district) return false;
 
-    if (district && r.district !== district) {
-      return false;
-    }
+    const date=parseDate(r.campDate);
 
-    const date = parseDate(r.campDate);
-
-    if (from && date && date < from) {
-      return false;
-    }
-
-    if (to && date && date > to) {
-      return false;
-    }
+    if(from && date && date<from) return false;
+    if(to && date && date>to) return false;
 
     return true;
 
   });
 
   renderReports();
-
 }
 
-function clearFilters() {
+function clearFilters(){
 
-  document.getElementById("searchInput").value = "";
-  document.getElementById("districtFilter").value = "";
-  document.getElementById("dateFrom").value = "";
-  document.getElementById("dateTo").value = "";
+  document.getElementById("searchInput").value="";
+  document.getElementById("districtFilter").value="";
+  document.getElementById("dateFrom").value="";
+  document.getElementById("dateTo").value="";
 
   applyFilters();
-
 }
 
-/* ======================================================
-   RENDER REPORTS
-====================================================== */
+/* =====================================================
+   REPORT TABLE
+===================================================== */
 
-function renderReports() {
+function renderReports(){
 
-  const head = document.getElementById("reportHead");
-  const body = document.getElementById("reportBody");
+  const head=document.getElementById("reportHead");
+  const body=document.getElementById("reportBody");
 
-  head.innerHTML = "";
-
-  const headers = [
-
-    "District",
-    "Block",
-    "Branch Name",
-    "SOL ID",
-    "BC Name",
-    "GP Name",
-    "Camp Date",
-    "BC Participated",
-    "PMJDY",
-    "PMJJBY",
-    "PMSBY",
-    "APY",
-    "NPS Sanchay",
-    "Other Activities",
-    "Remarks",
-    "Actions"
-
+  const columns=[
+    ["District","district"],
+    ["Block","block"],
+    ["Branch Name","branch"],
+    ["SOL ID","sol"],
+    ["BC Name","bcName"],
+    ["GP Name","gp"],
+    ["Camp Date","campDate"],
+    ["BC Participated","bcParticipated"],
+    ["PMJDY","pmjdy"],
+    ["PMJJBY","pmjjby"],
+    ["PMSBY","pmsby"],
+    ["APY","apy"],
+    ["NPS Sanchay","nps"],
+    ["Other Activities","other"],
+    ["Remarks","remarks"]
   ];
 
-  const trHead = document.createElement("tr");
+  head.innerHTML="<tr>"+columns.map(function(c){
+    return "<th>"+c[0]+"</th>";
+  }).join("")+"<th>Actions</th></tr>";
 
-  headers.forEach(function(header) {
+  body.innerHTML="";
 
-    const th = document.createElement("th");
+  document.getElementById("reportCount").textContent=
+    filteredReports.length+" Records";
 
-    th.textContent = header;
+  if(!filteredReports.length){
 
-    trHead.appendChild(th);
-
-  });
-
-  head.appendChild(trHead);
-
-  body.innerHTML = "";
-
-  document.getElementById("reportCount").textContent =
-    filteredReports.length + " Records";
-
-  if (!filteredReports.length) {
-
-    body.innerHTML =
+    body.innerHTML=
       '<tr><td colspan="16" class="loading-cell">No records found</td></tr>';
 
     return;
-
   }
 
-  filteredReports.forEach(function(row, index) {
+  filteredReports.forEach(function(row,index){
 
-    const r = normalizeReport(row);
+    const r=normalizeReport(row);
+    const tr=document.createElement("tr");
 
-    const tr = document.createElement("tr");
+    columns.forEach(function(c){
 
-    const values = [
+      const td=document.createElement("td");
+      let value=r[c[1]];
 
-      r.district,
-      r.block,
-      r.branch,
-      r.sol,
-      r.bcName,
-      r.gp,
-      formatDate(r.campDate),
-      r.bcParticipated,
-      r.pmjdy,
-      r.pmjjby,
-      r.pmsby,
-      r.apy,
-      r.nps,
-      r.other,
-      r.remarks
+      if(c[1]==="campDate") value=formatDate(value);
 
-    ];
-
-    values.forEach(function(value) {
-
-      const td = document.createElement("td");
-
-      td.textContent = value == null ? "" : value;
-
+      td.textContent=value==null?"":value;
       tr.appendChild(td);
 
     });
 
-    const actionTd = document.createElement("td");
+    const actionTd=document.createElement("td");
+    actionTd.className="action-cell";
 
-    actionTd.className = "action-cell";
+    const editBtn=document.createElement("button");
+    editBtn.className="small-btn";
+    editBtn.textContent="Edit";
+    editBtn.onclick=function(){openEdit(row);};
 
-    const editButton = document.createElement("button");
+    const deleteBtn=document.createElement("button");
+    deleteBtn.className="small-btn delete";
+    deleteBtn.textContent="Delete";
+    deleteBtn.onclick=function(){deleteReport(row);};
 
-    editButton.className = "small-btn";
-    editButton.textContent = "Edit";
-
-    editButton.onclick = function() {
-      openEdit(row, index);
-    };
-
-    const deleteButton = document.createElement("button");
-
-    deleteButton.className = "small-btn delete";
-    deleteButton.textContent = "Delete";
-
-    deleteButton.onclick = function() {
-      deleteReport(row);
-    };
-
-    actionTd.appendChild(editButton);
-    actionTd.appendChild(deleteButton);
-
+    actionTd.appendChild(editBtn);
+    actionTd.appendChild(deleteBtn);
     tr.appendChild(actionTd);
-
     body.appendChild(tr);
 
   });
-
 }
 
-/* ======================================================
-   UPDATE DASHBOARD
-====================================================== */
+/* =====================================================
+   DASHBOARD
+===================================================== */
 
-function updateDashboard() {
+function updateDashboard(){
 
-  const reports = allReports.map(normalizeReport);
+  const reports=allReports.map(normalizeReport);
+  const branchSet=new Set();
+  let pmjdyTotal=0;
 
-  document.getElementById("totalSubmitted").textContent =
-    reports.length;
+  reports.forEach(function(r){
 
-  document.getElementById("gpsCovered").textContent =
-    reports.length;
-
-  const branches = new Set();
-
-  let totalPMJDY = 0;
-
-  reports.forEach(function(r) {
-
-    if (r.sol) {
-      branches.add(String(r.sol));
-    }
-
-    totalPMJDY += Number(r.pmjdy) || 0;
+    if(r.sol) branchSet.add(String(r.sol));
+    pmjdyTotal+=Number(r.pmjdy)||0;
 
   });
 
-  document.getElementById("branchesReporting").textContent =
-    branches.size;
-
-  document.getElementById("pmjdyTotal").textContent =
-    totalPMJDY.toLocaleString("en-IN");
+  document.getElementById("totalSubmitted").textContent=reports.length;
+  document.getElementById("gpsCovered").textContent=reports.length;
+  document.getElementById("branchesReporting").textContent=branchSet.size;
+  document.getElementById("pmjdyTotal").textContent=pmjdyTotal.toLocaleString("en-IN");
+  document.getElementById("totalAllotted").textContent=getMasterCount();
 
   renderBranchSummary(reports);
-
   renderDistrictSummary(reports);
-
   renderDistrictPerformance(reports);
-
-  document.getElementById("totalAllotted").textContent =
-    getMasterCount().toLocaleString("en-IN");
-
 }
 
-/* ======================================================
+/* =====================================================
    BRANCH SUMMARY
-====================================================== */
+===================================================== */
 
-function renderBranchSummary(reports) {
+function renderBranchSummary(reports){
 
-  const summary = {};
+  const summary={};
 
-  reports.forEach(function(r) {
+  reports.forEach(function(r){
 
-    const key = String(r.sol || r.branch || "Unknown");
+    const key=String(r.sol||r.branch||"Unknown");
 
-    if (!summary[key]) {
-
-      summary[key] = {
-
-        branch: r.branch || "",
-        sol: r.sol || "",
-        camps: 0
-
+    if(!summary[key]){
+      summary[key]={
+        branch:r.branch||"",
+        sol:r.sol||"",
+        camps:0
       };
-
     }
 
     summary[key].camps++;
 
   });
 
-  const body = document.getElementById("branchBody");
+  const body=document.getElementById("branchBody");
+  body.innerHTML="";
 
-  body.innerHTML = "";
+  let total=0;
 
-  let total = 0;
+  Object.keys(summary).sort(function(a,b){
 
-  Object.values(summary)
-    .sort(function(a, b) {
+    return summary[a].branch.localeCompare(summary[b].branch);
 
-      return a.branch.localeCompare(b.branch);
+  }).forEach(function(key){
 
-    })
-    .forEach(function(item) {
+    const item=summary[key];
+    total+=item.camps;
 
-      total += item.camps;
+    const tr=document.createElement("tr");
 
-      const tr = document.createElement("tr");
+    tr.innerHTML=
+      "<td>"+escapeHtml(item.branch)+"</td>"+
+      "<td>"+escapeHtml(item.sol)+"</td>"+
+      "<td>"+item.camps+"</td>";
 
-      tr.innerHTML =
-        "<td>" + escapeHtml(item.branch) + "</td>" +
-        "<td>" + escapeHtml(item.sol) + "</td>" +
-        "<td>" + item.camps + "</td>";
+    body.appendChild(tr);
 
-      body.appendChild(tr);
+  });
 
-    });
-
-  const totalRow = document.createElement("tr");
-
-  totalRow.className = "grand-total";
-
-  totalRow.innerHTML =
-    "<td>Grand Total</td><td></td><td>" + total + "</td>";
-
-  body.appendChild(totalRow);
-
+  const grand=document.createElement("tr");
+  grand.className="grand-total";
+  grand.innerHTML="<td>Grand Total</td><td></td><td>"+total+"</td>";
+  body.appendChild(grand);
 }
 
-/* ======================================================
+/* =====================================================
    DISTRICT SUMMARY
-====================================================== */
+===================================================== */
 
-function renderDistrictSummary(reports) {
+function renderDistrictSummary(reports){
 
-  const summary = {};
+  const summary={};
 
-  reports.forEach(function(r) {
+  reports.forEach(function(r){
 
-    const district = r.district || "Unknown";
+    const district=r.district||"Unknown";
 
-    if (!summary[district]) {
-
-      summary[district] = {
-
-        camps: 0,
-        branches: new Set(),
-        bc: 0,
-        gps: 0
-
+    if(!summary[district]){
+      summary[district]={
+        camps:0,
+        branches:new Set(),
+        bc:0,
+        gps:0
       };
-
     }
 
     summary[district].camps++;
     summary[district].gps++;
 
-    if (r.sol) {
-      summary[district].branches.add(String(r.sol));
-    }
+    if(r.sol) summary[district].branches.add(String(r.sol));
 
-    summary[district].bc +=
-      Number(r.bcParticipated) || 0;
+    summary[district].bc+=Number(r.bcParticipated)||0;
 
   });
 
-  const body = document.getElementById("districtBody");
+  const body=document.getElementById("districtBody");
+  body.innerHTML="";
 
-  body.innerHTML = "";
+  let totalCamps=0,totalBC=0,totalGP=0;
+  const totalBranches=new Set();
 
-  let totalCamps = 0;
-  let totalBranches = new Set();
-  let totalBC = 0;
-  let totalGP = 0;
+  Object.keys(summary).sort().forEach(function(district){
 
-  Object.keys(summary)
-    .sort()
-    .forEach(function(district) {
+    const s=summary[district];
+    const allotted=getDistrictAllotted(district);
 
-      const s = summary[district];
+    totalCamps+=s.camps;
+    totalBC+=s.bc;
+    totalGP+=s.gps;
 
-      const allotted = getDistrictAllotted(district);
+    s.branches.forEach(function(sol){totalBranches.add(sol);});
 
-      totalCamps += s.camps;
-      totalBC += s.bc;
-      totalGP += s.gps;
+    const tr=document.createElement("tr");
 
-      s.branches.forEach(function(sol) {
-        totalBranches.add(sol);
-      });
+    tr.innerHTML=
+      "<td>"+escapeHtml(district)+"</td>"+
+      "<td>"+allotted+"</td>"+
+      "<td>"+s.camps+"</td>"+
+      "<td>"+s.branches.size+"</td>"+
+      "<td>"+s.bc+"</td>"+
+      "<td>"+s.gps+"</td>";
 
-      const tr = document.createElement("tr");
+    body.appendChild(tr);
 
-      tr.innerHTML =
-        "<td>" + escapeHtml(district) + "</td>" +
-        "<td>" + allotted + "</td>" +
-        "<td>" + s.camps + "</td>" +
-        "<td>" + s.branches.size + "</td>" +
-        "<td>" + s.bc + "</td>" +
-        "<td>" + s.gps + "</td>";
+  });
 
-      body.appendChild(tr);
+  const grand=document.createElement("tr");
+  grand.className="grand-total";
 
-    });
-
-  const grand = document.createElement("tr");
-
-  grand.className = "grand-total";
-
-  grand.innerHTML =
-    "<td>Grand Total</td>" +
-    "<td>" + getMasterCount() + "</td>" +
-    "<td>" + totalCamps + "</td>" +
-    "<td>" + totalBranches.size + "</td>" +
-    "<td>" + totalBC + "</td>" +
-    "<td>" + totalGP + "</td>";
+  grand.innerHTML=
+    "<td>Grand Total</td>"+
+    "<td>"+getMasterCount()+"</td>"+
+    "<td>"+totalCamps+"</td>"+
+    "<td>"+totalBranches.size+"</td>"+
+    "<td>"+totalBC+"</td>"+
+    "<td>"+totalGP+"</td>";
 
   body.appendChild(grand);
-
 }
 
-/* ======================================================
+/* =====================================================
    DISTRICT PERFORMANCE
-====================================================== */
+===================================================== */
 
-function renderDistrictPerformance(reports) {
+function renderDistrictPerformance(reports){
 
-  const summary = {};
+  const summary={};
 
-  reports.forEach(function(r) {
+  reports.forEach(function(r){
 
-    const district = r.district || "Unknown";
+    const district=r.district||"Unknown";
 
-    if (!summary[district]) {
-
-      summary[district] = {
-
-        pmjdy: 0,
-        pmjjby: 0,
-        pmsby: 0,
-        apy: 0,
-        camps: 0
-
+    if(!summary[district]){
+      summary[district]={
+        pmjdy:0,pmjjby:0,pmsby:0,apy:0,camps:0
       };
-
     }
 
-    summary[district].pmjdy += Number(r.pmjdy) || 0;
-    summary[district].pmjjby += Number(r.pmjjby) || 0;
-    summary[district].pmsby += Number(r.pmsby) || 0;
-    summary[district].apy += Number(r.apy) || 0;
+    summary[district].pmjdy+=Number(r.pmjdy)||0;
+    summary[district].pmjjby+=Number(r.pmjjby)||0;
+    summary[district].pmsby+=Number(r.pmsby)||0;
+    summary[district].apy+=Number(r.apy)||0;
     summary[district].camps++;
 
   });
 
-  const body = document.getElementById("performanceBody");
+  const body=document.getElementById("performanceBody");
+  body.innerHTML="";
 
-  body.innerHTML = "";
+  let t1=0,t2=0,t3=0,t4=0,t5=0;
 
-  let t1 = 0;
-  let t2 = 0;
-  let t3 = 0;
-  let t4 = 0;
-  let t5 = 0;
+  Object.keys(summary).sort().forEach(function(district){
 
-  Object.keys(summary)
-    .sort()
-    .forEach(function(district) {
+    const s=summary[district];
 
-      const s = summary[district];
+    t1+=s.pmjdy;t2+=s.pmjjby;t3+=s.pmsby;t4+=s.apy;t5+=s.camps;
 
-      t1 += s.pmjdy;
-      t2 += s.pmjjby;
-      t3 += s.pmsby;
-      t4 += s.apy;
-      t5 += s.camps;
+    const tr=document.createElement("tr");
 
-      const tr = document.createElement("tr");
+    tr.innerHTML=
+      "<td>"+escapeHtml(district)+"</td>"+
+      "<td>"+s.pmjdy+"</td>"+
+      "<td>"+s.pmjjby+"</td>"+
+      "<td>"+s.pmsby+"</td>"+
+      "<td>"+s.apy+"</td>"+
+      "<td>"+s.camps+"</td>";
 
-      tr.innerHTML =
-        "<td>" + escapeHtml(district) + "</td>" +
-        "<td>" + s.pmjdy + "</td>" +
-        "<td>" + s.pmjjby + "</td>" +
-        "<td>" + s.pmsby + "</td>" +
-        "<td>" + s.apy + "</td>" +
-        "<td>" + s.camps + "</td>";
+    body.appendChild(tr);
 
-      body.appendChild(tr);
+  });
 
-    });
+  const grand=document.createElement("tr");
+  grand.className="grand-total";
 
-  const grand = document.createElement("tr");
-
-  grand.className = "grand-total";
-
-  grand.innerHTML =
-    "<td>Grand Total</td>" +
-    "<td>" + t1 + "</td>" +
-    "<td>" + t2 + "</td>" +
-    "<td>" + t3 + "</td>" +
-    "<td>" + t4 + "</td>" +
-    "<td>" + t5 + "</td>";
+  grand.innerHTML=
+    "<td>Grand Total</td>"+
+    "<td>"+t1+"</td>"+
+    "<td>"+t2+"</td>"+
+    "<td>"+t3+"</td>"+
+    "<td>"+t4+"</td>"+
+    "<td>"+t5+"</td>";
 
   body.appendChild(grand);
-
 }
 
-/* ======================================================
-   MASTER DATA HELPERS
-====================================================== */
+/* =====================================================
+   GP MASTER HELPERS
+===================================================== */
 
-function getMasterCount() {
+function getMasterCount(){
 
-  if (!Array.isArray(masterData)) {
-    return 0;
-  }
+  if(!Array.isArray(masterData)) return 0;
 
-  return masterData.filter(function(row) {
+  return masterData.filter(function(row){
 
-    const district = Array.isArray(row)
-      ? row[0]
-      : row.district || row.District || "";
+    const district=Array.isArray(row)
+      ?row[0]
+      :row.district||row.District||"";
 
-    return String(district || "").trim() !== "";
+    return String(district||"").trim()!=="";
 
   }).length;
-
 }
 
-function getDistrictAllotted(district) {
+function getDistrictAllotted(district){
 
-  if (!Array.isArray(masterData)) {
-    return 0;
-  }
+  if(!Array.isArray(masterData)) return 0;
 
-  return masterData.filter(function(row) {
+  return masterData.filter(function(row){
 
-    const rowDistrict = Array.isArray(row)
-      ? row[0]
-      : row.district || row.District || "";
+    const rowDistrict=Array.isArray(row)
+      ?row[0]
+      :row.district||row.District||"";
 
-    return String(rowDistrict || "")
-      .trim()
-      .toLowerCase() ===
-      String(district || "")
-        .trim()
-        .toLowerCase();
+    return String(rowDistrict||"").trim().toLowerCase()===
+      String(district||"").trim().toLowerCase();
 
   }).length;
-
 }
 
-/* ======================================================
+/* =====================================================
    EDIT REPORT
-====================================================== */
+===================================================== */
 
-function openEdit(row, index) {
+function openEdit(row){
 
-  currentEditRow = row;
+  currentEditRow=row;
 
-  const r = normalizeReport(row);
+  const r=normalizeReport(row);
+  const fields=document.getElementById("editFields");
 
-  const fields = document.getElementById("editFields");
+  fields.innerHTML="";
 
-  fields.innerHTML = "";
-
-  const editItems = [
-
-    ["District", r.district],
-    ["Block", r.block],
-    ["Branch Name", r.branch],
-    ["SOL ID", r.sol],
-    ["BC Name", r.bcName],
-    ["BC Code", r.bcCode],
-    ["GP Name", r.gp],
-    ["GP Code", r.gpCode],
-    ["Camp Date", parseDate(r.campDate)],
-    ["No OF BC Participated", r.bcParticipated],
-    ["PMJDY", r.pmjdy],
-    ["PMJJBY", r.pmjjby],
-    ["PMSBY", r.pmsby],
-    ["APY", r.apy],
-    ["NPS Sanchay", r.nps],
-    ["Other Activities", r.other],
-    ["Remarks", r.remarks]
-
+  const items=[
+    ["District",r.district,"text"],
+    ["Block",r.block,"text"],
+    ["Branch Name",r.branch,"text"],
+    ["SOL ID",r.sol,"text"],
+    ["BC Name",r.bcName,"text"],
+    ["BC Code",r.bcCode,"text"],
+    ["GP Name",r.gp,"text"],
+    ["GP Code",r.gpCode,"text"],
+    ["Camp Date",parseDate(r.campDate),"date"],
+    ["No OF BC Participated",r.bcParticipated,"number"],
+    ["PMJDY",r.pmjdy,"number"],
+    ["PMJJBY",r.pmjjby,"number"],
+    ["PMSBY",r.pmsby,"number"],
+    ["APY",r.apy,"number"],
+    ["NPS Sanchay",r.nps,"number"],
+    ["Other Activities",r.other,"text"],
+    ["Remarks",r.remarks,"text"]
   ];
 
-  editItems.forEach(function(item, i) {
+  items.forEach(function(item,i){
 
-    const div = document.createElement("div");
+    const div=document.createElement("div");
+    div.className="form-field";
 
-    div.className = "form-field";
+    const label=document.createElement("label");
+    label.textContent=item[0];
 
-    const label = document.createElement("label");
+    const input=document.createElement("input");
+    input.id="editField_"+i;
+    input.type=item[2];
+    input.value=item[1]==null?"":item[1];
 
-    label.textContent = item[0];
-
-    const input = document.createElement("input");
-
-    input.id = "editField_" + i;
-    input.value = item[1] == null ? "" : item[1];
-
-    if (i === 8) {
-
-      input.type = "date";
-
-    } else if (i >= 9 && i <= 14) {
-
-      input.type = "number";
-      input.min = "0";
-
-    } else {
-
-      input.type = "text";
-
-    }
+    if(item[2]==="number") input.min="0";
 
     div.appendChild(label);
     div.appendChild(input);
-
     fields.appendChild(div);
 
   });
 
-  document.getElementById("editModal")
-    .classList.remove("hidden");
-
+  document.getElementById("editModal").classList.remove("hidden");
 }
 
-function closeModal() {
+function closeModal(){
 
-  document.getElementById("editModal")
-    .classList.add("hidden");
-
-  currentEditRow = null;
-
+  document.getElementById("editModal").classList.add("hidden");
+  currentEditRow=null;
 }
 
-/* ======================================================
+/* =====================================================
    SAVE REPORT
-====================================================== */
+===================================================== */
 
-async function saveReport() {
+async function saveReport(){
 
-  if (!currentEditRow) {
-
+  if(!currentEditRow){
     alert("No report selected.");
-
     return;
-
   }
 
-  const button = document.getElementById("saveBtn");
+  const button=document.getElementById("saveBtn");
+  button.disabled=true;
+  button.textContent="Saving...";
 
-  button.disabled = true;
-  button.textContent = "Saving...";
+  try{
 
-  try {
+    const values=[];
 
-    const values = [];
+    for(let i=0;i<17;i++){
 
-    for (let i = 0; i < 17; i++) {
-
-      const input =
-        document.getElementById("editField_" + i);
-
-      values.push(input ? input.value : "");
+      const input=document.getElementById("editField_"+i);
+      values.push(input?input.value:"");
 
     }
 
-    const result = await api({
+    const rowNumber=
+      currentEditRow.rowNumber||
+      currentEditRow._rowNumber||
+      currentEditRow.id;
 
-      action: "adminUpdateReport",
-
-      token: token,
-
-      rowNumber:
-        currentEditRow.rowNumber ||
-        currentEditRow._rowNumber ||
-        currentEditRow.id,
-
-      data: values
-
+    const result=await api({
+      action:"adminUpdateReport",
+      rowNumber:rowNumber,
+      data:values
     });
 
-    if (!result || result.success !== true) {
-
-      throw new Error(
-        result && result.message
-          ? result.message
-          : "Unable to save report."
-      );
-
+    if(!result||result.success!==true){
+      throw new Error(result&&result.message?result.message:"Unable to update report.");
     }
 
     alert("Report updated successfully.");
-
     closeModal();
-
     await loadReports();
 
-  } catch (error) {
+  }catch(error){
 
     console.error(error);
+    alert(error.message||"Update failed.");
 
-    alert(error.message || "Update failed.");
+  }finally{
 
-  } finally {
-
-    button.disabled = false;
-    button.textContent = "Save Changes";
+    button.disabled=false;
+    button.textContent="Save Changes";
 
   }
-
 }
 
-/* ======================================================
+/* =====================================================
    DELETE REPORT
-====================================================== */
+===================================================== */
 
-async function deleteReport(row) {
+async function deleteReport(row){
 
-  const r = normalizeReport(row);
+  const r=normalizeReport(row);
 
-  const confirmed = confirm(
+  if(!confirm(
+    "Are you sure you want to delete this camp report?\n\n"+
+    "Branch: "+r.branch+"\nGP: "+r.gp
+  )) return;
 
-    "Are you sure you want to delete this camp report?\n\n" +
-    "Branch: " + r.branch + "\n" +
-    "GP: " + r.gp
+  try{
 
-  );
-
-  if (!confirmed) {
-    return;
-  }
-
-  try {
-
-    const result = await api({
-
-      action: "adminDeleteReport",
-
-      token: token,
-
-      rowNumber:
-        row.rowNumber ||
-        row._rowNumber ||
-        row.id
-
+    const result=await api({
+      action:"adminDeleteReport",
+      rowNumber:row.rowNumber||row._rowNumber||row.id
     });
 
-    if (!result || result.success !== true) {
-
-      throw new Error(
-        result && result.message
-          ? result.message
-          : "Unable to delete report."
-      );
-
+    if(!result||result.success!==true){
+      throw new Error(result&&result.message?result.message:"Unable to delete report.");
     }
 
     alert("Report deleted successfully.");
-
     await loadReports();
 
-  } catch (error) {
+  }catch(error){
 
     console.error(error);
-
-    alert(error.message || "Delete failed.");
+    alert(error.message||"Delete failed.");
 
   }
-
 }
 
-/* ======================================================
-   EXPORT CSV
-====================================================== */
+/* =====================================================
+   CSV EXPORT
+===================================================== */
 
-function exportCSV() {
+function exportCSV(){
 
-  if (!filteredReports.length) {
-
+  if(!filteredReports.length){
     alert("No records available for export.");
-
     return;
-
   }
 
-  const headers = [
-
-    "District",
-    "Block",
-    "Branch Name",
-    "SOL ID",
-    "BC Name",
-    "BC Code",
-    "GP Name",
-    "GP Code",
-    "Camp Date",
-    "No OF BC Participated",
-    "PMJDY",
-    "PMJJBY",
-    "PMSBY",
-    "APY",
-    "NPS Sanchay",
-    "Other Activities",
-    "Remarks"
-
+  const headers=[
+    "District","Block","Branch Name","SOL ID","BC Name","BC Code",
+    "GP Name","GP Code","Camp Date","No OF BC Participated",
+    "PMJDY","PMJJBY","PMSBY","APY","NPS Sanchay",
+    "Other Activities","Remarks"
   ];
 
-  const rows = filteredReports.map(function(row) {
+  const rows=filteredReports.map(function(row){
 
-    const r = normalizeReport(row);
+    const r=normalizeReport(row);
 
     return [
-
-      r.district,
-      r.block,
-      r.branch,
-      r.sol,
-      r.bcName,
-      r.bcCode,
-      r.gp,
-      r.gpCode,
-      r.campDate,
-      r.bcParticipated,
-      r.pmjdy,
-      r.pmjjby,
-      r.pmsby,
-      r.apy,
-      r.nps,
-      r.other,
-      r.remarks
-
+      r.district,r.block,r.branch,r.sol,r.bcName,r.bcCode,
+      r.gp,r.gpCode,r.campDate,r.bcParticipated,
+      r.pmjdy,r.pmjjby,r.pmsby,r.apy,r.nps,r.other,r.remarks
     ];
 
   });
 
-  const csv = [headers].concat(rows)
-    .map(function(row) {
+  const csv=[headers].concat(rows).map(function(row){
 
-      return row.map(function(value) {
+    return row.map(function(value){
 
-        const text = String(value == null ? "" : value);
+      const text=String(value==null?"":value);
+      return '"'+text.replace(/"/g,'""')+'"';
 
-        return '"' + text.replace(/"/g, '""') + '"';
+    }).join(",");
 
-      }).join(",");
+  }).join("\r\n");
 
-    }).join("\r\n");
+  const blob=new Blob(["﻿"+csv],{
+    type:"text/csv;charset=utf-8;"
+  });
 
-  const blob = new Blob(
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");
 
-    ["\uFEFF" + csv],
-
-    { type: "text/csv;charset=utf-8;" }
-
-  );
-
-  const url = URL.createObjectURL(blob);
-
-  const link = document.createElement("a");
-
-  link.href = url;
-  link.download = "DFS_Camp_Reports.csv";
+  link.href=url;
+  link.download="DFS_Camp_Reports.csv";
 
   document.body.appendChild(link);
-
   link.click();
-
   document.body.removeChild(link);
 
   URL.revokeObjectURL(url);
-
 }
 
-/* ======================================================
+/* =====================================================
    DATE HELPERS
-====================================================== */
+===================================================== */
 
-function parseDate(value) {
+function parseDate(value){
 
-  if (!value) return "";
+  if(!value) return "";
 
-  const text = String(value).trim();
+  const text=String(value).trim();
 
-  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
-    return text;
+  if(/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
+
+  const dmy=text.match(/^(\d{2})[-/](\d{2})[-/](\d{4})$/);
+
+  if(dmy){
+    return dmy[3]+"-"+dmy[2]+"-"+dmy[1];
   }
 
-  const dmy = text.match(
-    /^(\d{2})[-/](\d{2})[-/](\d{4})$/
-  );
+  const date=new Date(value);
 
-  if (dmy) {
+  if(isNaN(date.getTime())) return "";
 
-    return dmy[3] + "-" +
-      dmy[2] + "-" +
-      dmy[1];
-
-  }
-
-  const date = new Date(value);
-
-  if (isNaN(date.getTime())) {
-    return "";
-  }
-
-  return date.getFullYear() + "-" +
-    String(date.getMonth() + 1).padStart(2, "0") + "-" +
-    String(date.getDate()).padStart(2, "0");
-
+  return date.getFullYear()+"-"+
+    String(date.getMonth()+1).padStart(2,"0")+"-"+
+    String(date.getDate()).padStart(2,"0");
 }
 
-function formatDate(value) {
+function formatDate(value){
 
-  const date = parseDate(value);
+  const date=parseDate(value);
+  if(!date) return value||"";
 
-  if (!date) return value || "";
+  const parts=date.split("-");
 
-  const parts = date.split("-");
-
-  return parts[2] + "-" +
-    parts[1] + "-" +
-    parts[0];
-
+  return parts[2]+"-"+parts[1]+"-"+parts[0];
 }
 
-/* ======================================================
-   ESCAPE HTML
-====================================================== */
+/* =====================================================
+   HTML ESCAPE
+===================================================== */
 
-function escapeHtml(value) {
+function escapeHtml(value){
 
-  return String(value == null ? "" : value)
-
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-
+  return String(value==null?"":value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 }
 
-/* ======================================================
-   INIT
-====================================================== */
+/* =====================================================
+   INITIALIZATION
+===================================================== */
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded",function(){
 
-  document.getElementById("username").value = "admin";
+  document.getElementById("password").focus();
 
 });
 
 </script>
-
 </body>
 </html>
