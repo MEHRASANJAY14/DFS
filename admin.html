@@ -1,1675 +1,222 @@
-
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DFS Saturation Camp Admin | RO Jabalpur</title>
-
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DFS Saturation Camp | Admin</title>
 <style>
-:root {
-  --green:#006633;
-  --dark-green:#004d26;
-  --light-green:#e8f5ec;
-  --blue:#1c4fa3;
-  --red:#c62828;
-  --orange:#ef8c00;
-  --bg:#f3f7f4;
-  --white:#ffffff;
-  --text:#26352b;
-  --muted:#718077;
-  --border:#dce6df;
-  --shadow:0 3px 12px rgba(0,0,0,.05);
+:root{--green:#075b35;--green2:#0b8b50;--mint:#e9f7ef;--bg:#f4f8f6;--ink:#172820;--muted:#718078;--line:#e1eae4;--red:#c63838;--shadow:0 12px 34px rgba(10,55,32,.08)}
+*{box-sizing:border-box}body{margin:0;font:14px Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}.hidden{display:none!important}
+.loginWrap{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 15% 15%,#d8f3e3,transparent 35%),linear-gradient(135deg,#f6fbf8,#eaf4ee)}.login{background:#fff;padding:38px;border-radius:24px;box-shadow:0 24px 70px #063d2420;max-width:420px;width:100%;border:1px solid #ffffff}.logo{background:linear-gradient(135deg,var(--green),var(--green2));color:white;padding:18px 22px;font-weight:800;font-size:16px;letter-spacing:1px;border-radius:14px;text-align:center}.login h2{margin:25px 0 8px;color:var(--green);font-size:26px}.login p{color:var(--muted);line-height:1.5}label{display:block;font-weight:700;margin:13px 0 7px;color:#34483b}input,select{width:100%;padding:12px 13px;border:1px solid #d3e0d7;border-radius:10px;background:#fff;font:inherit;outline:none}input:focus,select:focus{border-color:#0b8b50;box-shadow:0 0 0 3px #0b8b5018}button{border:0;border-radius:10px;padding:11px 16px;background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;font-weight:700;cursor:pointer;transition:.18s;box-shadow:0 4px 12px #075b3520}button:hover{transform:translateY(-1px);filter:brightness(1.05)}button.secondary{background:#eaf4ee;color:var(--green);box-shadow:none}button.danger{background:#c63838}button:disabled{opacity:.5;cursor:wait;transform:none}
+.layout{display:block;min-height:100vh}.sidebar{display:none}.sidebar h3{margin:10px 8px 32px;font-size:19px;letter-spacing:.4px}.sidebar button{width:100%;text-align:left;margin:6px 0;background:transparent;box-shadow:none;color:#e4f4e9;padding:13px 14px}.sidebar button.active,.sidebar button:hover{background:#ffffff20;color:#fff}.main{padding:clamp(14px,3vw,34px);width:100%;max-width:1600px;margin:0 auto;min-width:0}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.top h2{font-size:27px;letter-spacing:-.5px}.cards{display:grid;grid-template-columns:repeat(5,minmax(140px,1fr));gap:16px;margin:24px 0}.card{background:white;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}.card .num{font-size:32px;font-weight:800;color:var(--green);margin-top:10px}.filters{display:grid;grid-template-columns:repeat(4,minmax(130px,1fr));gap:12px;background:white;padding:18px;border:1px solid var(--line);border-radius:16px;margin-bottom:16px;box-shadow:var(--shadow)}.tableWrap{overflow:auto;background:white;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}table{border-collapse:collapse;width:100%;white-space:nowrap}th,td{padding:12px 14px;border-bottom:1px solid #edf2ee;text-align:left}th{background:#dceee3;color:#103d27;position:sticky;top:0;font-size:12px;text-transform:uppercase;letter-spacing:.35px;font-weight:900;border-bottom:2px solid #075b35}
+.card table thead th{font-weight:900}
+.card table tr.grand-total td,.card table tr.grand-total td:before{background:#173b2b!important;color:#fff!important;font-weight:900!important;border-color:#315b45!important}
+.card table tr.grand-total td{padding-top:14px;padding-bottom:14px}
+.card table tr.grand-total:hover td{background:#173b2b!important}tr:hover td{background:#f7fbf8}.actions{display:flex;gap:6px}.small{padding:7px 10px;font-size:12px}.status{margin:12px 0;color:var(--red)}.modal{position:fixed;inset:0;background:#09271899;backdrop-filter:blur(4px);display:grid;place-items:center;padding:15px;z-index:10}.modalbox{background:white;border-radius:18px;width:min(900px,100%);max-height:90vh;overflow:auto;padding:24px;box-shadow:0 25px 80px #0003}.formgrid{display:grid;grid-template-columns:repeat(3,minmax(150px,1fr));gap:12px}.modalhead{display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:white;padding-bottom:12px}.footer{color:var(--muted);margin-top:22px;font-size:12px;text-align:center}
+@media(max-width:950px){.main{width:100%;padding:18px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.filters{grid-template-columns:repeat(2,minmax(0,1fr))}.formgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){
+  body{font-size:13px}
+  .loginWrap{padding:14px;min-height:100svh}
+  .login{padding:22px 18px;border-radius:18px}
+  .login h2{font-size:23px}
+  .layout{display:block;min-height:100vh}
+  .main{width:100%;padding:12px;}
+  .top{align-items:flex-start;gap:10px}
+  .top h2{font-size:21px;line-height:1.25}
+  .top p{font-size:12px;max-width:240px}
+  .top button{padding:9px 10px;font-size:12px;white-space:nowrap}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:15px 0}
+  .card{padding:13px;border-radius:12px;min-width:0}
+  .card .num{font-size:23px;overflow-wrap:anywhere}
+  .filters{grid-template-columns:1fr;gap:8px;padding:12px;border-radius:12px}
+  label{margin:8px 0 5px}
+  input,select{padding:11px;font-size:16px;min-height:42px}
+  .tableWrap{overflow:visible;border:0;background:transparent;box-shadow:none}
+  .tableWrap table,.tableWrap thead,.tableWrap tbody,.tableWrap tr,.tableWrap td{display:block;width:100%}
+  .tableWrap thead{display:none}
+  .tableWrap tbody{display:grid;grid-template-columns:1fr;gap:10px}
+  .tableWrap tr{background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 12px;box-shadow:var(--shadow);white-space:normal}
+  .tableWrap td{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:7px 0;border-bottom:1px solid #edf2ee;white-space:normal;text-align:right;overflow-wrap:anywhere}
+  .tableWrap td:before{content:attr(data-label);font-weight:700;color:#52675a;text-align:left;flex:0 0 46%;}
+  .tableWrap td:last-child{border-bottom:0}
+  .actions{justify-content:flex-end;flex-wrap:wrap}
+  .small{font-size:12px;padding:8px 12px}
+  .modal{padding:8px;place-items:center}
+  .modalbox{width:100%;max-height:94svh;padding:15px;border-radius:14px}
+  .formgrid{grid-template-columns:1fr;gap:5px}
+  .modalhead h3{font-size:18px}
+  .modalhead{gap:10px}
+  .footer{margin:16px 0;font-size:11px}
+}
+@media(min-width:521px) and (max-width:950px){
+  .main{width:100%;padding:18px}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .formgrid{grid-template-columns:1fr 1fr}
 }
 
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  min-width:320px;
-  font-family:Arial,Helvetica,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
-
-input,select,button{font:inherit}
-button{cursor:pointer}
-.hidden{display:none!important}
-
-/* LOGIN */
-
-.login-screen{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  background:linear-gradient(135deg,#004d26,#00994d);
-}
-
-.login-card{
-  width:100%;
-  max-width:420px;
-  padding:32px;
-  background:#fff;
-  border-radius:18px;
-  box-shadow:0 15px 45px rgba(0,0,0,.18);
-}
-
-.login-logo{
-  text-align:center;
-  font-size:42px;
-  margin-bottom:10px;
-}
-
-.login-card h2{
-  text-align:center;
-  color:var(--green);
-  margin:0;
-  font-size:23px;
-}
-
-.subtitle{
-  text-align:center;
-  color:var(--muted);
-  font-size:13px;
-  margin:8px 0 25px;
-  line-height:1.6;
-}
-
-.login-card label{
-  display:block;
-  font-size:13px;
-  font-weight:bold;
-  margin:14px 0 7px;
-}
-
-.login-card input{
-  width:100%;
-  padding:13px;
-  border:1px solid var(--border);
-  border-radius:9px;
-  outline:none;
-}
-
-.login-card input:focus{
-  border-color:#00994d;
-}
-
-.login-btn{
-  width:100%;
-  padding:14px;
-  background:var(--green);
-  color:white;
-  border:none;
-  border-radius:9px;
-  margin-top:22px;
-  font-weight:bold;
-}
-
-.login-error{
-  color:var(--red);
-  font-size:13px;
-  margin-top:12px;
-  text-align:center;
-  overflow-wrap:anywhere;
-}
-
-/* MAIN */
-
-.main{
-  width:100%;
-  max-width:1700px;
-  margin:auto;
-  padding:24px;
-}
-
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:18px;
-  margin-bottom:25px;
-}
-
-.header-title h1{
-  color:var(--green);
-  font-size:27px;
-  margin:0 0 8px;
-}
-
-.header-title p{
-  color:var(--muted);
-  font-size:13px;
-  margin:0;
-}
-
-.header-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:9px;
-}
-
-.btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  border:none;
-  border-radius:8px;
-  padding:11px 16px;
-  background:var(--green);
-  color:white;
-  font-size:13px;
-  font-weight:bold;
-}
-
-.btn-blue{background:var(--blue)}
-.btn-red{background:var(--red)}
-.btn-gray{background:#68756c}
-.btn-orange{background:var(--orange)}
-.btn:disabled{opacity:.6;cursor:not-allowed}
-
-/* DASHBOARD CARDS */
-
-.dashboard-cards{
-  display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
-  gap:16px;
-  margin-bottom:25px;
-}
-
-.dashboard-card{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:13px;
-  padding:20px;
-  box-shadow:var(--shadow);
-  min-width:0;
-}
-
-.card-label{
-  color:var(--muted);
-  font-size:12px;
-  font-weight:bold;
-  line-height:1.5;
-  margin-bottom:12px;
-}
-
-.card-value{
-  color:var(--green);
-  font-size:29px;
-  font-weight:bold;
-  overflow-wrap:anywhere;
-}
-
-.card-note{
-  color:#8a968e;
-  font-size:11px;
-  margin-top:8px;
-}
-
-/* SECTIONS */
-
-.section{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:12px;
-  margin-bottom:24px;
-  overflow:hidden;
-  box-shadow:var(--shadow);
-}
-
-.section-header{
-  padding:16px 20px;
-  background:var(--light-green);
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  flex-wrap:wrap;
-}
-
-.section-header h3{
-  margin:0;
-  color:var(--green);
-  font-size:16px;
-}
-
-.section-content{padding:20px}
-
-/* FILTERS */
-
-.filters{
-  display:grid;
-  grid-template-columns:2fr 1fr 1fr 1fr;
-  gap:12px;
-  margin-bottom:15px;
-}
-
-.filters input,.filters select{
-  width:100%;
-  min-width:0;
-  padding:12px;
-  border:1px solid var(--border);
-  border-radius:8px;
-  background:white;
-  color:var(--text);
-  outline:none;
-}
-
-.filter-actions{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-bottom:15px;
-}
-
-/* TABLES */
-
-.table-wrapper{
-  width:100%;
-  overflow-x:auto;
-  border:1px solid var(--border);
-  border-radius:8px;
-  -webkit-overflow-scrolling:touch;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:12px;
-  white-space:nowrap;
-}
-
-thead th{
-  background:var(--green);
-  color:white;
-  padding:13px 12px;
-  text-align:left;
-  font-weight:bold;
-}
-
-tbody td{
-  padding:11px 12px;
-  border-bottom:1px solid #e8eee9;
-}
-
-tbody tr:nth-child(even){background:#f8faf8}
-tbody tr:hover{background:#edf6ef}
-
-.grand-total td{
-  background:var(--dark-green)!important;
-  color:white!important;
-  font-weight:bold;
-  padding:13px;
-}
-
-.action-cell{
-  display:flex;
-  gap:6px;
-}
-
-.small-btn{
-  border:none;
-  border-radius:5px;
-  padding:7px 10px;
-  font-size:11px;
-  font-weight:bold;
-  color:white;
-  background:var(--blue);
-}
-
-.small-btn.delete{background:var(--red)}
-
-.loading-cell{
-  text-align:center;
-  color:var(--muted);
-  padding:25px;
-}
-
-/* MODAL */
-
-.modal{
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  background:rgba(0,0,0,.55);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:15px;
-}
-
-.modal-box{
-  width:100%;
-  max-width:900px;
-  max-height:94vh;
-  overflow-y:auto;
-  background:white;
-  border-radius:12px;
-}
-
-.modal-header{
-  padding:16px 20px;
-  background:var(--green);
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.modal-header h3{margin:0;font-size:17px}
-
-.modal-close{
-  background:transparent;
-  border:none;
-  color:white;
-  font-size:26px;
-}
-
-.modal-content{padding:20px}
-
-.form-grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:15px;
-}
-
-.form-field{min-width:0}
-
-.form-field label{
-  display:block;
-  font-size:12px;
-  font-weight:bold;
-  margin-bottom:7px;
-}
-
-.form-field input,.form-field select,.form-field textarea{
-  width:100%;
-  padding:11px;
-  border:1px solid var(--border);
-  border-radius:7px;
-}
-
-.modal-footer{
-  display:flex;
-  justify-content:flex-end;
-  flex-wrap:wrap;
-  gap:10px;
-  padding:15px 20px;
-  border-top:1px solid var(--border);
-}
-
-.footer{
-  text-align:center;
-  color:#8b978f;
-  font-size:12px;
-  padding:20px 10px;
-}
-
-/* TABLET */
-
-@media(max-width:1100px){
-  .dashboard-cards{
-    grid-template-columns:repeat(3,minmax(0,1fr));
-  }
-  .filters{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-}
-
-/* MOBILE */
-
+/* Complete responsive/mobile enhancements */
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth }
+body{overflow-x:hidden;min-width:320px}
+button,input,select{touch-action:manipulation}
+button{min-height:42px}
+.main{padding:clamp(12px,2.5vw,30px)}
+.top{align-items:center}
+.top h2{overflow-wrap:anywhere}
+.card{min-width:0;overflow:hidden}
+.card table{min-width:100%;width:max-content;max-width:100%;}
+.card table th,.card table td{white-space:normal;overflow-wrap:anywhere}
+.tableWrap{max-width:100%;-webkit-overflow-scrolling:touch}
+.tableWrap table{min-width:760px}
+.filters>*{min-width:0}
+input,select{max-width:100%;min-width:0}
+.modalbox{overscroll-behavior:contain}
 @media(max-width:700px){
-  .main{padding:12px}
-
-  .header{
-    flex-direction:column;
-    align-items:stretch;
-    gap:14px;
-  }
-
-  .header-title h1{
-    font-size:21px;
-    line-height:1.4;
-  }
-
-  .header-actions{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    width:100%;
-  }
-
-  .header-actions .btn{
-    width:100%;
-    padding:12px 8px;
-  }
-
-  .dashboard-cards{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:10px;
-  }
-
-  .dashboard-card{
-    padding:14px;
-    border-radius:10px;
-  }
-
-  .card-label{font-size:11px;margin-bottom:8px}
-  .card-value{font-size:24px}
-  .card-note{font-size:10px}
-
-  .section{margin-bottom:16px}
-  .section-header{padding:13px 14px}
-  .section-header h3{font-size:14px}
-  .section-content{padding:12px}
-
-  .filters{
-    grid-template-columns:1fr;
-    gap:10px;
-  }
-
-  .filter-actions .btn{width:100%}
-
-  .modal{padding:7px}
-  .modal-box{max-height:96vh;border-radius:9px}
-  .modal-header{padding:14px}
-  .modal-content{padding:14px}
-
-  .form-grid{
-    grid-template-columns:1fr;
-    gap:13px;
-  }
-
-  .modal-footer{padding:12px}
-  .modal-footer .btn{flex:1}
-
-  table{font-size:11px}
-  thead th,tbody td{padding:9px 10px}
+ .main{padding:12px}
+ .top{display:flex;flex-direction:column;align-items:stretch}
+ .top>div:last-child{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important;width:100%}
+ .top>div:last-child button{width:100%;white-space:normal;min-height:44px;padding:10px 8px;font-size:12px}
+ .cards{gap:9px;margin:14px 0}
+ .card{padding:12px;border-radius:12px}
+ .card h3{font-size:17px;line-height:1.35;margin-top:5px}
+ .card p{line-height:1.45}
+ .card .num{font-size:clamp(20px,6vw,28px)}
+ .filters{grid-template-columns:1fr!important;padding:12px;gap:8px}
+ .filters input,.filters select{width:100%;font-size:16px}
+ #reportsSection .top{flex-direction:row;align-items:center;justify-content:space-between}
+ #reportsSection .top button{width:auto}
+ /* Dashboard summary tables become readable stacked cards */
+ .card table,.card table thead,.card table tbody,.card table tr,.card table td{display:block;width:100%;}
+ .card table{width:100%;}
+ .card table thead{display:none}
+ .card table tbody{display:grid;grid-template-columns:1fr;gap:8px}
+ .card table tr{border:1px solid var(--line);border-radius:10px;padding:8px 11px;background:#fff;white-space:normal}
+ .card table td{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid #edf2ee;text-align:right;white-space:normal;overflow-wrap:anywhere}
+ .card table td:before{content:attr(data-label);font-weight:700;color:#52675a;text-align:left;flex:0 0 43%}
+ .card table tr:last-child td{font-weight:800;color:var(--green)}
+ .card table td:last-child{border-bottom:0}
+ .tableWrap{overflow:visible}
+ .tableWrap table,.tableWrap thead,.tableWrap tbody,.tableWrap tr,.tableWrap td{display:block;width:100%}
+ .tableWrap thead{display:none}
+ .tableWrap tbody{display:grid;grid-template-columns:1fr;gap:10px}
+ .tableWrap tr{background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 12px;box-shadow:var(--shadow);white-space:normal}
+ .tableWrap td{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid #edf2ee;text-align:right;overflow-wrap:anywhere}
+ .tableWrap td:before{content:attr(data-label);font-weight:700;color:#52675a;text-align:left;flex:0 0 44%}
+ .tableWrap td:last-child{border-bottom:0}
+ .actions{justify-content:flex-end}
+ .modal{padding:7px}
+ .modalbox{padding:13px;width:100%;max-height:96dvh}
+ .formgrid{grid-template-columns:1fr!important}
+ .modalhead{gap:8px}
+ .modalhead h3{font-size:17px}
 }
-
 @media(max-width:380px){
-  .dashboard-cards{grid-template-columns:1fr}
-  .header-actions{grid-template-columns:1fr}
-  .login-card{padding:22px}
+ .cards{grid-template-columns:1fr 1fr}
+ .card{padding:10px}
+ .top>div:last-child{grid-template-columns:1fr}
+ #reportsSection .top{align-items:flex-start;flex-direction:column}
+ #reportsSection .top button{width:100%}
 }
-</style>
-</head>
-
-<body>
-
-<!-- LOGIN SCREEN -->
-
-<div id="loginView" class="login-screen">
-  <div class="login-card">
-
-    <div class="login-logo">🏦</div>
-
-    <h2>DFS Saturation Camp</h2>
-
-    <div class="subtitle">
-      Regional Office Jabalpur<br>
-      Administrator Login
-    </div>
-
-    <label for="password">Password</label>
-
-    <input
-      type="password"
-      id="password"
-      placeholder="Enter admin password"
-      autocomplete="current-password"
-    >
-
-    <button class="login-btn" id="loginBtn" onclick="login()">
-      Sign In
-    </button>
-
-    <div id="loginMsg" class="login-error"></div>
-
-  </div>
-</div>
-
-<!-- ADMIN APP -->
-
-<div id="app" class="hidden">
-
-<div class="main">
-
-  <div class="header">
-
-    <div class="header-title">
-      <h1>DFS Saturation Camp Admin</h1>
-      <p>IT & FI Department | Regional Office Jabalpur</p>
-    </div>
-
-    <div class="header-actions">
-      <button class="btn" onclick="loadReports()">↻ Refresh</button>
-      <button class="btn btn-blue" onclick="exportCSV()">⬇ Export CSV</button>
-      <button class="btn btn-gray" onclick="logout()">Logout</button>
-    </div>
-
-  </div>
-
-  <!-- DASHBOARD CARDS -->
-
-  <div class="dashboard-cards">
-
-    <div class="dashboard-card">
-      <div class="card-label">Total Camps Allotted</div>
-      <div class="card-value" id="totalAllotted">0</div>
-      <div class="card-note">As per GP Master</div>
-    </div>
-
-    <div class="dashboard-card">
-      <div class="card-label">Total Camps Submitted</div>
-      <div class="card-value" id="totalSubmitted">0</div>
-      <div class="card-note">Reports received</div>
-    </div>
-
-    <div class="dashboard-card">
-      <div class="card-label">Branches Reporting</div>
-      <div class="card-value" id="branchesReporting">0</div>
-      <div class="card-note">Unique SOL IDs</div>
-    </div>
-
-    <div class="dashboard-card">
-      <div class="card-label">GPs Covered</div>
-      <div class="card-value" id="gpsCovered">0</div>
-      <div class="card-note">Camps conducted</div>
-    </div>
-
-    <div class="dashboard-card">
-      <div class="card-label">PMJDY Accounts</div>
-      <div class="card-value" id="pmjdyTotal">0</div>
-      <div class="card-note">Total reported</div>
-    </div>
-
-  </div>
-
-  <!-- BRANCH SUMMARY -->
-
-  <div class="section">
-    <div class="section-header">
-      <h3>📊 Branch-wise Summary</h3>
-    </div>
-
-    <div class="section-content">
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>Branch Name</th>
-              <th>SOL ID</th>
-              <th>Camps Conducted</th>
-            </tr>
-          </thead>
-          <tbody id="branchBody">
-            <tr><td colspan="3" class="loading-cell">Loading...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- DISTRICT SUMMARY -->
-
-  <div class="section">
-    <div class="section-header">
-      <h3>📍 District-wise Summary</h3>
-    </div>
-
-    <div class="section-content">
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>District</th>
-              <th>Camps Allotted</th>
-              <th>Camps Conducted</th>
-              <th>Branches</th>
-              <th>BCs Participated</th>
-              <th>GPs Covered</th>
-            </tr>
-          </thead>
-          <tbody id="districtBody">
-            <tr><td colspan="6" class="loading-cell">Loading...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- DISTRICT PERFORMANCE -->
-
-  <div class="section">
-    <div class="section-header">
-      <h3>📈 District-wise Scheme Performance</h3>
-    </div>
-
-    <div class="section-content">
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>District</th>
-              <th>PMJDY</th>
-              <th>PMJJBY</th>
-              <th>PMSBY</th>
-              <th>APY</th>
-              <th>Camp Reports</th>
-            </tr>
-          </thead>
-          <tbody id="performanceBody">
-            <tr><td colspan="6" class="loading-cell">Loading...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- REPORT DETAILS -->
-
-  <div class="section">
-
-    <div class="section-header">
-      <h3>📋 Camp Reporting Details</h3>
-      <span id="reportCount">0 Records</span>
-    </div>
-
-    <div class="section-content">
-
-      <div class="filters">
-
-        <input
-          type="search"
-          id="searchInput"
-          placeholder="Search Branch / SOL / GP / BC"
-          oninput="applyFilters()"
-        >
-
-        <select id="districtFilter" onchange="applyFilters()">
-          <option value="">All Districts</option>
-        </select>
-
-        <input type="date" id="dateFrom" onchange="applyFilters()">
-        <input type="date" id="dateTo" onchange="applyFilters()">
-
-      </div>
-
-      <div class="filter-actions">
-        <button class="btn btn-gray" onclick="clearFilters()">Clear Filters</button>
-      </div>
-
-      <div class="table-wrapper">
-        <table>
-          <thead id="reportHead"></thead>
-          <tbody id="reportBody">
-            <tr><td class="loading-cell">Please login to load reports</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="footer">
-    DFS Saturation Camp Admin Portal | IT & FI Department | RO Jabalpur
-  </div>
-
-</div>
-</div>
-
-<!-- EDIT MODAL -->
-
-<div id="editModal" class="modal hidden">
-
-  <div class="modal-box">
-
-    <div class="modal-header">
-      <h3>Edit Camp Report</h3>
-      <button class="modal-close" onclick="closeModal()">×</button>
-    </div>
-
-    <div class="modal-content">
-      <div id="editFields" class="form-grid"></div>
-    </div>
-
-    <div class="modal-footer">
-      <button class="btn btn-gray" onclick="closeModal()">Cancel</button>
-      <button class="btn" id="saveBtn" onclick="saveReport()">Save Changes</button>
-    </div>
-
-  </div>
-</div>
-
+@media(min-width:701px) and (max-width:1024px){
+ .top>div:last-child{gap:8px!important}
+ .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+</style></head><body>
+<div id="loginView" class="loginWrap"><div class="login"><div class="logo">DFS SATURATION CAMP</div><h2 style="margin-top:20px">Admin Login</h2><p style="color:#667">Authorized administration only</p><input id="username" autocomplete="username" value="admin" type="hidden"><label>Password</label><input id="password" type="password" autocomplete="current-password"><button style="width:100%;margin-top:18px" onclick="login()" id="loginBtn">Sign in</button><div id="loginMsg" class="status"></div></div></div>
+<div id="app" class="layout hidden"><aside class="sidebar"><h3>DFS Admin</h3><button class="active" onclick="showDashboard(this)">Dashboard</button><button onclick="showReports(this)">All Reports</button><button onclick="exportCSV()">Excel Export</button><button onclick="logout()">Logout</button></aside><main class="main"><div class="top"><div><h2 style="margin:0">Admin Dashboard</h2><p style="color:var(--muted);margin:6px 0">DFS Saturation Camp Reporting & Analytics</p></div><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="secondary" onclick="showDashboard()">Dashboard Overview</button><button onclick="showReports()">View All Camp Reports</button><button class="secondary" onclick="exportCSV()">Export Report Data</button><button class="secondary" onclick="loadReports()">↻ Refresh Latest Data</button><button class="danger" onclick="logout()">Logout</button></div></div>
+<section id="dashboard"><p style="color:var(--muted);line-height:1.65;margin:12px 0 20px">This dashboard provides a consolidated overview of DFS Saturation Camp reporting across branches. Use the summary indicators to review reporting coverage and the branch-wise and district-wise breakdowns to identify progress and follow-up requirements.</p><div class="cards"><div class="card"><strong>Total Camps Allotted</strong><p style="color:var(--muted);margin:6px 0">Total Gram Panchayat camps allotted as per GP Master.</p><div class="num" id="totalAllottedCamps">0</div></div><div class="card"><strong>Total Camps Submitted</strong><p style="color:var(--muted);margin:6px 0">Total camps reported by branches in the portal.</p><div class="num" id="totalReports">0</div></div><div class="card"><strong>Branches Reporting</strong><p style="color:var(--muted);margin:6px 0">Unique branches that have submitted camp reports.</p><div class="num" id="branchCount">0</div></div><div class="card"><strong>Gram Panchayats Covered</strong><p style="color:var(--muted);margin:6px 0">Unique GPs represented in submitted reports.</p><div class="num" id="gpCount">0</div></div><div class="card"><strong>PMJDY Accounts Opened</strong><p style="color:var(--muted);margin:6px 0">Total PMJDY accounts reported opened through camps.</p><div class="num" id="pmjdyTotal">0</div></div></div><div class="card"><h3>Branch-wise Reporting Summary</h3><p style="color:var(--muted)">Compare the number of camp reports received from each branch.</p><div id="branchAnalytics">Loading...</div></div><div class="card" style="margin-top:14px"><h3>District-wise Reporting Summary</h3><p style="color:var(--muted)">Review submissions by district to understand reporting distribution.</p><div id="districtAnalytics">Loading...</div></div><div class="card" style="margin-top:14px"><h3>District-wise Performance Report</h3><p style="color:var(--muted)">District-level consolidated figures based on submitted camp reports. Figures are summed from the submitted branch reports.</p><div id="districtPerformance">Loading...</div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><button class="secondary" onclick="exportDistrictCSV()">Export District-wise Summary (CSV)</button><button class="secondary" onclick="showReports()">Open District-filtered Camp Reports</button></div></div></section>
+<section id="reportsSection" class="hidden"><h2>All Camp Reports</h2><p style="color:var(--muted);line-height:1.6">Search and filter submitted camp reports by branch, district, or camp date. Select <b>Edit</b> to correct a report or <b>Delete</b> to remove a submission. Export the filtered results for offline review.</p><div class="filters"><div><label>Search</label><input id="search" placeholder="Branch, SOL, GP..." oninput="renderTable()"></div><div><label>District</label><select id="districtFilter" onchange="renderTable()"><option value="">All Districts</option></select></div><div><label>Branch</label><select id="branchFilter" onchange="renderTable()"><option value="">All Branches</option></select></div><div><label>Camp Date</label><input id="dateFilter" type="date" onchange="renderTable()"></div></div><div class="top" style="margin-bottom:10px"><span id="resultCount">0 reports</span><button onclick="exportCSV()">⬇ Export Excel (CSV)</button></div><div class="tableWrap"><table><thead id="tableHead"></thead><tbody id="tableBody"></tbody></table></div></section><div class="footer">DFS Saturation Camp Admin Portal</div></main></div>
+<div id="editModal" class="modal hidden"><div class="modalbox"><div class="modalhead"><h3>Edit Camp Report</h3><button class="secondary" onclick="closeModal()">Close</button></div><div id="editFields" class="formgrid"></div><p id="editMsg" class="status"></p><button onclick="saveEdit()" id="saveBtn">Save Changes</button></div></div>
 <script>
-
-/* =====================================================
-   CONFIGURATION
-===================================================== */
-
-const API_URL =
-"https://script.google.com/macros/s/AKfycbwHkmc9qul-GOuWTTTCKD3QKUdRLLcn9Xv7xKP-0kC46DHfJ6fO5rYnDWOEPoq09uz-/exec";
-
-/* =====================================================
-   STATE
-===================================================== */
-
-let allReports = [];
-let filteredReports = [];
-let masterData = [];
-let currentEditRow = null;
-
-/* =====================================================
-   API
-===================================================== */
-
-async function api(payload){
-
-  const response = await fetch(API_URL,{
-    method:"POST",
-    headers:{
-      "Content-Type":"text/plain;charset=utf-8"
-    },
-    body:JSON.stringify(payload)
-  });
-
-  return await response.json();
-}
-
-/* =====================================================
-   LOGIN
-===================================================== */
-
-async function login(){
-
-  const button = document.getElementById("loginBtn");
-  const message = document.getElementById("loginMsg");
-  const password = document.getElementById("password").value;
-
-  message.textContent="";
-
-  if(!password.trim()){
-    message.textContent="Please enter your password.";
-    document.getElementById("password").focus();
-    return;
-  }
-
-  button.disabled=true;
-  button.textContent="Signing in...";
-
-  try{
-
-    const result=await api({
-      action:"adminLogin",
-      password:password
-    });
-
-    if(!result || result.success!==true){
-      throw new Error(
-        result && result.message
-          ? result.message
-          : "Invalid password."
-      );
-    }
-
-    document.getElementById("loginView").classList.add("hidden");
-    document.getElementById("app").classList.remove("hidden");
-
-    await loadReports();
-
-  }catch(error){
-
-    console.error("Login error:",error);
-    message.textContent=error.message||"Login failed.";
-
-  }finally{
-
-    button.disabled=false;
-    button.textContent="Sign In";
-
-  }
-}
-
-document.getElementById("password").addEventListener("keydown",function(event){
-  if(event.key==="Enter") login();
-});
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-function logout(){
-
-  allReports=[];
-  filteredReports=[];
-  masterData=[];
-
-  document.getElementById("app").classList.add("hidden");
-  document.getElementById("loginView").classList.remove("hidden");
-  document.getElementById("password").value="";
-  document.getElementById("loginMsg").textContent="";
-
-}
-
-/* =====================================================
-   LOAD REPORTS
-===================================================== */
-
-async function loadReports(){
-
-  document.getElementById("reportBody").innerHTML=
-    '<tr><td colspan="16" class="loading-cell">Loading reports...</td></tr>';
-
-  try{
-
-    const result=await api({
-      action:"adminGetReports"
-    });
-
-    if(!result || result.success!==true){
-      throw new Error(
-        result && result.message
-          ? result.message
-          : "Unable to load reports."
-      );
-    }
-
-    const data=result.data||{};
-
-    allReports=Array.isArray(data.reports)
-      ? data.reports
-      : Array.isArray(result.reports)
-        ? result.reports
-        : [];
-
-    // Load GP master if backend supports it
-    try{
-
-      const masterResult=await api({
-        action:"getMasterData"
-      });
-
-      if(masterResult && masterResult.success===true){
-
-        const md=masterResult.data||{};
-
-        masterData=Array.isArray(md.GP)
-          ? md.GP
-          : Array.isArray(md)
-            ? md
-            : [];
-
-      }
-
-    }catch(masterError){
-
-      console.warn("Master data unavailable:",masterError);
-
-    }
-
-    populateDistrictFilter();
-    applyFilters();
-    updateDashboard();
-
-  }catch(error){
-
-    console.error("Reports loading error:",error);
-
-    document.getElementById("reportBody").innerHTML=
-      '<tr><td colspan="16" class="loading-cell">'+
-      escapeHtml(error.message)+
-      '</td></tr>';
-
-  }
-}
-
-/* =====================================================
-   NORMALIZE DATA
-===================================================== */
-
-function normalizeReport(row){
-
-  if(Array.isArray(row)){
-
-    return {
-      raw:row,
-      timestamp:row[0]||"",
-      district:row[1]||"",
-      block:row[2]||"",
-      branch:row[3]||"",
-      sol:row[4]||"",
-      bcName:row[5]||"",
-      bcCode:row[6]||"",
-      gp:row[7]||"",
-      gpCode:row[8]||"",
-      campDate:row[9]||"",
-      bcParticipated:Number(row[10])||0,
-      pmjdy:Number(row[11])||0,
-      pmjjby:Number(row[12])||0,
-      pmsby:Number(row[13])||0,
-      apy:Number(row[14])||0,
-      nps:Number(row[15])||0,
-      other:row[16]||"",
-      remarks:row[17]||"",
-      rowNumber:row.rowNumber||row._rowNumber||row.id||""
-    };
-
-  }
-
-  row=row||{};
-
-  return {
-    raw:row,
-    timestamp:row.timestamp||row.Timestamp||"",
-    district:row.district||row.District||"",
-    block:row.block||row.Block||"",
-    branch:row.branch||row["Branch Name"]||row.branchName||"",
-    sol:row.sol||row["SOL ID"]||row.solId||"",
-    bcName:row.bcName||row["BC Name"]||"",
-    bcCode:row.bcCode||row["BC Code"]||"",
-    gp:row.gp||row["GP Name"]||row.gpName||"",
-    gpCode:row.gpCode||row["GP Code"]||"",
-    campDate:row.campDate||row["Camp Date"]||"",
-    bcParticipated:Number(row.bcParticipated||row["No OF BC Participated"])||0,
-    pmjdy:Number(row.pmjdy||row.PMJDY)||0,
-    pmjjby:Number(row.pmjjby||row.PMJJBY)||0,
-    pmsby:Number(row.pmsby||row.PMSBY)||0,
-    apy:Number(row.apy||row.APY)||0,
-    nps:Number(row.nps||row["NPS Sanchay"])||0,
-    other:row.other||row["Other Activities"]||"",
-    remarks:row.remarks||row.Remarks||"",
-    rowNumber:row.rowNumber||row._rowNumber||row.id||""
-  };
-}
-
-/* =====================================================
-   FILTER
-===================================================== */
-
-function populateDistrictFilter(){
-
-  const select=document.getElementById("districtFilter");
-  const previous=select.value;
-  const districts=new Set();
-
-  allReports.forEach(function(row){
-    const r=normalizeReport(row);
-    if(r.district) districts.add(r.district);
-  });
-
-  select.innerHTML='<option value="">All Districts</option>';
-
-  Array.from(districts).sort().forEach(function(district){
-
-    const option=document.createElement("option");
-    option.value=district;
-    option.textContent=district;
-    select.appendChild(option);
-
-  });
-
-  select.value=previous;
-}
-
-function applyFilters(){
-
-  const search=document.getElementById("searchInput").value.trim().toLowerCase();
-  const district=document.getElementById("districtFilter").value;
-  const from=document.getElementById("dateFrom").value;
-  const to=document.getElementById("dateTo").value;
-
-  filteredReports=allReports.filter(function(row){
-
-    const r=normalizeReport(row);
-
-    const searchable=[
-      r.branch,r.sol,r.district,r.block,r.gp,r.gpCode,r.bcName,r.bcCode
-    ].join(" ").toLowerCase();
-
-    if(search && !searchable.includes(search)) return false;
-    if(district && r.district!==district) return false;
-
-    const date=parseDate(r.campDate);
-
-    if(from && date && date<from) return false;
-    if(to && date && date>to) return false;
-
-    return true;
-
-  });
-
-  renderReports();
-}
-
-function clearFilters(){
-
-  document.getElementById("searchInput").value="";
-  document.getElementById("districtFilter").value="";
-  document.getElementById("dateFrom").value="";
-  document.getElementById("dateTo").value="";
-
-  applyFilters();
-}
-
-/* =====================================================
-   REPORT TABLE
-===================================================== */
-
-function renderReports(){
-
-  const head=document.getElementById("reportHead");
-  const body=document.getElementById("reportBody");
-
-  const columns=[
-    ["District","district"],
-    ["Block","block"],
-    ["Branch Name","branch"],
-    ["SOL ID","sol"],
-    ["BC Name","bcName"],
-    ["GP Name","gp"],
-    ["Camp Date","campDate"],
-    ["BC Participated","bcParticipated"],
-    ["PMJDY","pmjdy"],
-    ["PMJJBY","pmjjby"],
-    ["PMSBY","pmsby"],
-    ["APY","apy"],
-    ["NPS Sanchay","nps"],
-    ["Other Activities","other"],
-    ["Remarks","remarks"]
-  ];
-
-  head.innerHTML="<tr>"+columns.map(function(c){
-    return "<th>"+c[0]+"</th>";
-  }).join("")+"<th>Actions</th></tr>";
-
-  body.innerHTML="";
-
-  document.getElementById("reportCount").textContent=
-    filteredReports.length+" Records";
-
-  if(!filteredReports.length){
-
-    body.innerHTML=
-      '<tr><td colspan="16" class="loading-cell">No records found</td></tr>';
-
-    return;
-  }
-
-  filteredReports.forEach(function(row,index){
-
-    const r=normalizeReport(row);
-    const tr=document.createElement("tr");
-
-    columns.forEach(function(c){
-
-      const td=document.createElement("td");
-      let value=r[c[1]];
-
-      if(c[1]==="campDate") value=formatDate(value);
-
-      td.textContent=value==null?"":value;
-      tr.appendChild(td);
-
-    });
-
-    const actionTd=document.createElement("td");
-    actionTd.className="action-cell";
-
-    const editBtn=document.createElement("button");
-    editBtn.className="small-btn";
-    editBtn.textContent="Edit";
-    editBtn.onclick=function(){openEdit(row);};
-
-    const deleteBtn=document.createElement("button");
-    deleteBtn.className="small-btn delete";
-    deleteBtn.textContent="Delete";
-    deleteBtn.onclick=function(){deleteReport(row);};
-
-    actionTd.appendChild(editBtn);
-    actionTd.appendChild(deleteBtn);
-    tr.appendChild(actionTd);
-    body.appendChild(tr);
-
-  });
-}
-
-/* =====================================================
-   DASHBOARD
-===================================================== */
-
+const API_URL='https://script.google.com/macros/s/AKfycbwHkmc9qul-GOuWTTTCKD3QKUdRLLcn9Xv7xKP-0kC46DHfJ6fO5rYnDWOEPoq09uz-/exec';
+const HEADERS=['Camp Date','Sol ID','Branch Name','Block Code','Block Name','Gram Panchayat (GP) Code','Gram Panchayat (GP) Name','Bank Name','No OF BC Participated','PMJDY Applications Sourced','PMJDY Accounts Opened','PMJDY Applications Sourced - PVTG','PMJDY Accounts Opened - PVTG','Applications Received for Reactivation of Inoperative PMJDY Accounts','Inoperative PMJDY Accounts Reactivated','PMJJBY Applications Sourced','PMJJBY En enrolments','PMSBY Applications Sourced','PMSBY Enrolments','APY Applications Sourced','APY Subscriptions','Applications Received for Re-KYC of PMJDY Accounts','PMJDY Accounts for which Re-KYC Completed','Applications Received for Re-KYC of Other Savings Accounts','Other Savings Accounts for which Re-KYC Completed','Nomination Applications Received - PMJDY Accounts','Nominations Registered - PMJDY Accounts','Nomination Applications Received - Non-PMJDY Accounts','Nominations Registered - Non-PMJDY Accounts','Nomination Applications Received - Lockers','Locker Nominations Registered','KCC Applications Sourced for PM-Kisan Beneficiaries','KCC Applications Sanctioned for PM-Kisan Beneficiaries','CKYC ID Generation Applications Sourced','CKYC IDs Generated','Number of DEAF Claims Settled for claim amounts less than ₹1,00,000','Amount (in ₹) of DEAF Claims Settled for claim amounts less than ₹1,00,000','Number of DEAF Claims Settled for claim amounts ₹1,00,000 or more','Amount (in ₹) of DEAF Claims Settled for claim amounts ₹1,00,000 or more','Update date','photo_link'];
+let token='',reports=[],filtered=[],editing=null,gpMasterData=[];
+async function api(body){const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});return r.json()}
+async function login(){let b=document.getElementById('loginBtn');b.disabled=true;b.textContent='Signing in...';try{let x=await api({action:'adminLogin',username:document.getElementById('username').value,password:document.getElementById('password').value});if(!x.success)throw Error(x.message||'Login failed');token=x.data.token;document.getElementById('loginView').classList.add('hidden');document.getElementById('app').classList.remove('hidden');await loadReports()}catch(e){document.getElementById('loginMsg').textContent=e.message}finally{b.disabled=false;b.textContent='Sign in'}}
+function logout(){token='';reports=[];document.getElementById('app').classList.add('hidden');document.getElementById('loginView').classList.remove('hidden');document.getElementById('password').value=''}
+async function loadReports(){try{let x=await api({action:'adminGetReports',token});if(!x.success){if((x.message||'').includes('session'))logout();throw Error(x.message||'Could not load reports')}reports=x.data.reports||[];try{const mx=await api({action:'getMasterData'});if(mx&&mx.success&&mx.data){gpMasterData=mx.data.gpMaster||mx.data.gp||mx.data.GP||mx.data.gpMasterData||[];if(!Array.isArray(gpMasterData))gpMasterData=[];}}catch(_){gpMasterData=[];}fillFilters();updateDashboard();renderTable()}catch(e){alert(e.message)}}
+function val(r,k){return r[k]===undefined||r[k]===null?'':String(r[k])}
+function fillFilters(){let ds=[...new Set(reports.map(r=>val(r,'District')).filter(Boolean))].sort();let bs=[...new Set(reports.map(r=>val(r,'Branch Name')+'|'+val(r,'Sol ID')).filter(Boolean))].sort();districtFilter.innerHTML='<option value="">All Districts</option>'+ds.map(x=>`<option>${esc(x)}</option>`).join('');branchFilter.innerHTML='<option value="">All Branches</option>'+bs.map(x=>`<option value="${esc(x)}">${esc(x.replace('|',' — '))}</option>`).join('')}
 function updateDashboard(){
+  totalReports.textContent=reports.length;
+  // Define helper before first use to avoid temporal-dead-zone ReferenceError.
+  const districtNameFromGP=row=>{
+    if(Array.isArray(row)) return String(row[0]||'').trim();
+    return String(row.district||row.District||row['District Name']||row['DISTRICT']||'').trim();
+  };
+  const totalAllottedCard=gpMasterData.reduce((n,row)=>n+(districtNameFromGP(row)?1:0),0);
+  document.getElementById("totalAllottedCamps").textContent=totalAllottedCard.toLocaleString();
+  branchCount.textContent=new Set(reports.map(r=>val(r,'Sol ID')).filter(Boolean)).size;
+  gpCount.textContent=new Set(reports.map(r=>val(r,'Gram Panchayat (GP) Code')||val(r,'Gram Panchayat (GP) Name')).filter(Boolean)).size;
+  pmjdyTotal.textContent=reports.reduce((a,r)=>a+(Number(r['PMJDY Accounts Opened'])||0),0).toLocaleString();
 
-  const reports=allReports.map(normalizeReport);
-  const branchSet=new Set();
-  let pmjdyTotal=0;
+  // GP sheet master: one GP row = one camp allotted for that district.
+  const allotted={};
+  gpMasterData.forEach(row=>{const d=districtNameFromGP(row);if(d)allotted[d]=(allotted[d]||0)+1;});
 
-  reports.forEach(function(r){
+  // Branch-wise: count camp reports, with Branch Name and SOL ID separate.
+  const branchMap={};
+  reports.forEach(r=>{const branch=val(r,'Branch Name')||'Not specified',sol=val(r,'Sol ID')||'Not specified',key=branch+'||'+sol;if(!branchMap[key])branchMap[key]={branch,sol,camps:0};branchMap[key].camps++;});
+  const branchRows=Object.values(branchMap).sort((a,b)=>a.branch.localeCompare(b.branch)||a.sol.localeCompare(b.sol)).map(a=>[a.branch,a.sol,a.camps]);
+  branchRows.push(['GRAND TOTAL','',reports.length]);
+  branchAnalytics.innerHTML=miniTable(['Branch Name','SOL ID','Camps'],branchRows);
 
-    if(r.sol) branchSet.add(String(r.sol));
-    pmjdyTotal+=Number(r.pmjdy)||0;
-
+  // Union districts from GP allocation and actual camp reporting.
+  const districts=new Set([...Object.keys(allotted),...reports.map(r=>val(r,'District')).filter(Boolean)]);
+  const dm={};
+  districts.forEach(d=>dm[d]={allotted:allotted[d]||0,camps:0,branches:new Set(),bc:0,pmjdy:0,pmjjby:0,pmsby:0,apy:0});
+  reports.forEach(r=>{
+    const d=val(r,'District')||'Not specified';
+    if(!dm[d])dm[d]={allotted:allotted[d]||0,camps:0,branches:new Set(),bc:0,pmjdy:0,pmjjby:0,pmsby:0,apy:0};
+    const a=dm[d];a.camps++;
+    const sol=val(r,'Sol ID');if(sol)a.branches.add(sol);
+    a.bc+=Number(r['No OF BC Participated'])||0;
+    a.pmjdy+=Number(r['PMJDY Accounts Opened'])||0;
+    a.pmjjby+=Number(r['PMJJBY En enrolments'])||Number(r['PMJJBY Enrolments'])||0;
+    a.pmsby+=Number(r['PMSBY Enrolments'])||0;
+    a.apy+=Number(r['APY Subscriptions'])||0;
   });
+  const ordered=Object.entries(dm).sort((a,b)=>a[0].localeCompare(b[0]));
+  const districtRows=ordered.map(([d,a])=>[d,a.allotted,a.camps,a.branches.size,a.bc,new Set(reports.filter(r=>val(r,'District')===d).map(r=>val(r,'Gram Panchayat (GP) Code')||val(r,'Gram Panchayat (GP) Name')).filter(Boolean)).size]);
+  const totalAllotted=Object.values(allotted).reduce((n,v)=>n+v,0);
+  const totalBranches=new Set(reports.map(r=>val(r,'Sol ID')).filter(Boolean)).size;
+  const totalBC=reports.reduce((n,r)=>n+(Number(r['No OF BC Participated'])||0),0);
+  const totalGPsCovered=new Set(reports.map(r=>val(r,'Gram Panchayat (GP) Code')||val(r,'Gram Panchayat (GP) Name')).filter(Boolean)).size;
+  districtRows.push(['GRAND TOTAL',totalAllotted,reports.length,totalBranches,totalBC,totalGPsCovered]);
+  districtAnalytics.innerHTML=miniTable(['District','Camps Allotted','Camps Conducted','Branches Participated','BCs Participated','GPs Covered'],districtRows);
 
-  document.getElementById("totalSubmitted").textContent=reports.length;
-  document.getElementById("gpsCovered").textContent=reports.length;
-  document.getElementById("branchesReporting").textContent=branchSet.size;
-  document.getElementById("pmjdyTotal").textContent=pmjdyTotal.toLocaleString("en-IN");
-  document.getElementById("totalAllotted").textContent=getMasterCount();
-
-  renderBranchSummary(reports);
-  renderDistrictSummary(reports);
-  renderDistrictPerformance(reports);
+  // District-wise performance includes camp allocation/reporting metrics plus scheme totals.
+  const drows=ordered.map(([d,a])=>[d,a.allotted,a.camps,a.branches.size,a.bc,new Set(reports.filter(r=>val(r,'District')===d).map(r=>val(r,'Gram Panchayat (GP) Code')||val(r,'Gram Panchayat (GP) Name')).filter(Boolean)).size,a.pmjdy.toLocaleString(),a.pmjjby.toLocaleString(),a.pmsby.toLocaleString(),a.apy.toLocaleString()]);
+  drows.push(['GRAND TOTAL',totalAllotted,reports.length,totalBranches,totalBC,totalGPsCovered,
+    reports.reduce((n,r)=>n+(Number(r['PMJDY Accounts Opened'])||0),0).toLocaleString(),
+    reports.reduce((n,r)=>n+(Number(r['PMJJBY En enrolments'])||Number(r['PMJJBY Enrolments'])||0),0).toLocaleString(),
+    reports.reduce((n,r)=>n+(Number(r['PMSBY Enrolments'])||0),0).toLocaleString(),
+    reports.reduce((n,r)=>n+(Number(r['APY Subscriptions'])||0),0).toLocaleString()]);
+  districtPerformance.innerHTML=miniTable(['District','Camps Allotted','Camps Conducted','Branches Participated','BCs Participated','GPs Covered','PMJDY Accounts','PMJJBY Enrolments','PMSBY Enrolments','APY Subscriptions'],drows);
 }
-
-/* =====================================================
-   BRANCH SUMMARY
-===================================================== */
-
-function renderBranchSummary(reports){
-
-  const summary={};
-
-  reports.forEach(function(r){
-
-    const key=String(r.sol||r.branch||"Unknown");
-
-    if(!summary[key]){
-      summary[key]={
-        branch:r.branch||"",
-        sol:r.sol||"",
-        camps:0
-      };
-    }
-
-    summary[key].camps++;
-
+function miniTable(h,rows){return '<table><thead><tr>'+h.map(x=>'<th>'+esc(x)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>{const isGrand=String(r[0]||'').toUpperCase().indexOf('GRAND TOTAL')===0;return '<tr'+(isGrand?' class="grand-total"':'')+'>'+r.map((x,i)=>'<td data-label="'+esc(h[i]||'')+'">'+esc(String(x))+'</td>').join('')+'</tr>';}).join('')+'</tbody></table>'}
+function showDashboard(){dashboard.classList.remove('hidden');reportsSection.classList.add('hidden')}function showReports(){dashboard.classList.add('hidden');reportsSection.classList.remove('hidden');renderTable()}function setActive(el){}
+function renderTable(){let q=search.value.toLowerCase(),d=districtFilter.value,b=branchFilter.value,date=dateFilter.value;filtered=reports.filter(r=>(!q||['Branch Name','Sol ID','Gram Panchayat (GP) Name','Gram Panchayat (GP) Code','Block Name'].some(k=>val(r,k).toLowerCase().includes(q)))&&(!d||val(r,'District')===d)&&(!b||(val(r,'Branch Name')+'|'+val(r,'Sol ID'))===b)&&(!date||val(r,'Camp Date').slice(0,10)===date));resultCount.textContent=filtered.length+' camps';let visible=['Camp Date','Sol ID','Branch Name','District','Block Name','Gram Panchayat (GP) Name','PMJDY Accounts Opened','PMJJBY Enrolments','PMSBY Enrolments','APY Subscriptions'];tableHead.innerHTML='<tr>'+visible.map(k=>'<th>'+esc(k)+'</th>').join('')+'<th>Actions</th></tr>';tableBody.innerHTML=filtered.map((r,i)=>'<tr>'+visible.map(k=>'<td data-label="'+esc(k)+'">'+esc(val(r,k))+'</td>').join('')+'<td data-label="Actions"><div class="actions"><button class="small" onclick="editReport('+i+')">Edit</button><button class="small danger" onclick="deleteReport('+i+')">Delete</button></div></td></tr>').join('')}
+function editReport(i){editing=filtered[i];editFields.innerHTML='';HEADERS.forEach(h=>{if(['Update date','photo_link'].includes(h))return;let div=document.createElement('div'),lab=document.createElement('label'),inp=document.createElement('input');lab.textContent=h;inp.dataset.header=h;inp.value=val(editing,h);if(h==='Camp Date')inp.type='date';div.append(lab,inp);editFields.append(div)});editModal.classList.remove('hidden')}
+function closeModal(){editModal.classList.add('hidden');editing=null}
+async function saveEdit(){let payload={};editFields.querySelectorAll('input').forEach(i=>payload[i.dataset.header]=i.value);payload['Gram Panchayat (GP) Code']=editing['Gram Panchayat (GP) Code'];payload.gpCode=payload['Gram Panchayat (GP) Code'];let btn=saveBtn;btn.disabled=true;editMsg.textContent='Saving...';try{let x=await api({action:'adminUpdateReport',token,payload,originalGpCode:val(editing,'Gram Panchayat (GP) Code')});if(!x.success)throw Error(x.message||'Update failed');closeModal();await loadReports();alert('Report updated successfully')}catch(e){editMsg.textContent=e.message}finally{btn.disabled=false}}
+async function deleteReport(i){let r=filtered[i],gp=val(r,'Gram Panchayat (GP) Code');if(!confirm('Delete report for GP '+gp+'? This action cannot be undone.'))return;try{let x=await api({action:'adminDeleteReport',token,gpCode:gp});if(!x.success)throw Error(x.message||'Delete failed');await loadReports();alert('Report deleted')}catch(e){alert(e.message)}}
+function exportDistrictCSV(){
+  const grouped={};
+  reports.forEach(r=>{
+    const district=val(r,'District')||'Not specified';
+    if(!grouped[district]) grouped[district]={district,branches:new Set(),reports:0,pmjdy:0,pmjjby:0,pmsby:0,apy:0};
+    const a=grouped[district]; a.reports++;
+    const sol=val(r,'Sol ID'); if(sol) a.branches.add(sol);
+    a.pmjdy+=Number(r['PMJDY Accounts Opened'])||0;
+    a.pmjjby+=Number(r['PMJJBY En enrolments'])||Number(r['PMJJBY Enrolments'])||0;
+    a.pmsby+=Number(r['PMSBY Enrolments'])||0;
+    a.apy+=Number(r['APY Subscriptions'])||0;
   });
-
-  const body=document.getElementById("branchBody");
-  body.innerHTML="";
-
-  let total=0;
-
-  Object.keys(summary).sort(function(a,b){
-
-    return summary[a].branch.localeCompare(summary[b].branch);
-
-  }).forEach(function(key){
-
-    const item=summary[key];
-    total+=item.camps;
-
-    const tr=document.createElement("tr");
-
-    tr.innerHTML=
-      "<td>"+escapeHtml(item.branch)+"</td>"+
-      "<td>"+escapeHtml(item.sol)+"</td>"+
-      "<td>"+item.camps+"</td>";
-
-    body.appendChild(tr);
-
-  });
-
-  const grand=document.createElement("tr");
-  grand.className="grand-total";
-  grand.innerHTML="<td>Grand Total</td><td></td><td>"+total+"</td>";
-  body.appendChild(grand);
+  const rows=Object.values(grouped).sort((a,b)=>a.district.localeCompare(b.district)).map(a=>[a.district,a.branches.size,a.reports,a.pmjdy,a.pmjjby,a.pmsby,a.apy]);
+  const headers=['District','Reporting Branches','Camp Reports','PMJDY Accounts Opened','PMJJBY Enrolments','PMSBY Enrolments','APY Subscriptions'];
+  const csv=[headers,...rows].map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'}); const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download='DFS_District_Wise_Summary_'+new Date().toISOString().slice(0,10)+'.csv';a.click();URL.revokeObjectURL(a.href);
 }
-
-/* =====================================================
-   DISTRICT SUMMARY
-===================================================== */
-
-function renderDistrictSummary(reports){
-
-  const summary={};
-
-  reports.forEach(function(r){
-
-    const district=r.district||"Unknown";
-
-    if(!summary[district]){
-      summary[district]={
-        camps:0,
-        branches:new Set(),
-        bc:0,
-        gps:0
-      };
-    }
-
-    summary[district].camps++;
-    summary[district].gps++;
-
-    if(r.sol) summary[district].branches.add(String(r.sol));
-
-    summary[district].bc+=Number(r.bcParticipated)||0;
-
-  });
-
-  const body=document.getElementById("districtBody");
-  body.innerHTML="";
-
-  let totalCamps=0,totalBC=0,totalGP=0;
-  const totalBranches=new Set();
-
-  Object.keys(summary).sort().forEach(function(district){
-
-    const s=summary[district];
-    const allotted=getDistrictAllotted(district);
-
-    totalCamps+=s.camps;
-    totalBC+=s.bc;
-    totalGP+=s.gps;
-
-    s.branches.forEach(function(sol){totalBranches.add(sol);});
-
-    const tr=document.createElement("tr");
-
-    tr.innerHTML=
-      "<td>"+escapeHtml(district)+"</td>"+
-      "<td>"+allotted+"</td>"+
-      "<td>"+s.camps+"</td>"+
-      "<td>"+s.branches.size+"</td>"+
-      "<td>"+s.bc+"</td>"+
-      "<td>"+s.gps+"</td>";
-
-    body.appendChild(tr);
-
-  });
-
-  const grand=document.createElement("tr");
-  grand.className="grand-total";
-
-  grand.innerHTML=
-    "<td>Grand Total</td>"+
-    "<td>"+getMasterCount()+"</td>"+
-    "<td>"+totalCamps+"</td>"+
-    "<td>"+totalBranches.size+"</td>"+
-    "<td>"+totalBC+"</td>"+
-    "<td>"+totalGP+"</td>";
-
-  body.appendChild(grand);
-}
-
-/* =====================================================
-   DISTRICT PERFORMANCE
-===================================================== */
-
-function renderDistrictPerformance(reports){
-
-  const summary={};
-
-  reports.forEach(function(r){
-
-    const district=r.district||"Unknown";
-
-    if(!summary[district]){
-      summary[district]={
-        pmjdy:0,pmjjby:0,pmsby:0,apy:0,camps:0
-      };
-    }
-
-    summary[district].pmjdy+=Number(r.pmjdy)||0;
-    summary[district].pmjjby+=Number(r.pmjjby)||0;
-    summary[district].pmsby+=Number(r.pmsby)||0;
-    summary[district].apy+=Number(r.apy)||0;
-    summary[district].camps++;
-
-  });
-
-  const body=document.getElementById("performanceBody");
-  body.innerHTML="";
-
-  let t1=0,t2=0,t3=0,t4=0,t5=0;
-
-  Object.keys(summary).sort().forEach(function(district){
-
-    const s=summary[district];
-
-    t1+=s.pmjdy;t2+=s.pmjjby;t3+=s.pmsby;t4+=s.apy;t5+=s.camps;
-
-    const tr=document.createElement("tr");
-
-    tr.innerHTML=
-      "<td>"+escapeHtml(district)+"</td>"+
-      "<td>"+s.pmjdy+"</td>"+
-      "<td>"+s.pmjjby+"</td>"+
-      "<td>"+s.pmsby+"</td>"+
-      "<td>"+s.apy+"</td>"+
-      "<td>"+s.camps+"</td>";
-
-    body.appendChild(tr);
-
-  });
-
-  const grand=document.createElement("tr");
-  grand.className="grand-total";
-
-  grand.innerHTML=
-    "<td>Grand Total</td>"+
-    "<td>"+t1+"</td>"+
-    "<td>"+t2+"</td>"+
-    "<td>"+t3+"</td>"+
-    "<td>"+t4+"</td>"+
-    "<td>"+t5+"</td>";
-
-  body.appendChild(grand);
-}
-
-/* =====================================================
-   GP MASTER HELPERS
-===================================================== */
-
-function getMasterCount(){
-
-  if(!Array.isArray(masterData)) return 0;
-
-  return masterData.filter(function(row){
-
-    const district=Array.isArray(row)
-      ?row[0]
-      :row.district||row.District||"";
-
-    return String(district||"").trim()!=="";
-
-  }).length;
-}
-
-function getDistrictAllotted(district){
-
-  if(!Array.isArray(masterData)) return 0;
-
-  return masterData.filter(function(row){
-
-    const rowDistrict=Array.isArray(row)
-      ?row[0]
-      :row.district||row.District||"";
-
-    return String(rowDistrict||"").trim().toLowerCase()===
-      String(district||"").trim().toLowerCase();
-
-  }).length;
-}
-
-/* =====================================================
-   EDIT REPORT
-===================================================== */
-
-function openEdit(row){
-
-  currentEditRow=row;
-
-  const r=normalizeReport(row);
-  const fields=document.getElementById("editFields");
-
-  fields.innerHTML="";
-
-  const items=[
-    ["District",r.district,"text"],
-    ["Block",r.block,"text"],
-    ["Branch Name",r.branch,"text"],
-    ["SOL ID",r.sol,"text"],
-    ["BC Name",r.bcName,"text"],
-    ["BC Code",r.bcCode,"text"],
-    ["GP Name",r.gp,"text"],
-    ["GP Code",r.gpCode,"text"],
-    ["Camp Date",parseDate(r.campDate),"date"],
-    ["No OF BC Participated",r.bcParticipated,"number"],
-    ["PMJDY",r.pmjdy,"number"],
-    ["PMJJBY",r.pmjjby,"number"],
-    ["PMSBY",r.pmsby,"number"],
-    ["APY",r.apy,"number"],
-    ["NPS Sanchay",r.nps,"number"],
-    ["Other Activities",r.other,"text"],
-    ["Remarks",r.remarks,"text"]
-  ];
-
-  items.forEach(function(item,i){
-
-    const div=document.createElement("div");
-    div.className="form-field";
-
-    const label=document.createElement("label");
-    label.textContent=item[0];
-
-    const input=document.createElement("input");
-    input.id="editField_"+i;
-    input.type=item[2];
-    input.value=item[1]==null?"":item[1];
-
-    if(item[2]==="number") input.min="0";
-
-    div.appendChild(label);
-    div.appendChild(input);
-    fields.appendChild(div);
-
-  });
-
-  document.getElementById("editModal").classList.remove("hidden");
-}
-
-function closeModal(){
-
-  document.getElementById("editModal").classList.add("hidden");
-  currentEditRow=null;
-}
-
-/* =====================================================
-   SAVE REPORT
-===================================================== */
-
-async function saveReport(){
-
-  if(!currentEditRow){
-    alert("No report selected.");
-    return;
-  }
-
-  const button=document.getElementById("saveBtn");
-  button.disabled=true;
-  button.textContent="Saving...";
-
-  try{
-
-    const values=[];
-
-    for(let i=0;i<17;i++){
-
-      const input=document.getElementById("editField_"+i);
-      values.push(input?input.value:"");
-
-    }
-
-    const rowNumber=
-      currentEditRow.rowNumber||
-      currentEditRow._rowNumber||
-      currentEditRow.id;
-
-    const result=await api({
-      action:"adminUpdateReport",
-      rowNumber:rowNumber,
-      data:values
-    });
-
-    if(!result||result.success!==true){
-      throw new Error(result&&result.message?result.message:"Unable to update report.");
-    }
-
-    alert("Report updated successfully.");
-    closeModal();
-    await loadReports();
-
-  }catch(error){
-
-    console.error(error);
-    alert(error.message||"Update failed.");
-
-  }finally{
-
-    button.disabled=false;
-    button.textContent="Save Changes";
-
-  }
-}
-
-/* =====================================================
-   DELETE REPORT
-===================================================== */
-
-async function deleteReport(row){
-
-  const r=normalizeReport(row);
-
-  if(!confirm(
-    "Are you sure you want to delete this camp report?\n\n"+
-    "Branch: "+r.branch+"\nGP: "+r.gp
-  )) return;
-
-  try{
-
-    const result=await api({
-      action:"adminDeleteReport",
-      rowNumber:row.rowNumber||row._rowNumber||row.id
-    });
-
-    if(!result||result.success!==true){
-      throw new Error(result&&result.message?result.message:"Unable to delete report.");
-    }
-
-    alert("Report deleted successfully.");
-    await loadReports();
-
-  }catch(error){
-
-    console.error(error);
-    alert(error.message||"Delete failed.");
-
-  }
-}
-
-/* =====================================================
-   CSV EXPORT
-===================================================== */
-
-function exportCSV(){
-
-  if(!filteredReports.length){
-    alert("No records available for export.");
-    return;
-  }
-
-  const headers=[
-    "District","Block","Branch Name","SOL ID","BC Name","BC Code",
-    "GP Name","GP Code","Camp Date","No OF BC Participated",
-    "PMJDY","PMJJBY","PMSBY","APY","NPS Sanchay",
-    "Other Activities","Remarks"
-  ];
-
-  const rows=filteredReports.map(function(row){
-
-    const r=normalizeReport(row);
-
-    return [
-      r.district,r.block,r.branch,r.sol,r.bcName,r.bcCode,
-      r.gp,r.gpCode,r.campDate,r.bcParticipated,
-      r.pmjdy,r.pmjjby,r.pmsby,r.apy,r.nps,r.other,r.remarks
-    ];
-
-  });
-
-  const csv=[headers].concat(rows).map(function(row){
-
-    return row.map(function(value){
-
-      const text=String(value==null?"":value);
-      return '"'+text.replace(/"/g,'""')+'"';
-
-    }).join(",");
-
-  }).join("\r\n");
-
-  const blob=new Blob(["﻿"+csv],{
-    type:"text/csv;charset=utf-8;"
-  });
-
-  const url=URL.createObjectURL(blob);
-  const link=document.createElement("a");
-
-  link.href=url;
-  link.download="DFS_Camp_Reports.csv";
-
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-
-  URL.revokeObjectURL(url);
-}
-
-/* =====================================================
-   DATE HELPERS
-===================================================== */
-
-function parseDate(value){
-
-  if(!value) return "";
-
-  const text=String(value).trim();
-
-  if(/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
-
-  const dmy=text.match(/^(\d{2})[-/](\d{2})[-/](\d{4})$/);
-
-  if(dmy){
-    return dmy[3]+"-"+dmy[2]+"-"+dmy[1];
-  }
-
-  const date=new Date(value);
-
-  if(isNaN(date.getTime())) return "";
-
-  return date.getFullYear()+"-"+
-    String(date.getMonth()+1).padStart(2,"0")+"-"+
-    String(date.getDate()).padStart(2,"0");
-}
-
-function formatDate(value){
-
-  const date=parseDate(value);
-  if(!date) return value||"";
-
-  const parts=date.split("-");
-
-  return parts[2]+"-"+parts[1]+"-"+parts[0];
-}
-
-/* =====================================================
-   HTML ESCAPE
-===================================================== */
-
-function escapeHtml(value){
-
-  return String(value==null?"":value)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-}
-
-/* =====================================================
-   INITIALIZATION
-===================================================== */
-
-document.addEventListener("DOMContentLoaded",function(){
-
-  document.getElementById("password").focus();
-
-});
-
-</script>
-</body>
-</html>
+function exportCSV(){if(!filtered.length&&!reports.length){alert('No reports to export');return}let rows=(document.getElementById('reportsSection').classList.contains('hidden')?reports:filtered);let keys=HEADERS.filter(h=>rows.some(r=>r[h]!==undefined));let csv=[keys,...rows.map(r=>keys.map(k=>r[k]??''))].map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');let blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='DFS_Saturation_Camp_Reports_'+new Date().toISOString().slice(0,10)+'.csv';a.click();URL.revokeObjectURL(a.href)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+</script></body></html>
