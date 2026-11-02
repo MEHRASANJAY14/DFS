@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SOL-wise GP Details | DFS Saturation Camp</title>
+<style>
+:root{--green:#006633;--green2:#008447;--light:#f2f7f3;--border:#d8e3da;--text:#1d2b22;--muted:#607064;--red:#b42318;--blue:#1c4fa3}
+*{box-sizing:border-box}
+body{margin:0;background:#f3f6f4;color:var(--text);font-family:Arial,Helvetica,sans-serif}
+header{background:linear-gradient(120deg,var(--green),var(--green2));color:#fff;padding:22px 16px;box-shadow:0 3px 12px #0002}
+.header-inner,.container{max-width:1200px;margin:auto}
+header h1{font-size:clamp(20px,3vw,29px);margin:0 0 8px}
+header p{margin:0;font-size:14px;opacity:.94}
+.container{padding:20px 14px 35px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:8px;padding:11px 15px;font-weight:700;cursor:pointer;font-size:14px;text-decoration:none}
+.primary{background:var(--green);color:#fff}.secondary{background:#e4eee7;color:var(--green)}
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:16px;box-shadow:0 3px 12px #183b2410;overflow:hidden}
+.card-head{padding:14px 18px;background:#f7faf8;border-bottom:1px solid var(--border);font-size:16px;font-weight:700}
+.card-body{padding:18px}
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.metric{border:1px solid var(--border);background:#f9fbf9;border-radius:10px;padding:15px}
+.metric .label{font-size:13px;color:var(--muted);font-weight:700}
+.metric .value{font-size:27px;font-weight:800;color:var(--green);margin-top:6px}
+.status{padding:12px 14px;border-radius:8px;margin:0 0 16px;font-size:14px;white-space:pre-wrap;display:none}
+.status.info{display:block;background:#eaf1ff;color:#234c91;border:1px solid #c9d8fb}
+.status.ok{display:block;background:#e7f6eb;color:#176534;border:1px solid #b9e2c5}
+.status.err{display:block;background:#fff0ee;color:#a32117;border:1px solid #f1c1bc}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.controls input{flex:1;min-width:220px;padding:11px;border:1px solid #cbd8ce;border-radius:7px;font-size:15px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:760px}
+th,td{padding:11px 10px;border:1px solid var(--border);text-align:left;vertical-align:middle}
+th{background:#f7faf8;color:#25432d}
+tr:nth-child(even) td{background:#fbfdfb}
+.pill{display:inline-block;padding:5px 10px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap}
+.done{background:#e2f4e7;color:#176534}.pending{background:#fff0d9;color:#8a5200}
+.small{font-size:12px;color:var(--muted);line-height:1.5}
+footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
+@media(max-width:600px){.container{padding:12px 9px 25px}.card-body{padding:12px}.metrics{grid-template-columns:1fr}.metric .value{font-size:24px}.toolbar .btn{flex:1}.controls input{min-width:100%}}
+</style>
+</head>
+<body>
+<header><div class="header-inner">
+<h1>DFS Saturation Camp Reporting Portal</h1>
+<p>GP-wise Camp Reporting Status • SOL Details</p>
+</div></header>
+<main class="container">
+<div class="toolbar">
+<a class="btn secondary" href="./sol-wise.html">← Back to SOL-wise Dashboard</a>
+<a class="btn secondary" href="./index.html">⌂ Main Portal</a>
+<button class="btn primary" id="reloadBtn" type="button">↻ Refresh Data</button>
+</div>
+<div id="status" class="status info">Loading SOL details…</div>
+<section class="card">
+<div class="card-head" id="branchHeading">Branch / SOL Details</div>
+<div class="card-body"><div class="metrics">
+<div class="metric"><div class="label">Camps Allotted</div><div class="value" id="allotted">—</div></div>
+<div class="metric"><div class="label">Camps Conducted</div><div class="value" id="conducted">—</div></div>
+<div class="metric"><div class="label">Pending Camps</div><div class="value" id="pending">—</div></div>
+</div></div></section>
+<section class="card">
+<div class="card-head">Gram Panchayat-wise Status</div>
+<div class="card-body">
+<div class="controls"><input id="searchBox" type="search" placeholder="Search GP, GP Code, District or Block…"></div>
+<div class="table-wrap"><table>
+<thead><tr><th>#</th><th>District</th><th>Block</th><th>Block Code</th><th>Gram Panchayat</th><th>GP Code</th><th>Status</th></tr></thead>
+<tbody id="tableBody"><tr><td colspan="7">Loading…</td></tr></tbody>
+</table></div>
+<p class="small" id="countLabel"></p>
+</div></section>
+<footer>DFS Saturation Camp Reporting Portal</footer>
+</main>
+<script>
+'use strict';
+const API_URL='https://script.google.com/macros/s/AKfycbwHkmc9qul-GOuWTTTCKD3QKUdRLLcn9Xv7xKP-0kC46DHfJ6fO5rYnDWOEPoq09uz-/exec';
+const params=new URLSearchParams(window.location.search);
+const SOL_ID=String(params.get('sol')||params.get('solId')||'').trim();
+let rows=[];
+const $=id=>document.getElementById(id);
+function setStatus(msg,type='info'){const el=$('status');el.textContent=msg;el.className='status '+type;}
+function norm(v){return String(v==null?'':v).replace(/[\u00A0\u200B-\u200D\uFEFF]/g,' ').replace(/\s+/g,' ').trim().toLowerCase();}
+function clean(v){return String(v==null?'':v).trim();}
+async function api(action,extra={}){
+ const resp=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,...extra})});
+ if(!resp.ok)throw new Error('Server returned HTTP '+resp.status);
+ const txt=await resp.text();let result;
+ try{result=JSON.parse(txt)}catch(e){throw new Error('Apps Script returned non-JSON response. Verify Web App deployment.');}
+ if(!result.success)throw new Error(result.message||result.details||'Apps Script request failed');
+ return result.data;
+}
+function extractGPCode(report){return clean(report['Gram Panchayat (GP) Code']||report['GP Code']||report['gpCode']);}
+function render(){
+ const q=norm($('searchBox').value);
+ const filtered=rows.filter(r=>[r.district,r.blockName,r.blockCode,r.gpName,r.gpCode].some(v=>norm(v).includes(q)));
+ const body=$('tableBody');body.replaceChildren();
+ if(!filtered.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=7;td.textContent='No GP records found.';tr.appendChild(td);body.appendChild(tr);}
+ filtered.forEach((r,i)=>{
+  const tr=document.createElement('tr');
+  [i+1,r.district,r.blockName,r.blockCode,r.gpName,r.gpCode].forEach(v=>{const td=document.createElement('td');td.textContent=clean(v)||'—';tr.appendChild(td);});
+  const td=document.createElement('td'),span=document.createElement('span');
+  span.className='pill '+(r.isConducted?'done':'pending');span.textContent=r.isConducted?'Conducted':'Pending';td.appendChild(span);tr.appendChild(td);body.appendChild(tr);
+ });
+ $('countLabel').textContent=`Showing ${filtered.length} of ${rows.length} allotted GP(s).`;
+}
+async function loadData(){
+ if(!SOL_ID){setStatus('SOL ID missing in URL. Please open this page by clicking a SOL ID from sol-wise.html.','err');$('branchHeading').textContent='SOL ID not provided';$('tableBody').innerHTML='<tr><td colspan="7">Missing SOL ID.</td></tr>';return;}
+ $('reloadBtn').disabled=true;$('tableBody').innerHTML='<tr><td colspan="7">Loading GP Master and reports…</td></tr>';
+ setStatus('Loading GP Master and Camp Reporting data…','info');
+ try{
+  const master=await api('getMasterData');
+  const gpMaster=Array.isArray(master.gpMaster)?master.gpMaster:[];
+  const reportsData=await api('getReportsBySOL',{solId:SOL_ID});
+  const reports=Array.isArray(reportsData.reports)?reportsData.reports:[];
+  const branch=(Array.isArray(master.branches)?master.branches:[]).find(b=>clean(b.solId)===SOL_ID);
+  const mappedGP=gpMaster.filter(g=>clean(g.solId)===SOL_ID);
+  if(!mappedGP.length){
+   setStatus(`No GP Master records found for SOL ID ${SOL_ID}. Check GP sheet columns F (SOL) and G (BRANCH), then update/deploy Code.gs.`,'err');
+   $('branchHeading').textContent=`SOL ID: ${SOL_ID} — Branch name unavailable`;
+   $('allotted').textContent='0';$('conducted').textContent='0';$('pending').textContent='0';
+   $('tableBody').innerHTML='<tr><td colspan="7">No GP records mapped to this SOL ID.</td></tr>';return;
+  }
+  const conductedCodes=new Set(reports.map(extractGPCode).filter(Boolean));
+  rows=mappedGP.map(g=>({district:g.district,blockName:g.blockName,blockCode:g.blockCode,gpName:g.gpName,gpCode:clean(g.gpCode),isConducted:conductedCodes.has(clean(g.gpCode))}));
+  const conducted=rows.filter(r=>r.isConducted).length, pending=rows.length-conducted;
+  $('branchHeading').textContent=`SOL ID: ${SOL_ID} — ${clean(branch&&branch.branchName)||clean(mappedGP[0].branchName)||'Branch Name'}`;
+  $('allotted').textContent=rows.length;$('conducted').textContent=conducted;$('pending').textContent=pending;
+  render();setStatus(`Data loaded successfully for SOL ID ${SOL_ID}.`,'ok');
+ }catch(err){
+  setStatus('Failed to load SOL details: '+(err.message||err)+'. Ensure Code.gs is saved and deployed as a new version.','err');
+  $('tableBody').innerHTML='<tr><td colspan="7">Unable to load data. See message above.</td></tr>';
+ }finally{$('reloadBtn').disabled=false;}
+}
+$('reloadBtn').addEventListener('click',loadData);
+$('searchBox').addEventListener('input',render);
+loadData();
+</script>
+</body>
+</html>
