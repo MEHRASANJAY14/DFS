@@ -159,16 +159,17 @@ footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
               <th class="num">Camps Allotted</th>
               <th class="num">Camps Conducted</th>
               <th class="num">Pending</th>
+              <th>View Details</th>
             </tr>
           </thead>
           <tbody id="dashboardRows">
-            <tr><td colspan="5" class="empty">Loading…</td></tr>
+            <tr><td colspan="6" class="empty">Loading…</td></tr>
           </tbody>
         </table>
       </div>
 
       <p style="font-size:12px;color:#607064;margin:12px 0 0">
-        Click on any SOL ID to view GP-wise allotment and reporting status.
+        Click SOL ID or View Details to view GP-wise allotment and reporting status.
       </p>
 
     </div>
@@ -390,7 +391,7 @@ function render(){
     const tr=document.createElement('tr');
     const td=document.createElement('td');
 
-    td.colSpan=5;
+    td.colSpan=6;
     td.className='empty';
     td.textContent='No allotted branch found.';
 
@@ -428,7 +429,17 @@ function render(){
     pending.className='num pending';
     pending.textContent=r.pending;
 
-    tr.append(soltd,branch,allotted,conducted,pending);
+    // View Details column — always the last column in the on-screen summary.
+    const detailtd=document.createElement('td');
+    const detailLink=document.createElement('a');
+    detailLink.className='btn secondary';
+    detailLink.style.padding='7px 10px';
+    detailLink.style.minHeight='30px';
+    detailLink.href='./sol-details.html?sol='+encodeURIComponent(r.solId);
+    detailLink.textContent='View Details';
+    detailtd.appendChild(detailLink);
+
+    tr.append(soltd,branch,allotted,conducted,pending,detailtd);
     body.appendChild(tr);
   });
 }
@@ -480,7 +491,7 @@ async function loadDashboard(){
     );
 
     $('dashboardRows').innerHTML=
-      '<tr><td colspan="5" class="empty">'+
+      '<tr><td colspan="6" class="empty">'+
       'Data could not be loaded. Read the error message above.'+
       '</td></tr>';
 
