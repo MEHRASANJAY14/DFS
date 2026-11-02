@@ -1,385 +1,171 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SOL Wise Camp Dashboard</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SOL-wise DFS Camp Dashboard</title>
 <style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f1f5f9;
-  color:#1e293b;
-}
-.header{
-  background:#006633;
-  color:white;
-  padding:20px;
-  text-align:center;
-}
-.header h2{margin:0}
-.container{
-  max-width:1200px;
-  margin:20px auto;
-  padding:15px;
-}
-.cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:15px;
-  margin-bottom:20px;
-}
-.card{
-  background:white;
-  padding:20px;
-  border-radius:10px;
-  box-shadow:0 2px 8px #0001;
-  text-align:center;
-}
-.card h3{
-  margin:0 0 10px;
-  color:#475569;
-  font-size:15px;
-}
-.card .number{
-  font-size:30px;
-  font-weight:bold;
-  color:#006633;
-}
-.search{
-  width:100%;
-  padding:12px;
-  border:1px solid #cbd5e1;
-  border-radius:6px;
-  margin-bottom:15px;
-  font-size:16px;
-}
-.table-container{
-  overflow-x:auto;
-  background:white;
-  border-radius:8px;
-}
-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:700px;
-}
-th{
-  background:#006633;
-  color:white;
-  padding:12px;
-  text-align:center;
-}
-td{
-  padding:12px;
-  border-bottom:1px solid #e2e8f0;
-  text-align:center;
-}
-tr:hover{background:#f0fdf4}
-a{
-  color:#006633;
-  font-weight:bold;
-  text-decoration:none;
-}
-a:hover{text-decoration:underline}
-.status{
-  text-align:center;
-  padding:20px;
-  background:white;
-  border-radius:8px;
-  margin-bottom:15px;
-}
-.error{color:#b91c1c}
-.footer{
-  text-align:center;
-  padding:20px;
-  color:#64748b;
-  font-size:13px;
-}
+:root{--green:#006633;--green2:#008447;--light:#f2f7f3;--border:#d8e3da;--text:#1d2b22;--muted:#607064;--blue:#1c4fa3}
+*{box-sizing:border-box}body{margin:0;background:#f3f6f4;color:var(--text);font-family:Arial,Helvetica,sans-serif}
+header{background:linear-gradient(120deg,var(--green),var(--green2));color:#fff;padding:22px 16px;box-shadow:0 3px 12px #0002}
+.header-inner{max-width:1200px;margin:auto}header h1{font-size:clamp(20px,3vw,30px);margin:0 0 7px}header p{margin:0;opacity:.92;font-size:14px}
+.container{max-width:1200px;margin:20px auto;padding:0 14px 36px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:8px;padding:11px 15px;font-weight:700;cursor:pointer;font-size:14px;text-decoration:none;min-height:40px}
+.primary{background:var(--green);color:#fff}.secondary{background:#e4eee7;color:var(--green)}.btn:hover{filter:brightness(.96)}
+.status{padding:12px 14px;border-radius:8px;margin:0 0 16px;font-size:14px;white-space:pre-wrap;background:#eaf1ff;color:#234c91;border:1px solid #c9d8fb;overflow-wrap:anywhere}
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:16px;box-shadow:0 3px 12px #183b2410;overflow:hidden}.card-head{padding:14px 18px;background:#f7faf8;border-bottom:1px solid var(--border);font-size:16px;font-weight:700}.card-body{padding:18px}
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px}.metric{padding:15px;background:#fff;border:1px solid var(--border);border-radius:10px;text-align:center}.metric .number{font-size:26px;font-weight:800;color:var(--green)}.metric .label{font-size:13px;color:var(--muted);margin-top:5px}
+.controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}.controls input{flex:1;min-width:220px;padding:11px;border:1px solid #cbd8ce;border-radius:7px;font-size:15px}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:650px;font-size:14px}th,td{padding:12px 10px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}th{background:#f7faf8;color:#33473a;position:sticky;top:0}tbody tr:hover{background:#f4faf5}.sol-link{color:#006633;font-weight:800;text-decoration:underline;cursor:pointer}.num{text-align:center;font-weight:700}.pending{color:#b42318}.conducted{color:#176534}.empty{text-align:center;padding:25px;color:var(--muted)}footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
+@media(max-width:600px){.container{padding:0 10px 25px;margin-top:12px}.card-body{padding:12px}.metrics{grid-template-columns:1fr}.controls input{min-width:100%}header{padding:18px 13px}}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
-
 <body>
-
-<div class="header">
-  <h2>DFS SATURATION CAMP</h2>
-  <p>SOL-WISE CAMP REPORTING DASHBOARD</p>
-</div>
-
-<div class="container">
-
-  <div id="status" class="status">
-    Loading dashboard data...
+<header><div class="header-inner"><h1>DFS Saturation Camp — SOL-wise Dashboard</h1><p>Regional Office Jabalpur • Gram Panchayat camp allotment and reporting status</p></div></header>
+<main class="container">
+  <div class="toolbar"><a class="btn secondary" href="./index.html">← Back to Reporting Portal</a><button class="btn primary" id="reloadBtn" type="button">↻ Refresh Dashboard</button></div>
+  <div id="status" class="status" role="status">Loading dashboard data…</div>
+  <div class="metrics">
+    <div class="metric"><div class="number" id="totalSol">—</div><div class="label">Total Branches (SOL)</div></div>
+    <div class="metric"><div class="number" id="totalAllotted">—</div><div class="label">Total Camps Allotted</div></div>
+    <div class="metric"><div class="number" id="totalConducted">—</div><div class="label">Total Camps Conducted</div></div>
   </div>
-
-  <div class="cards">
-    <div class="card">
-      <h3>Total SOLs</h3>
-      <div class="number" id="totalSOL">0</div>
+  <section class="card"><div class="card-head">Branch-wise Camp Status</div><div class="card-body">
+    <div class="controls">
+      <input id="searchBox" type="search" placeholder="Search SOL ID or branch name…" aria-label="Search SOL ID or branch name">
+      <button class="btn secondary" id="downloadExcel" type="button">⬇ Download Excel</button>
+      <button class="btn secondary" id="downloadImage" type="button">🖼 Download Image</button>
     </div>
-
-    <div class="card">
-      <h3>Total Camps Allotted</h3>
-      <div class="number" id="totalAllotted">0</div>
-    </div>
-
-    <div class="card">
-      <h3>Camps Conducted</h3>
-      <div class="number" id="totalConducted">0</div>
-    </div>
-
-    <div class="card">
-      <h3>Camps Pending</h3>
-      <div class="number" id="totalPending">0</div>
-    </div>
-  </div>
-
-  <input
-    type="text"
-    id="search"
-    class="search"
-    placeholder="Search SOL ID or Branch Name..."
-    onkeyup="filterTable()"
-  >
-
-  <div class="table-container">
-    <table id="solTable">
-      <thead>
-        <tr>
-          <th>S.No.</th>
-          <th>SOL ID</th>
-          <th>Branch Name</th>
-          <th>Camps Allotted</th>
-          <th>Camps Conducted</th>
-          <th>Pending</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody">
-      </tbody>
-    </table>
-  </div>
-
-</div>
-
-<div class="footer">
-  Developed for RO Jabalpur | IT & FI Department
-</div>
-
+    <div class="table-wrap"><table><thead><tr><th>SOL ID</th><th>Branch Name</th><th class="num">Camps Allotted</th><th class="num">Camps Conducted</th><th class="num">Pending</th></tr></thead><tbody id="dashboardRows"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody></table></div>
+    <p style="font-size:12px;color:#607064;margin:12px 0 0">Click on any SOL ID to view GP-wise allotment and reporting status.</p>
+  </div></section>
+  <footer>DFS Saturation Camp Reporting Portal • MPGB RO Jabalpur</footer>
+</main>
 <script>
+'use strict';
+const API_URL='https://script.google.com/macros/s/AKfycbwHkmc9qul-GOuWTTTCKD3QKUdRLLcn9Xv7xKP-0kC46DHfJ6fO5rYnDWOEPoq09uz-/exec';
+const $=id=>document.getElementById(id);
+let dashboardRows=[];
 
-const API_URL = "https://script.google.com/macros/s/AKfycbwHkmc9qul-GOuWTTTCKD3QKUdRLLcn9Xv7xKP-0kC46DHfJ6fO5rYnDWOEPoq09uz-/exec";
+function norm(v){return String(v==null?'':v).replace(/[\u00A0\u200B-\u200D\uFEFF]/g,' ').replace(/\s+/g,' ').trim().toLowerCase();}
+function solNorm(v){return String(v==null?'':v).trim();}
+function showStatus(msg,isError=false){const el=$('status');el.textContent=msg;el.style.background=isError?'#fff0ee':'#eaf1ff';el.style.color=isError?'#a32117':'#234c91';el.style.borderColor=isError?'#f1c1bc':'#c9d8fb';}
 
-function setStatus(message,isError=false){
-  const el=document.getElementById("status");
-  el.textContent=message;
-  el.className=isError?"status error":"status";
-}
-
+// Apps Script ContentService responds with JSON. Use text/plain to avoid CORS preflight.
 async function api(action,extra={}){
-  const payload=Object.assign({action:action},extra);
-
-  const response=await fetch(API_URL,{
-    method:"POST",
-    headers:{
-      "Content-Type":"text/plain;charset=utf-8"
-    },
-    body:JSON.stringify(payload)
-  });
-
-  if(!response.ok){
-    throw new Error("HTTP Error: "+response.status);
-  }
-
-  const result=await response.json();
-
-  if(result.success===false){
-    throw new Error(result.message||"API returned error");
-  }
-
-  return result.data!==undefined ? result.data : result;
-}
-
-function clean(value){
-  return String(value??"").trim();
-}
-
-function getValue(obj,keys){
-  for(const key of keys){
-    if(obj[key]!==undefined && obj[key]!==null){
-      return obj[key];
-    }
-  }
-  return "";
-}
-
-function getSOL(obj){
-  return clean(getValue(obj,[
-    "solId","SOL ID","Sol ID","sol_id","SOL"
-  ]));
-}
-
-function getBranch(obj){
-  return clean(getValue(obj,[
-    "branchName","BRANCH","Branch Name",
-    "branch_name","branch"
-  ]));
-}
-
-function getGPCode(obj){
-  return clean(getValue(obj,[
-    "gpCode","GP Code",
-    "Gram Panchayat (GP) Code","gp_code"
-  ]));
-}
-
-function buildDashboard(master,reports){
-
-  const gpMaster=master.gpMaster||master.GP||master.masterData||[];
-
-  if(!Array.isArray(gpMaster)||gpMaster.length===0){
-    throw new Error(
-      "GP Master data empty. Check getMasterData() in Apps Script."
-    );
-  }
-
-  if(!Array.isArray(reports)){
-    reports=reports.reports||reports.data||[];
-  }
-
-  if(!Array.isArray(reports)){
-    reports=[];
-  }
-
-  const conductedCodes=new Set();
-
-  reports.forEach(report=>{
-    const code=getGPCode(report);
-    if(code) conductedCodes.add(code);
-  });
-
-  const solMap={};
-
-  gpMaster.forEach(gp=>{
-
-    const sol=getSOL(gp);
-    const branch=getBranch(gp);
-    const gpCode=getGPCode(gp);
-
-    if(!sol) return;
-
-    if(!solMap[sol]){
-      solMap[sol]={
-        solId:sol,
-        branchName:branch,
-        allotted:0,
-        conducted:0
-      };
-    }
-
-    solMap[sol].allotted++;
-
-    if(gpCode && conductedCodes.has(gpCode)){
-      solMap[sol].conducted++;
-    }
-  });
-
-  const rows=Object.values(solMap);
-
-  rows.forEach(row=>{
-    row.pending=Math.max(0,row.allotted-row.conducted);
-  });
-
-  rows.sort((a,b)=>
-    Number(a.solId)-Number(b.solId)
-  );
-
-  document.getElementById("totalSOL").textContent=rows.length;
-
-  document.getElementById("totalAllotted").textContent=
-    rows.reduce((sum,row)=>sum+row.allotted,0);
-
-  document.getElementById("totalConducted").textContent=
-    rows.reduce((sum,row)=>sum+row.conducted,0);
-
-  document.getElementById("totalPending").textContent=
-    rows.reduce((sum,row)=>sum+row.pending,0);
-
-  renderTable(rows);
-
-  setStatus("Dashboard loaded successfully.");
-}
-
-function renderTable(rows){
-
-  const tbody=document.getElementById("tableBody");
-  tbody.innerHTML="";
-
-  rows.forEach((row,index)=>{
-
-    const tr=document.createElement("tr");
-
-    tr.innerHTML=`
-      <td>${index+1}</td>
-      <td>${row.solId}</td>
-      <td>${row.branchName||"-"}</td>
-      <td>${row.allotted}</td>
-      <td>${row.conducted}</td>
-      <td>${row.pending}</td>
-      <td>
-        <a href="./sol-details.html?sol=${encodeURIComponent(row.solId)}">
-          View Details
-        </a>
-      </td>
-    `;
-
-    tbody.appendChild(tr);
-  });
-}
-
-function filterTable(){
-
-  const filter=document.getElementById("search")
-    .value.toLowerCase();
-
-  const rows=document.querySelectorAll("#tableBody tr");
-
-  rows.forEach(row=>{
-    const text=row.textContent.toLowerCase();
-    row.style.display=text.includes(filter)?"":"none";
-  });
-}
-
-async function loadDashboard(){
-
+  let response;
   try{
-
-    setStatus("Loading master data and camp reports...");
-
-    const masterResponse=await api("getMasterData");
-
-    const reportResponse=await api("adminGetReports");
-
-    buildDashboard(masterResponse,reportResponse);
-
-  }catch(error){
-
-    console.error(error);
-
-    setStatus(
-      "FAILED: "+error.message+
-      " | Please check Apps Script deployment and API response.",
-      true
-    );
-  }
+    response=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({action:action},extra))});
+  }catch(err){throw new Error('Network/CORS error while contacting Apps Script. Confirm Web App access is set to Anyone and URL is the deployed /exec URL. Details: '+(err.message||err));}
+  if(!response.ok)throw new Error('Apps Script HTTP error '+response.status+' ('+response.statusText+').');
+  const raw=await response.text();
+  let result;
+  try{result=JSON.parse(raw);}catch(err){throw new Error('Apps Script response is not JSON. First response text: '+raw.slice(0,180));}
+  if(result&&result.success===false)throw new Error(result.message||result.details||'Apps Script returned success:false.');
+  if(!result||typeof result!=='object')throw new Error('Unexpected Apps Script response format.');
+  // Standard backend envelope: {success:true,data:...}; also tolerate direct data responses.
+  return Object.prototype.hasOwnProperty.call(result,'data')?result.data:result;
+}
+function getField(obj,keys){for(const k of keys){if(obj&&obj[k]!==undefined&&obj[k]!==null&&String(obj[k]).trim()!=='')return obj[k];}return '';}
+function extractReports(reportResponse){
+  if(Array.isArray(reportResponse))return reportResponse;
+  if(reportResponse&&Array.isArray(reportResponse.reports))return reportResponse.reports;
+  if(reportResponse&&reportResponse.data&&Array.isArray(reportResponse.data.reports))return reportResponse.data.reports;
+  return [];
+}
+function buildRows(masterResponse,reports){
+  const master=masterResponse&&masterResponse.data?masterResponse.data:masterResponse;
+  if(!master||!Array.isArray(master.gpMaster))throw new Error('getMasterData response is missing gpMaster array. Check Code.gs deployment.');
+  const gps=master.gpMaster;
+  const branches=Array.isArray(master.branches)?master.branches:[];
+  const conductedCodes=new Set();
+  (Array.isArray(reports)?reports:[]).forEach(r=>{
+    const code=getField(r,['Gram Panchayat (GP) Code','GP Code','gpCode']);
+    if(String(code).trim())conductedCodes.add(norm(code));
+  });
+  const solMap=new Map();
+  gps.forEach(g=>{
+    const sol=solNorm(getField(g,['solId','SOL ID','Sol ID','sol_id']));
+    if(!sol)return;
+    if(!solMap.has(sol))solMap.set(sol,{solId:sol,branchName:String(getField(g,['branchName','Branch Name','branch_name'])).trim(),allotted:0,conducted:0});
+    const item=solMap.get(sol);item.allotted++;
+    const gpCode=getField(g,['gpCode','GP Code','Gram Panchayat (GP) Code']);
+    if(gpCode&&conductedCodes.has(norm(gpCode)))item.conducted++;
+    if(!item.branchName)item.branchName=String(getField(g,['branchName','Branch Name','branch_name'])).trim();
+  });
+  branches.forEach(b=>{
+    const sol=solNorm(getField(b,['solId','SOL ID','Sol ID','sol_id']));if(!sol)return;
+    if(!solMap.has(sol))solMap.set(sol,{solId:sol,branchName:String(getField(b,['branchName','Branch Name','branch_name'])).trim(),allotted:0,conducted:0});
+    else if(!solMap.get(sol).branchName)solMap.get(sol).branchName=String(getField(b,['branchName','Branch Name','branch_name'])).trim();
+  });
+  return Array.from(solMap.values()).map(x=>({...x,pending:Math.max(0,x.allotted-x.conducted)})).sort((a,b)=>a.solId.localeCompare(b.solId,undefined,{numeric:true}));
+}
+function render(){
+  const q=norm($('searchBox').value);
+  const list=dashboardRows.filter(r=>norm(r.solId+' '+r.branchName).includes(q));
+  const body=$('dashboardRows');body.replaceChildren();
+  if(!list.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=5;td.className='empty';td.textContent='No matching branch found.';tr.appendChild(td);body.appendChild(tr);return;}
+  list.forEach(r=>{
+    const tr=document.createElement('tr');
+    const soltd=document.createElement('td');const link=document.createElement('a');link.className='sol-link';link.href='./sol-details.html?sol='+encodeURIComponent(r.solId);link.textContent=r.solId;soltd.appendChild(link);
+    const branch=document.createElement('td');branch.textContent=r.branchName||'—';
+    const allotted=document.createElement('td');allotted.className='num';allotted.textContent=r.allotted;
+    const conducted=document.createElement('td');conducted.className='num conducted';conducted.textContent=r.conducted;
+    const pending=document.createElement('td');pending.className='num pending';pending.textContent=r.pending;
+    tr.append(soltd,branch,allotted,conducted,pending);body.appendChild(tr);
+  });
+}
+async function loadDashboard(){
+  $('reloadBtn').disabled=true;showStatus('Loading master data and camp reports…');
+  try{
+    const results=await Promise.all([api('getMasterData'),api('adminGetReports')]);
+    const master=results[0];const reports=extractReports(results[1]);
+    dashboardRows=buildRows(master,reports);
+    $('totalSol').textContent=dashboardRows.length;
+    $('totalAllotted').textContent=dashboardRows.reduce((sum,row)=>sum+Number(row.allotted||0),0);
+    $('totalConducted').textContent=dashboardRows.reduce((sum,row)=>sum+Number(row.conducted||0),0);
+    render();
+    showStatus('Dashboard updated successfully. Click SOL ID to view GP-wise details.');
+  }catch(err){
+    console.error('SOL Dashboard error:',err);
+    showStatus('Unable to load dashboard:\n'+(err.message||String(err)),true);
+    $('dashboardRows').innerHTML='<tr><td colspan="5" class="empty">Data could not be loaded. Read the error message above.</td></tr>';
+  }finally{$('reloadBtn').disabled=false;}
 }
 
+function getVisibleRows(){
+  const q=norm($('searchBox').value);
+  return dashboardRows.filter(r=>norm(r.solId+' '+r.branchName).includes(q));
+}
+function downloadExcel(){
+  if(typeof XLSX==='undefined'){alert('Excel library could not load. Please check internet connection and retry.');return;}
+  const rows=getVisibleRows();
+  const data=[['DFS SATURATION CAMP — BRANCH-WISE SUMMARY'],['Regional Office Jabalpur'],[],['S.No.','SOL ID','Branch Name','Camps Allotted','Camps Conducted','Pending']];
+  rows.forEach((r,i)=>data.push([i+1,r.solId,r.branchName,r.allotted,r.conducted,r.pending]));
+  data.push([]);data.push(['TOTAL','', '',rows.reduce((a,r)=>a+Number(r.allotted||0),0),rows.reduce((a,r)=>a+Number(r.conducted||0),0),rows.reduce((a,r)=>a+Number(r.pending||0),0)]);
+  const ws=XLSX.utils.aoa_to_sheet(data);
+  ws['!cols']=[{wch:8},{wch:14},{wch:30},{wch:18},{wch:20},{wch:14}];
+  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Branch Summary');
+  XLSX.writeFile(wb,'DFS_Branch_Wise_Camp_Summary.xlsx');
+}
+async function downloadImage(){
+  if(typeof html2canvas==='undefined'){alert('Image library could not load. Please check internet connection and retry.');return;}
+  const target=document.querySelector('.card');
+  const button=$('downloadImage');button.disabled=true;button.textContent='Preparing image…';
+  try{
+    const canvas=await html2canvas(target,{scale:2,backgroundColor:'#ffffff',useCORS:true});
+    const link=document.createElement('a');link.download='DFS_Branch_Wise_Camp_Summary.png';link.href=canvas.toDataURL('image/png');link.click();
+  }catch(e){console.error(e);alert('Could not create image. Please retry.');}
+  finally{button.disabled=false;button.textContent='🖼 Download Image';}
+}
+$('downloadExcel').addEventListener('click',downloadExcel);
+$('downloadImage').addEventListener('click',downloadImage);
+
+$('reloadBtn').addEventListener('click',loadDashboard);
+$('searchBox').addEventListener('input',render);
 loadDashboard();
-
 </script>
-
 </body>
 </html>
