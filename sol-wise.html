@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SOL-wise DFS Camp Dashboard</title>
+<style>
+:root{--green:#006633;--green2:#008447;--light:#f2f7f3;--border:#d8e3da;--text:#1d2b22;--muted:#607064;--blue:#1c4fa3}
+*{box-sizing:border-box}body{margin:0;background:#f3f6f4;color:var(--text);font-family:Arial,Helvetica,sans-serif}
+header{background:linear-gradient(120deg,var(--green),var(--green2));color:#fff;padding:22px 16px;box-shadow:0 3px 12px #0002}
+.header-inner{max-width:1200px;margin:auto}header h1{font-size:clamp(20px,3vw,30px);margin:0 0 7px}header p{margin:0;opacity:.92;font-size:14px}
+.container{max-width:1200px;margin:20px auto;padding:0 14px 36px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:8px;padding:11px 15px;font-weight:700;cursor:pointer;font-size:14px;text-decoration:none;min-height:40px}
+.primary{background:var(--green);color:#fff}.secondary{background:#e4eee7;color:var(--green)}.btn:hover{filter:brightness(.96)}
+.status{padding:12px 14px;border-radius:8px;margin:0 0 16px;font-size:14px;white-space:pre-wrap;background:#eaf1ff;color:#234c91;border:1px solid #c9d8fb}
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:16px;box-shadow:0 3px 12px #183b2410;overflow:hidden}.card-head{padding:14px 18px;background:#f7faf8;border-bottom:1px solid var(--border);font-size:16px;font-weight:700}.card-body{padding:18px}
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px}.metric{padding:15px;background:#fff;border:1px solid var(--border);border-radius:10px;text-align:center}.metric .number{font-size:26px;font-weight:800;color:var(--green)}.metric .label{font-size:13px;color:var(--muted);margin-top:5px}
+.controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}.controls input{flex:1;min-width:220px;padding:11px;border:1px solid #cbd8ce;border-radius:7px;font-size:15px}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:650px;font-size:14px}th,td{padding:12px 10px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}th{background:#f7faf8;color:#33473a;position:sticky;top:0}tbody tr:hover{background:#f4faf5}.sol-link{color:#006633;font-weight:800;text-decoration:underline;cursor:pointer}.num{text-align:center;font-weight:700}.pending{color:#b42318}.conducted{color:#176534}.empty{text-align:center;padding:25px;color:var(--muted)}footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
+@media(max-width:600px){.container{padding:0 10px 25px;margin-top:12px}.card-body{padding:12px}.metrics{grid-template-columns:1fr}.controls input{min-width:100%}header{padding:18px 13px}}
+</style>
+</head>
+<body>
+<header><div class="header-inner"><h1>DFS Saturation Camp — SOL-wise Dashboard</h1><p>Regional Office Jabalpur • Gram Panchayat camp allotment and reporting status</p></div></header>
+<main class="container">
+  <div class="toolbar"><a class="btn secondary" href="./index.html">← Back to Reporting Portal</a><button class="btn primary" id="reloadBtn">↻ Refresh Dashboard</button></div>
+  <div id="status" class="status">Loading dashboard data…</div>
+  <div class="metrics">
+    <div class="metric"><div class="number" id="totalSol">—</div><div class="label">Total Branches (SOL)</div></div>
+    <div class="metric"><div class="number" id="totalAllotted">—</div><div class="label">Total Camps Allotted</div></div>
+    <div class="metric"><div class="number" id="totalConducted">—</div><div class="label">Total Camps Conducted</div></div>
+  </div>
+  <section class="card"><div class="card-head">Branch-wise Camp Status</div><div class="card-body">
+    <div class="controls"><input id="searchBox" type="search" placeholder="Search SOL ID or branch name…" aria-label="Search SOL ID or branch name"></div>
+    <div class="table-wrap"><table><thead><tr><th>SOL ID</th><th>Branch Name</th><th class="num">Camps Allotted</th><th class="num">Camps Conducted</th><th class="num">Pending</th></tr></thead><tbody id="dashboardRows"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody></table></div>
+    <p style="font-size:12px;color:#607064;margin:12px 0 0">Click on any SOL ID to view GP-wise allotment and reporting status.</p>
+  </div></section>
+  <footer>DFS Saturation Camp Reporting Portal • MPGB RO Jabalpur</footer>
+</main>
+<script>
+'use strict';
+const API_URL='https://script.google.com/macros/s/AKfycbwHkmc9qul-GOuWTTTCKD3QKUdRLLcn9Xv7xKP-0kC46DHfJ6fO5rYnDWOEPoq09uz-/exec';
+const $=id=>document.getElementById(id);
+let dashboardRows=[];
+function norm(v){return String(v==null?'':v).replace(/[\u00A0\u200B-\u200D\uFEFF]/g,' ').replace(/\s+/g,' ').trim().toLowerCase()}
+function solNorm(v){return String(v==null?'':v).trim()}
+function showStatus(msg,isError=false){$('status').textContent=msg;$('status').style.background=isError?'#fff0ee':'#eaf1ff';$('status').style.color=isError?'#a32117':'#234c91';$('status').style.borderColor=isError?'#f1c1bc':'#c9d8fb'}
+async function api(action,extra={}){
+ const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,...extra})});
+ if(!res.ok)throw new Error('Server returned HTTP '+res.status);
+ const text=await res.text();let result;try{result=JSON.parse(text)}catch(e){throw new Error('Apps Script did not return JSON. Please check deployment.')}
+ if(!result.success)throw new Error(result.message||result.details||'Request failed');return result.data;
+}
+function getField(obj,keys){for(const k of keys){if(obj&&obj[k]!==undefined&&obj[k]!==null&&String(obj[k]).trim()!=='')return obj[k]}return ''}
+function buildRows(master,reports){
+ const gps=Array.isArray(master.gpMaster)?master.gpMaster:[];
+ const branches=Array.isArray(master.branches)?master.branches:[];
+ const conductedCodes=new Set();
+ (Array.isArray(reports)?reports:[]).forEach(r=>{
+   const code=getField(r,['Gram Panchayat (GP) Code','GP Code','gpCode']);
+   if(String(code).trim())conductedCodes.add(norm(code));
+ });
+ const solMap=new Map();
+ gps.forEach(g=>{
+   const sol=solNorm(getField(g,['solId','SOL ID','Sol ID','sol_id']));
+   if(!sol)return;
+   if(!solMap.has(sol))solMap.set(sol,{solId:sol,branchName:String(getField(g,['branchName','Branch Name','branch_name'])).trim(),allotted:0,conducted:0});
+   const item=solMap.get(sol);item.allotted++;
+   if(conductedCodes.has(norm(getField(g,['gpCode','GP Code','Gram Panchayat (GP) Code']))))item.conducted++;
+   if(!item.branchName)item.branchName=String(getField(g,['branchName','Branch Name','branch_name'])).trim();
+ });
+ // Branch master ensures branches with zero GP entries can still appear.
+ branches.forEach(b=>{
+   const sol=solNorm(getField(b,['solId','SOL ID','Sol ID','sol_id']));if(!sol)return;
+   if(!solMap.has(sol))solMap.set(sol,{solId:sol,branchName:String(getField(b,['branchName','Branch Name','branch_name'])).trim(),allotted:0,conducted:0});
+   else if(!solMap.get(sol).branchName)solMap.get(sol).branchName=String(getField(b,['branchName','Branch Name','branch_name'])).trim();
+ });
+ return Array.from(solMap.values()).map(x=>({...x,pending:Math.max(0,x.allotted-x.conducted)})).sort((a,b)=>a.solId.localeCompare(b.solId,undefined,{numeric:true}));
+}
+function render(){
+ const q=norm($('searchBox').value);const list=dashboardRows.filter(r=>norm(r.solId+' '+r.branchName).includes(q));
+ const body=$('dashboardRows');body.replaceChildren();
+ if(!list.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=5;td.className='empty';td.textContent='No matching branch found.';tr.appendChild(td);body.appendChild(tr);return;}
+ list.forEach(r=>{
+   const tr=document.createElement('tr');
+   const soltd=document.createElement('td');const link=document.createElement('a');link.className='sol-link';link.href='./sol-details.html?sol='+encodeURIComponent(r.solId);link.textContent=r.solId;soltd.appendChild(link);
+   const branch=document.createElement('td');branch.textContent=r.branchName||'—';
+   const allotted=document.createElement('td');allotted.className='num';allotted.textContent=r.allotted;
+   const conducted=document.createElement('td');conducted.className='num conducted';conducted.textContent=r.conducted;
+   const pending=document.createElement('td');pending.className='num pending';pending.textContent=r.pending;
+   tr.append(soltd,branch,allotted,conducted,pending);body.appendChild(tr);
+ });
+}
+async function loadDashboard(){
+ $('reloadBtn').disabled=true;showStatus('Loading master data and camp reports…');
+ try{
+   const [master,reportsData]=await Promise.all([api('getMasterData'),api('adminGetReports')]);
+   const reports=Array.isArray(reportsData)?reportsData:(Array.isArray(reportsData.reports)?reportsData.reports:[]);
+   dashboardRows=buildRows(master,reports);
+   $('totalSol').textContent=dashboardRows.length;
+   $('totalAllotted').textContent=dashboardRows.reduce((s,r)=>s+r.allotted,0;
+   $('totalConducted').textContent=dashboardRows.reduce((s,r)=>s+r.conducted,0);
+   render();showStatus('Dashboard updated successfully. Click SOL ID to view GP-wise details.');
+ }catch(err){showStatus('Unable to load dashboard: '+(err.message||err)+'. Verify Code.gs is saved and deployed as a new version.',true);$('dashboardRows').innerHTML='<tr><td colspan="5" class="empty">Data could not be loaded.</td></tr>'}
+ finally{$('reloadBtn').disabled=false}
+}
+$('reloadBtn').addEventListener('click',loadDashboard);$('searchBox').addEventListener('input',render);loadDashboard();
+</script>
+</body>
+</html>
