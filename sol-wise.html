@@ -154,6 +154,7 @@ footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
         <table>
           <thead>
             <tr>
+              <th class="num">S.No.</th>
               <th>SOL ID</th>
               <th>Branch Name</th>
               <th class="num">Camps Allotted</th>
@@ -163,13 +164,13 @@ footer{text-align:center;color:#738078;font-size:12px;padding:8px 0 20px}
             </tr>
           </thead>
           <tbody id="dashboardRows">
-            <tr><td colspan="6" class="empty">Loading…</td></tr>
+            <tr><td colspan="7" class="empty">Loading…</td></tr>
           </tbody>
         </table>
       </div>
 
       <p style="font-size:12px;color:#607064;margin:12px 0 0">
-        Click SOL ID or View Details to view GP-wise allotment and reporting status.
+        Click View Details to view GP-wise allotment and reporting status.
       </p>
 
     </div>
@@ -391,7 +392,7 @@ function render(){
     const tr=document.createElement('tr');
     const td=document.createElement('td');
 
-    td.colSpan=6;
+    td.colSpan=7;
     td.className='empty';
     td.textContent='No allotted branch found.';
 
@@ -400,19 +401,17 @@ function render(){
     return;
   }
 
-  list.forEach(r=>{
+  list.forEach((r,index)=>{
 
     const tr=document.createElement('tr');
 
-    // SOL ID link — original View Details behavior preserved.
+    const serial=document.createElement('td');
+    serial.className='num';
+    serial.textContent=index+1;
+
+    // SOL ID is plain text (not clickable).
     const soltd=document.createElement('td');
-    const link=document.createElement('a');
-
-    link.className='sol-link';
-    link.href='./sol-details.html?sol='+encodeURIComponent(r.solId);
-    link.textContent=r.solId;
-
-    soltd.appendChild(link);
+    soltd.textContent=r.solId;
 
     const branch=document.createElement('td');
     branch.textContent=r.branchName||'—';
@@ -439,7 +438,7 @@ function render(){
     detailLink.textContent='View Details';
     detailtd.appendChild(detailLink);
 
-    tr.append(soltd,branch,allotted,conducted,pending,detailtd);
+    tr.append(serial,soltd,branch,allotted,conducted,pending,detailtd);
     body.appendChild(tr);
   });
 }
@@ -491,7 +490,7 @@ async function loadDashboard(){
     );
 
     $('dashboardRows').innerHTML=
-      '<tr><td colspan="6" class="empty">'+
+      '<tr><td colspan="7" class="empty">'+
       'Data could not be loaded. Read the error message above.'+
       '</td></tr>';
 
